@@ -49,6 +49,9 @@ test:
 #
 production:
   <<: *default
-  database: coco_shopping_list_production
-  username: coco_shopping_list
-  password: <%= ENV['COCO_SHOPPING_LIST_DATABASE_PASSWORD'] %>
+  database: <%= ENV['DATABASE_URL'] %>
+  #database: coco_shopping_list_production
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  #username: coco_shopping_list
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  #password: <%= ENV['COCO_SHOPPING_LIST_DATABASE_PASSWORD'] %>
