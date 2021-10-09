@@ -74,7 +74,13 @@
     },
     methods: {
       signupClick() {
-        debugger
+        this.axios.post('/api/v1/signup', { last_name: this.last_name.value, first_name: this.first_name.value, email: this.email.value, password: this.password.value, password_confirmation: this.password_confirmation.value})
+        .then(response => {
+          debugger
+        })
+        .catch(error => {
+          debugger
+        })
       }
     }
   }
