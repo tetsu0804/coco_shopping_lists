@@ -64,9 +64,9 @@
       loginClick() {
         this.axios.post('/api/v1/login', { email: this.email.value, password: this.password.value, remember_me: this.login_state.value })
         .then(response => {
-          // this.dataClear();
-          // this.$store.dispatch('fetchLoggedInUser', response.data.user);
-          // this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんが登録されました。`}});
+          this.dataClear();
+          this.$store.dispatch('fetchLoggedInUser', response.data.user);
+          this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんがログインしました。`}});
         })
         .catch(error => {
           debugger
