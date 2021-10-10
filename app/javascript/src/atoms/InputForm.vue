@@ -1,7 +1,13 @@
 <template>
   <div class="input-form-container">
-    <label  :for="forId">{{ labelText }}</label>
-    <input class="input-form" :type="typeKinds"  :id="forId" :placeholder="placeholder" v-model="inputValue"/>
+    <template v-if="beCheckbox">
+      <input class="checkbox-form":type="typeKinds"  :id="forId" :true-value="trueBox" :false-value="falseBox" v-model="inputValue"/>
+      <label  :for="forId">{{ labelText }}</label>
+    </template>
+    <template v-else>
+      <label  :for="forId">{{ labelText }}</label>
+      <input class="input-form" :type="typeKinds"  :id="forId" :placeholder="placeholder" v-model="inputValue"/>
+    </template>
   </div>
 </template>
 
@@ -24,6 +30,15 @@
       },
       labelText() {
         return !!this.status && !!this.status.label ? this.status.label : ''
+      },
+      trueBox() {
+        return !!this.status && !!this.status.true_box ? this.status.true_box : false
+      },
+      falseBox() {
+        return !!this.status && !!this.status.false_box ? this.status.false_box : false
+      },
+      beCheckbox() {
+        return !!this.status && this.status.checkbox_be ? true : false
       },
       inputValue: {
         get: function() {
@@ -49,6 +64,12 @@
     height: 100%;
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 4px;
+    box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
+  }
+  .checkbox-form {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
   }
 </style>
