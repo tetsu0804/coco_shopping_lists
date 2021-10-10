@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post '/signup', controller: :users, action: :create
+      post '/login', controller: :sessions, action: :create
+      delete '/logout', controller: :sessions, action: :destroy
+      get '/users', controller: :users, action: :show
     end
   end
 end
