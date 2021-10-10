@@ -4,22 +4,7 @@
       {{ flash }}
     </div>
     <form>
-      <div class="input-container">
-        <div class="input-field-double">
-          <input-form
-           :status="last_name"
-           @inputFormValue="last_name.value = $event"
-          ></input-form>
-        </div>
-        <div class="input-field-double">
-          <input-form
-            :status="first_name"
-            @inputFormValue="first_name.value = $event"
-          ></input-form>
-        </div>
-        <div class="clear-left"></div>
-      </div>
-
+      <div>{{ email.value }}</div>
       <div class="input-container">
         <div class="input-field">
           <input-form
@@ -28,33 +13,34 @@
           ></input-form>
         </div>
       </div>
-
+      <div> {{ password.value }}</div>
       <div class="input-container">
-        <div class="input-field-double">
+        <div class="input-field">
           <input-form
             :status="password"
             @inputFormValue="password.value = $event"
           ></input-form>
         </div>
-        <div class="input-field-double">
+      </div>
+      <div> {{ login_state.value}}</div>
+
+      <div class="input-container">
+        <div class="input-field">
           <input-form
-            :status="password_confirmation"
-            @inputFormValue="password_confirmation.value = $event"
+            :status="login_state"
+            @inputFormValue="login_state.value = $event"
           ></input-form>
         </div>
-        <div class="clear-left"></div>
       </div>
 
       <div class="input-container">
         <div class="input-field">
           <create-btn
-            @createBtnClick="signupClick"
+            @createBtnClick="loginClick"
           ></create-btn>
         </div>
       </div>
-
     </form>
-
   </div>
 </template>
 
@@ -68,22 +54,19 @@
     },
     data() {
       return {
-        last_name: { id: 'input-last-name', kinds: 'text', place: '田中', label: '', value: ''},
-        first_name: { id: 'input-first-name', kinds: 'text', place: '太朗', label: '', value: ''},
         email: { id: 'input-email', kinds: 'email', place: 'メールアドレス', label: '', value: ''},
         password: { id: 'input-password', kinds: 'password', place: 'パスワード', label: '', value: ''},
-        password_confirmation: { id: 'input-password-confirmation', kinds: 'password', place: 'パスワード再確認', label: '', value: ''},
+        login_state: { id: 'input-check-box', kinds: 'checkbox', label: 'ログイン状態を保持', true_box: '1', false_box: '0', value: '0', checkbox_be: true },
         flash: ''
       }
     },
     methods: {
-      signupClick() {
-        this.axios.post('/api/v1/signup', { last_name: this.last_name.value, first_name: this.first_name.value, email: this.email.value, password: this.password.value, password_confirmation: this.password_confirmation.value})
+      loginClick() {
+        this.axios.post('/api/v1/login', { email: this.email.value, password: this.password.value, remember_me: this.login_state.value })
         .then(response => {
           this.dataClear();
-          this.$store.dispatch('fetchCreateUsers', response.data.user);
           this.$store.dispatch('fetchLoggedInUser', response.data.user);
-          this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんが登録されました。`}});
+          this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんがログインしました。`}});
         })
         .catch(error => {
           debugger
@@ -92,11 +75,8 @@
         })
       },
       dataClear() {
-        this.last_name.value = ''
-        this.first_name.value = ''
         this.email.value = ''
         this.password.value = ''
-        this.password_confirmation = ''
       }
     }
   }
@@ -110,15 +90,6 @@
   .input-container {
     width: 100%;
     margin-top: 10px;
-  }
-  .input-field-double {
-    width: 46%;
-    margin: 0 2%;
-    height: 40px;
-    float: left;
-  }
-  .clear-left {
-    clear: left;
   }
   .input-field {
     width: 96%;
