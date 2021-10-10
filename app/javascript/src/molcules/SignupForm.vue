@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="flash">
+      {{ flash }}
+    </div>
     <form>
       <div class="input-container">
         <div class="input-field-double">
@@ -69,18 +72,31 @@
         first_name: { id: 'input-first-name', kinds: 'text', place: '太朗', label: '', value: ''},
         email: { id: 'input-email', kinds: 'email', place: 'メールアドレス', label: '', value: ''},
         password: { id: 'input-password', kinds: 'password', place: 'パスワード', label: '', value: ''},
-        password_confirmation: { id: 'input-password-confirmation', kinds: 'password', place: 'パスワード再確認', label: '', value: ''}
+        password_confirmation: { id: 'input-password-confirmation', kinds: 'password', place: 'パスワード再確認', label: '', value: ''},
+        flash: ''
       }
     },
     methods: {
       signupClick() {
         this.axios.post('/api/v1/signup', { last_name: this.last_name.value, first_name: this.first_name.value, email: this.email.value, password: this.password.value, password_confirmation: this.password_confirmation.value})
         .then(response => {
-          debugger
+          this.dataClear();
+          this.$store.dispatch('fetchCreateUsers', response.data.user);
+          this.$store.dispatch('fetchLoggedInUser', response.data.user);
+          this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんが登録されました。`}});
         })
         .catch(error => {
           debugger
+          this.dataClear();
+          this.flash = '失敗しました'
         })
+      },
+      dataClear() {
+        this.last_name.value = ''
+        this.first_name.value = ''
+        this.email.value = ''
+        this.password.value = ''
+        this.password_confirmation = ''
       }
     }
   }
