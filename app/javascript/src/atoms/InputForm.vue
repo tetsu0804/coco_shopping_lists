@@ -1,7 +1,7 @@
 <template>
   <div class="input-form-container">
     <template v-if="beCheckbox">
-      <input class="checkbox-form":type="typeKinds"  :id="forId" :true-value="trueBox" :false-value="falseBox" v-model="inputValue"/>
+      <input class="checkbox-form" :type="typeKinds"  :id="forId" :true-value="trueBox" :false-value="falseBox" v-model="inputValue"/>
       <label  :for="forId">{{ labelText }}</label>
     </template>
     <template v-else>
