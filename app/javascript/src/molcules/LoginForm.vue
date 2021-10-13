@@ -66,17 +66,20 @@
         .then(response => {
           this.dataClear();
           this.$store.dispatch('fetchLoggedInUser', response.data.user);
-          this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんがログインしました。`}});
+          this.$router.push({ name: 'Home', params: { flash: { message: `${response.data.user.first_name} さんがログインしました。`, status: response.status }}});
         })
         .catch(error => {
-          debugger
+          const error_format = { message: '', status: ''}
+          error_format.message = !!error.response && !!error.response.data && !!error.response.data.error ? error.response.data.error : '失敗しました'
+          error_format.status = !!error.response && !!error.response.status ? error.response.status : 422
           this.dataClear();
-          this.flash = '失敗しました'
+          this.$emit('loginErrorStatus', error_format);
         })
       },
       dataClear() {
-        this.email.value = ''
-        this.password.value = ''
+        this.email = { id: 'input-email', kinds: 'email', place: 'メールアドレス', label: '', value: ''}
+        this.password = { id: 'input-password', kinds: 'password', place: 'パスワード', label: '', value: ''}
+        this.login_state = { id: 'input-check-box', kinds: 'checkbox', label: 'ログイン状態を保持', true_box: '1', false_box: '0', value: '0', checkbox_be: true }
       }
     }
   }
