@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div v-if="flash">
-      {{ flash }}
-    </div>
     <form>
       <div class="input-container">
         <div class="input-field-double">
@@ -73,7 +70,6 @@
         email: { id: 'input-email', kinds: 'email', place: 'メールアドレス', label: '', value: ''},
         password: { id: 'input-password', kinds: 'password', place: 'パスワード', label: '', value: ''},
         password_confirmation: { id: 'input-password-confirmation', kinds: 'password', place: 'パスワード再確認', label: '', value: ''},
-        flash: ''
       }
     },
     methods: {
@@ -83,20 +79,22 @@
           this.dataClear();
           this.$store.dispatch('fetchCreateUsers', response.data.user);
           this.$store.dispatch('fetchLoggedInUser', response.data.user);
-          this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんが登録されました。`}});
+          this.$router.push({ name: 'Home', params: { flash: { message: `${response.data.user.first_name} さんが登録されました。`, status: response.status }}});
         })
         .catch(error => {
-          debugger
+          const error_format = { message: '', status: ''}
+          error_format.message = !!error.response && !!error.response.data && !!error.response.data.error ? error.response.data.error : '失敗しました'
+          error_format.status = !!error.response && !!error.response.status ? error.response.status : 422
           this.dataClear();
-          this.flash = '失敗しました'
+          this.$emit('signupErrorStatus', error_format)
         })
       },
       dataClear() {
-        this.last_name.value = ''
-        this.first_name.value = ''
-        this.email.value = ''
-        this.password.value = ''
-        this.password_confirmation = ''
+        this.last_name = { id: 'input-last-name', kinds: 'text', place: '田中', label: '', value: ''},
+        this.first_name = { id: 'input-first-name', kinds: 'text', place: '太朗', label: '', value: ''},
+        this.email = { id: 'input-email', kinds: 'email', place: 'メールアドレス', label: '', value: ''},
+        this.password = { id: 'input-password', kinds: 'password', place: 'パスワード', label: '', value: ''},
+        this.password_confirmation = { id: 'input-password-confirmation', kinds: 'password', place: 'パスワード再確認', label: '', value: ''}
       }
     }
   }
