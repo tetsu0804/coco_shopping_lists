@@ -79,7 +79,7 @@
           this.dataClear();
           this.$store.dispatch('fetchCreateUsers', response.data.user);
           this.$store.dispatch('fetchLoggedInUser', response.data.user);
-          this.$router.push({ name: 'Home', params: { flash: `${response.data.user.first_name} さんが登録されました。`}});
+          this.$router.push({ name: 'Home', params: { flash: { message: `${response.data.user.first_name} さんが登録されました。`, status: response.status }}});
         })
         .catch(error => {
           const error_format = { message: '', status: ''}
