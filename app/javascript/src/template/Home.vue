@@ -12,12 +12,15 @@
       <div @click="logoutClick">ログアウト</div>
     </template>
 
-    <div v-if="$route.params.flash">
-      {{ $route.params.flash }}
-    </div>
-    <div v-if="flash">
-      {{ flash }}
-    </div>
+
+      <flash
+        v-if="flash.status"
+        :flash="$route.params.flash"
+        @closeFlash="flash = { message: '', status: ''}"
+      >
+      </flash>
+
+
     home
 
     <div v-for="user in allUsers" :key="user.id">
@@ -32,11 +35,20 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Flash from '../atoms/Flash.vue'
   export default {
+    components: {
+      Flash
+    },
     computed: mapGetters(['allUsers', 'userLoggedIn']),
     data() {
       return {
-        flash: ''
+        flash: { message: '', status: ''}
+      }
+    },
+    mounted() {
+      if (this.$route.params.flash) {
+        this.getFlash();
       }
     },
     methods: {
@@ -49,6 +61,9 @@ import { mapGetters } from 'vuex'
         .catch(error => {
           this.flash = 'ログアウトできませんでした。'
         })
+      },
+      getFlash() {
+        this.flash = this.$route.params.flash
       }
     }
   }
