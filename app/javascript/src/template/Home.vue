@@ -3,6 +3,7 @@
     <template v-if="userLoggedIn.signedIn">
       <div> {{ userLoggedIn.user.first_name }} さん</div>
       <div @click="logoutClick">ログアウト</div>
+      <router-link :to="{ name: 'CategoryCreate'}">カテゴリ作成</router-link>
       <div>
         {{ userLoggedIn }}
       </div>
