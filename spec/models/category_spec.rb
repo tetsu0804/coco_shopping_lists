@@ -39,4 +39,10 @@ RSpec.describe Category, type: :model do
       end
     end
   end
+
+  context 'select_column' do
+    it 'id と category_name が抽出される' do
+      expect(@gohan.select_column[:category_name]).to eq 'ご飯'
+    end
+  end
 end
