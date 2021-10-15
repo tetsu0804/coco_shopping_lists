@@ -8,7 +8,12 @@ describe('/store/getters', () => {
         { id: 1, last_name: '吉田', first_name: '太朗', email: 'test@test.com' },
         { id: 2, last_name: '田中', first_name: '二郎', email: 'test1@test.com' },
       ],
-      loggedIn: { signedIn: true, user: { id: 1, last_name: '吉田', first_name: '太朗', email: 'test@test.com' } }
+      loggedIn: { signedIn: true, user: { id: 1, last_name: '吉田', first_name: '太朗', email: 'test@test.com' } },
+      categories: [
+        { id: 1, category_name: 'ご飯' },
+        { id: 2, category_name: 'おやつ' },
+        { id: 3, category_name: 'しつけ' }
+      ]
     }
   });
   describe('allUsers', () => {
@@ -38,6 +43,16 @@ describe('/store/getters', () => {
           user: ''
         }
       )
+    });
+  });
+
+  describe('allCategories', () =>{
+    it('state.categoriesの値と同じである', () => {
+      expect(getters.allCategories(state)).toMatchObject([
+        { id: 1, category_name: 'ご飯' },
+        { id: 2, category_name: 'おやつ' },
+        { id: 3, category_name: 'しつけ' }
+      ]);
     });
   });
 });
