@@ -4,5 +4,8 @@ export default {
   },
   userLoggedIn(state) {
     return state.loggedIn
+  },
+  allCategories(state) {
+    return state.categories
   }
 }
