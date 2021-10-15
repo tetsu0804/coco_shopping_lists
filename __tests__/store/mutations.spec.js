@@ -5,7 +5,8 @@ describe('/store/mutatios', () => {
   beforeEach(() => {
     state = {
       users: [],
-      loggedIn: { signedIn: false, user: '' }
+      loggedIn: { signedIn: false, user: '' },
+      categories: []
     }
     user = { id: 1, last_name: '吉田', first_name: '太朗', email: 'test@test.com' }
   });
@@ -56,6 +57,38 @@ describe('/store/mutatios', () => {
           signedIn: false,
           user: ''
         }
+      )
+    });
+  });
+
+  describe('createCategory', () => {
+    let category, categories
+    it('(1つのカテゴリ追加) createCategoryを動かすと state.categoriesにカテゴリが追加されているか？', () => {
+      expect(state.categories.length).toEqual(0);
+      category = { id: 1, category_name: 'ご飯' }
+      mutations.createCategory(state, category);
+      expect(state.categories.length).toEqual(1);
+      expect(state.categories).toMatchObject(
+        [
+          { id: 1, category_name: 'ご飯' }
+        ]
+      );
+    });
+
+    it('(複数のカテゴリ追加) ceateCategoryを動かすと state.categoriesにカテゴリが追加されているか？', () => {
+      expect(state.categories.length).toEqual(0);
+      categories = [
+        { id: 1, category_name: 'ご飯' },
+        { id: 2, category_name: 'おやつ' },
+        { id: 3, category_name: 'しつけ' }
+      ]
+      mutations.createCategory(state, categories);
+      expect(state.categories).toMatchObject(
+        [
+          { id: 1, category_name: 'ご飯' },
+          { id: 2, category_name: 'おやつ' },
+          { id: 3, category_name: 'しつけ' }
+        ]
       )
     });
   });
