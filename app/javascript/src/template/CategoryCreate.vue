@@ -9,19 +9,22 @@
     <category-form
       @categoryStatus="flash = $event"
     ></category-form>
-    <div v-for="category in allCategories" :key="category.id">
-      {{ category.category_name }}
-    </div>
+  
+    <category-list
+      :allCategories="allCategories"
+    ></category-list>
   </div>
 </template>
 
 <script>
   import CategoryForm from '../molcules/CategoryForm.vue'
+  import CategoryList from '../molcules/CategoryList.vue'
   import Flash from '../atoms/Flash.vue'
   import { mapGetters } from 'vuex'
   export default {
     components: {
       CategoryForm,
+      CategoryList,
       Flash
     },
     data() {
