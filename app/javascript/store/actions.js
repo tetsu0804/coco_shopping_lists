@@ -7,5 +7,8 @@ export default {
   },
   fetchLogoutUser( { commit }) {
     commit('logoutUser');
+  },
+  fetchCreateCategory( { commit }, categories) {
+    commit('createCategory', categories)
   }
 }
