@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       post '/login', controller: :sessions, action: :create
       delete '/logout', controller: :sessions, action: :destroy
       get '/users', controller: :users, action: :show
+      post '/category', controller: :categories, action: :create
+      get '/category', controller: :categories, action: :index
     end
   end
 end
