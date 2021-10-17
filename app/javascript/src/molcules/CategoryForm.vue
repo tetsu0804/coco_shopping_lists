@@ -24,6 +24,11 @@
 import InputForm from '../atoms/InputForm.vue'
 import CreateBtn from '../atoms/CreateBtn.vue'
   export default {
+    props: {
+      userLoggedIn: {
+        type: Object
+      }
+    },
     components: {
       InputForm,
       CreateBtn
@@ -35,7 +40,7 @@ import CreateBtn from '../atoms/CreateBtn.vue'
     },
     methods: {
       createCategoryClick() {
-        this.axios.post('/api/v1/category', { category_name: this.category_name.value })
+        this.axios.post('/api/v1/category', { category_name: this.category_name.value, user_id: this.userLoggedIn.user.id })
         .then(response => {
           this.dataClear();
           this.$store.dispatch('fetchCreateCategory', response.data.category)
@@ -49,6 +54,7 @@ import CreateBtn from '../atoms/CreateBtn.vue'
           const error_format = { message: '', status: ''}
           error_format.message = !!error.response && !!error.response.data && !!error.response.data.message ? error.response.data.message : '失敗しました'
           error_format.status = !!error.response && !!error.response.status ? error.response.status : 400
+          this.$emit('categoryStatus', error_format)
         })
       },
       dataClear() {
