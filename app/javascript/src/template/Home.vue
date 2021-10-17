@@ -1,18 +1,21 @@
 <template>
   <div>
-    <template v-if="userLoggedIn.signedIn">
-      <div> {{ userLoggedIn.user.first_name }} さん</div>
-      <div @click="logoutClick">ログアウト</div>
-      <router-link :to="{ name: 'CategoryCreate'}">カテゴリ作成</router-link>
-      <div>
-        {{ userLoggedIn }}
-      </div>
+    <template v-if="loding">
+      Loding ...
     </template>
     <template v-else>
-      <router-link :to="{ name: 'Signup' }">ユーザー登録</router-link>
-      <div @click="logoutClick">ログアウト</div>
-    </template>
-
+      <template v-if="userLoggedIn.signedIn">
+        <div> {{ userLoggedIn.user.first_name }} さん</div>
+        <div @click="logoutClick">ログアウト</div>
+        <router-link :to="{ name: 'CategoryCreate'}">カテゴリ作成</router-link>
+        <div>
+          {{ userLoggedIn }}
+        </div>
+      </template>
+      <template v-else>
+        <router-link :to="{ name: 'Signup' }">ユーザー登録</router-link>
+        <div @click="logoutClick">ログアウト</div>
+      </template>
 
       <flash
         v-if="flash.status"
@@ -20,17 +23,22 @@
         @closeFlash="flash = { message: '', status: ''}"
       >
       </flash>
-
-
-    home
-
-    <div v-for="user in allUsers" :key="user.id">
-      {{ user.last_name }} {{ user.first_name }} さん
-    </div>
-
-    <div>
-      {{ allUsers }}
-    </div>
+      home
+      <p>---------------</p>
+      <div v-if="error">
+        {{ error }}
+      </div>
+      <div v-for="category in allCategories" :key="category.id">
+        {{ category.category_name }}
+      </div>
+      <div>
+        {{ $store.state.categories }}
+      </div>
+      <p>-------------</p>
+      <div>
+        {{ allCategories }}
+      </div>
+    </template>
   </div>
 </template>
 
@@ -41,10 +49,17 @@ import Flash from '../atoms/Flash.vue'
     components: {
       Flash
     },
-    computed: mapGetters(['allUsers', 'userLoggedIn']),
+    computed: mapGetters(['userLoggedIn', 'allCategories']),
     data() {
       return {
-        flash: { message: '', status: ''}
+        flash: { message: '', status: ''},
+        loding: null,
+        error: null
+      }
+    },
+    created() {
+      if (this.$route.params.loggedIn) {
+        this.getCategoryData();
       }
     },
     mounted() {
@@ -65,6 +80,20 @@ import Flash from '../atoms/Flash.vue'
       },
       getFlash() {
         this.flash = this.$route.params.flash
+      },
+      getCategoryData() {
+        this.loding = true
+        this.axios.get('/api/v1/category')
+        .then(response => {
+          this.$store.dispatch('fetchCreateAllCategories', response.data.categories)
+          this.error = false
+          this.loding = false
+        })
+        .catch(error => {
+          this.$store.dispatch('fetchAllDeleteCategory');
+          this.error = error.response.data.message
+          this.loding = false
+        })
       }
     }
   }
