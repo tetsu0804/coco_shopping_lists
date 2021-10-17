@@ -208,7 +208,7 @@ describe('/molcules/SignupForm', () => {
         it('this.$rotuer.pushが動いていて適切な引数が入っているか？', async () => {
           create_btn.vm.$emit('createBtnClick');
           await flushPromises();
-          expect(mockPush).toHaveBeenCalledWith({ name: 'Home', params: { flash: { message: '二郎 さんが登録されました。', status: 200}}});
+          expect(mockPush).toHaveBeenCalledWith({ name: 'Home', params: { loggedIn: true, flash: { message: '二郎 さんが登録されました。', status: 200}}});
           expect(signup_form.vm.last_name.value).toEqual('')
         });
         it('data内のプロパティのvalue値が空文字になる', async () => {
