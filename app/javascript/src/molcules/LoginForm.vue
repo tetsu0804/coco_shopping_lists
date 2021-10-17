@@ -66,7 +66,7 @@
         .then(response => {
           this.dataClear();
           this.$store.dispatch('fetchLoggedInUser', response.data.user);
-          this.$router.push({ name: 'Home', params: { flash: { message: `${response.data.user.first_name} さんがログインしました。`, status: response.status }}});
+          this.$router.push({ name: 'Home', params: { loggedIn: true, flash: { message: `${response.data.user.first_name} さんがログインしました。`, status: response.status }}});
         })
         .catch(error => {
           const error_format = { message: '', status: ''}
