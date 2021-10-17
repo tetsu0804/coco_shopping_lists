@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Category, type: :model do
   before do
-    @gohan = Category.create(category_name: 'ご飯')
+    @tarou = User.create(last_name: '吉田', first_name: '太朗', email: 'test@test.com', password: 'password', password_confirmation: 'password')
+    @gohan = Category.create(category_name: 'ご飯', user_id: @tarou.id)
   end
 
   context 'valid' do
