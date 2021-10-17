@@ -10,9 +10,9 @@ describe('/store/getters', () => {
       ],
       loggedIn: { signedIn: true, user: { id: 1, last_name: '吉田', first_name: '太朗', email: 'test@test.com' } },
       categories: [
-        { id: 1, category_name: 'ご飯' },
-        { id: 2, category_name: 'おやつ' },
-        { id: 3, category_name: 'しつけ' }
+        { id: 1, category_name: 'ご飯', user_id: 1 },
+        { id: 2, category_name: 'おやつ', user_id: 2 },
+        { id: 3, category_name: 'しつけ', user_id: 1 }
       ]
     }
   });
@@ -53,6 +53,22 @@ describe('/store/getters', () => {
         { id: 2, category_name: 'おやつ' },
         { id: 3, category_name: 'しつけ' }
       ]);
+    });
+  });
+
+  describe('selectedCategory', () => {
+    let selected
+    it('{id:2 category_name: "おやつ"} を 取得する', () => {
+      selected = getters.selectedCategory(state)
+      expect(selected(2)).toEqual(
+        { id: 2, category_name: 'おやつ', user_id: 2 }
+      )
+    });
+    it('category_idが存在しない場合は { id: "", category_name: "登録なし", user_id: ""} となる', () => {
+      selected = getters.selectedCategory(state)
+      expect(selected(4)).toEqual(
+        { id: '', category_name: '登録なし', user_id: '' }
+      )
     });
   });
 });
