@@ -138,7 +138,7 @@ describe('/molcules/LoginForm', () => {
         it('this.$router.pushが動いていて適切な引数になっているか？', async () => {
           create_btn.vm.$emit('createBtnClick');
           await flushPromises();
-          expect(mockPush).toHaveBeenCalledWith({"name": "Home", "params": {"flash": { message: "太朗 さんがログインしました。", status: 200}} });
+          expect(mockPush).toHaveBeenCalledWith({"name": "Home", "params": {"loggedIn": true, "flash": { message: "太朗 さんがログインしました。", status: 200}} });
         });
         it('data.プロパティ.valueの値が空文字になる', async() => {
           expect(login_form.vm.email.value).toEqual('test@test.com');

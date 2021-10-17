@@ -9,7 +9,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     users: [],
-    loggedIn: { signedIn: false, user: '' }
+    loggedIn: { signedIn: false, user: '' },
+    categories: []
   },
   getters,
   mutations,
