@@ -1,6 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import CategoryList from '@/src/molcules/CategoryList'
 import Vuex from 'vuex'
+import flushPromises from 'flush-promises'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
