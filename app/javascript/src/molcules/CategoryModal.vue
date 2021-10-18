@@ -1,26 +1,28 @@
 <template>
   <div class="category-modal-container">
     <div class="category-modal-sub-container">
-      <h3 class="category-update-title">{{ selectedCategory.category_name}} を編集</h3>
-      <div class="error-flash" v-if="error">{{ error }}</div>
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>カテゴリ名</th>
-            <th>編集完了</th>
-            <th>X</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{  selectedCategory.id}}</td>
-            <td><input type="text" v-model="updateCategory"></input></td>
-            <td><div class="clickIcon" @click="updateCategoryName(selectedCategory.id)"></div></td>
-            <td><div class="clickIcon" @click="closeClick"></div></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="category-modal-title-table">
+        <h3 class="category-update-title">{{ selectedCategory.category_name}} を編集</h3>
+        <div class="error-flash" v-if="error">{{ error }}</div>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>カテゴリ名</th>
+              <th>編集完了</th>
+              <th>X</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{  selectedCategory.id}}</td>
+              <td><input type="text" v-model="updateCategory"></input></td>
+              <td><div class="clickIcon" @click="updateCategoryName(selectedCategory.id)"></div></td>
+              <td><div class="clickIcon" @click="closeClick"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -80,10 +82,15 @@
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .category-modal-title-table {
+    width: 100%;
   }
   .category-update-title {
     text-align: center;
-    margin-top: 20%;
   }
   table {
     width: 90%;
