@@ -3,6 +3,7 @@ import CategoryForm from '@/src/molcules/CategoryForm'
 import InputForm from '@/src/atoms/InputForm'
 import CreateBtn from '@/src/atoms/CreateBtn'
 import Vuex from 'vuex'
+import flushPromises from 'flush-promises'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -94,6 +95,65 @@ describe('/molcules/CategoryForm', () => {
 
         it('テキスト', () => {
           expect(create_btn.text()).toEqual('カテゴリ登録');
+        });
+      });
+    });
+  });
+
+  describe('methods', () =>{
+    afterEach(() => {
+      mockPost.mockClear();
+      actions.fetchCreateCategory.mockClear();
+    });
+    describe('createCategoryClick', () =>{
+      describe('then', () => {
+        beforeEach(() => {
+          category_form.setData({
+            category_name: { id: 'category-name', kinds: 'text', place: 'ご飯', label: '', value: 'ご飯'}
+          });
+        });
+
+        it('this.axios.psotが動いて適切な引数が入っているか？', () => {
+          create_btn.vm.$emit('createBtnClick');
+          expect(mockPost).toHaveBeenCalledWith('/api/v1/category', { category_name: 'ご飯', user_id: 1});
+        });
+
+        it('this.$store.dispatch("fetchCreateCategory") が動いて適切な引数が渡っているか？', async () => {
+          create_btn.vm.$emit('createBtnClick');
+          await flushPromises();
+          expect(actions.fetchCreateCategory).toHaveBeenCalledWith(expect.any(Object), { id: 1, category_name: 'ご飯', user_id: 1});
+        });
+
+        it('this.$emit("categoryStatus") が動いて適切な引数が入っているか？', async () =>{
+          create_btn.vm.$emit('createBtnClick');
+          await flushPromises();
+          expect(category_form.emitted('categoryStatus')).toMatchObject([[{ message: 'ご飯 を作成しました。', status: 200}]])
+        });
+
+        it('dataClear() が動いて category_name.value が "" となっているか？', async () => {
+          create_btn.vm.$emit('createBtnClick');
+          await flushPromises();
+          expect(category_form.vm.category_name).toMatchObject({ id: 'category-name', kinds: 'text', place: 'ご飯', label: '', value: ''})
+        });
+      });
+
+      describe('catch', () => {
+        beforeEach(() => {
+          category_form.setData({
+            category_name: { id: 'category-name', kinds: 'text', place: 'ご飯', label: '', value: ''}
+          });
+        });
+
+        it('this.$emit("categoryStatus") が動いて適切な引数が入っているか？', async () => {
+          create_btn.vm.$emit('createBtnClick');
+          await flushPromises();
+          expect(category_form.emitted('categoryStatus')).toMatchObject([[ { message: '失敗しました。', status: 400 }]]);
+        });
+
+        it('dataClear() が動いて category_name.value が "" となっているか？', async () => {
+          create_btn.vm.$emit('createBtnClick');
+          await flushPromises();
+          expect(category_form.vm.category_name).toMatchObject({ id: 'category-name', kinds: 'text', place: 'ご飯', label: '', value: ''});
         });
       });
     });
