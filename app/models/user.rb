@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   attr_accessor :remember_token
   has_many :categories, dependent: :destroy
+  has_many :shop_lists, dependent: :destroy
   EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :last_name, presence: true, length: { maximum: 20 }
   validates :first_name, presence: true, length: { maximum: 20 }
