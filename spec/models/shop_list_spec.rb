@@ -3,9 +3,8 @@ require 'rails_helper'
 RSpec.describe ShopList, type: :model do
   before do
     @tarou = User.create(last_name: '吉田', first_name: '太朗', email: 'test@test.com', password: 'password', password_confirmation: 'password')
-    time = Time.zone.parse('2021-10-19 00:00:00 +00:00')
-    ti = '2021-10-19 00:00:00 +00:00'
-    @canan = ShopList.create(list_name: 'ロイヤルカナン', price: 5000, purchasedate: ti, user_id: @tarou.id)
+    time = '2021-10-19 00:00:00 +00:00'
+    @canan = ShopList.create(list_name: 'ロイヤルカナン', price: 5000, purchasedate: time, user_id: @tarou.id)
   end
 
   context 'valid' do
@@ -85,6 +84,23 @@ RSpec.describe ShopList, type: :model do
           expect(@canan).to_not be_valid
         end
       end
+    end
+  end
+
+  context 'shop_list.user' do
+    it '@canan.user' do
+      expect(@canan.user.last_name).to eq '吉田'
+      expect(@canan.user.first_name).to eq '太朗'
+      expect(@canan.user.email).to eq 'test@test.com'
+    end
+  end
+
+  context 'user.shop_lists' do
+    it '@tarou.shop_lists' do
+      expect(@tarou.shop_lists[0].id).to eq @canan.id
+      expect(@tarou.shop_lists[0].list_name).to eq 'ロイヤルカナン'
+      expect(@tarou.shop_lists[0].price).to eq 5000
+      expect(@tarou.shop_lists[0].purchasedate).to eq '2021-10-19 00:00:00 +00:00'
     end
   end
 end
