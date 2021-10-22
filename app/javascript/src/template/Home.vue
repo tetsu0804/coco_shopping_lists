@@ -38,6 +38,10 @@
       <div>
         {{ allCategories }}
       </div>
+      <shop-list-create
+        :allCategories="allCategories"
+        :userLoggedIn="userLoggedIn"
+      ></shop-list-create>
     </template>
   </div>
 </template>
@@ -45,9 +49,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import Flash from '../atoms/Flash.vue'
+import ShopListCreate from '../molcules/ShopListCreate.vue'
+
   export default {
     components: {
-      Flash
+      Flash,
+      ShopListCreate
     },
     computed: mapGetters(['userLoggedIn', 'allCategories']),
     data() {
