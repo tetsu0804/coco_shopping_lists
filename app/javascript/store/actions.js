@@ -22,5 +22,8 @@ export default {
   },
   fetchAllDeleteCategory( { commit }) {
     commit('allDeleteCategory')
+  },
+  fetchCreateShopList( { commit }, { shoplist: shoplist, categories: categories }) {
+    commit('createShopList', { shoplist: shoplist, categories: categories})
   }
 }
