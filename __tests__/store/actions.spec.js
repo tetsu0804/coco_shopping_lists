@@ -79,4 +79,16 @@ describe('/store/actioins', () => {
     });
   });
 
+  describe('fetchCreateShopList', () => {
+    let shoplist, categories
+    beforeEach(() => {
+      shoplist = { id: 1, list_name: 'ロイヤルカナン', price: 5000, purchasedate: '2021_10_22T00:00:00.000Z', user_id: 1}
+      categories = [1, 2]
+    });
+
+    it('commitの引数が shoplist と cateoriesになっているか？', () => {
+      actions.fetchCreateShopList({ commit }, { shoplist: shoplist, categories: categories });
+      expect(commit).toHaveBeenCalledWith('createShopList', { shoplist: shoplist, categories: categories });
+    });
+  });
 });

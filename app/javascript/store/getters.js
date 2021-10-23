@@ -24,5 +24,8 @@ export default {
       }
       return !!selected.length ? selected[0] : {id: '', category_name: '登録なし', user_id: ''}
     }
+  },
+  allShoplists(state) {
+    return state.shoplists
   }
 }

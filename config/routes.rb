@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get '/category', controller: :categories, action: :index
       patch '/category/:id', controller: :categories, action: :update
       delete '/category/:id', controller: :categories, action: :destroy
+      post '/shop_list', controller: :shop_lists, action: :create
     end
   end
 end

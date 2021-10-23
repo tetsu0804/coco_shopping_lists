@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state: {
     users: [],
     loggedIn: { signedIn: false, user: '' },
-    categories: []
+    categories: [],
+    shoplists: []
   },
   getters,
   mutations,

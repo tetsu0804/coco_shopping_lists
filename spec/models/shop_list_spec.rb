@@ -4,6 +4,7 @@ RSpec.describe ShopList, type: :model do
   before do
     @tarou = User.create(last_name: '吉田', first_name: '太朗', email: 'test@test.com', password: 'password', password_confirmation: 'password')
     time = '2021-10-19 00:00:00 +00:00'
+    @gohan = Category.create(category_name: 'ご飯', user_id: @tarou.id)
     @canan = ShopList.create(list_name: 'ロイヤルカナン', price: 5000, purchasedate: time, user_id: @tarou.id)
   end
 
@@ -101,6 +102,17 @@ RSpec.describe ShopList, type: :model do
       expect(@tarou.shop_lists[0].list_name).to eq 'ロイヤルカナン'
       expect(@tarou.shop_lists[0].price).to eq 5000
       expect(@tarou.shop_lists[0].purchasedate).to eq '2021-10-19 00:00:00 +00:00'
+    end
+  end
+
+  context '@canan.category_shop_lists.create メソッド' do
+    it 'category_shop_listsが作成される' do
+      expect(@canan.category_shop_lists.present?).to eq false
+      @canan.category_shop_lists.create(category_id: @gohan.id)
+      expect(@canan.category_shop_lists.present?).to eq true
+      @canan.categories.each do |category|
+        expect(category.category_name).to eq 'ご飯'
+      end
     end
   end
 end

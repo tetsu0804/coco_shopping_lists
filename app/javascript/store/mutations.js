@@ -31,5 +31,10 @@ export default {
   },
   allDeleteCategory(state) {
     state.categories = []
+  },
+  createShopList(state, { shoplist: shoplist, categories: categories}) {
+    const list = shoplist
+    list.categories = categories
+    state.shoplists.push(list)
   }
 }
