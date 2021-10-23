@@ -36,5 +36,33 @@ export default {
     const list = shoplist
     list.categories = categories
     state.shoplists.push(list)
+  },
+  createAllShopList(state, { categories: categories, shoplists: shoplists, category_shoplists: category_shoplists}) {
+    let format_list, categories_box = []
+    if (categories.length > 0) {
+      state.categories = categories
+      if (shoplists.length > 0) {
+        state.shoplists = []
+        shoplists.forEach(shoplist => {
+          categories_box = []
+          category_shoplists.forEach(result => {
+            if (shoplist.id === result.shop_list_id) {
+              format_list = shoplist
+              categories_box.push(result.category_id)
+            }
+          });
+          format_list.categories = categories_box
+          state.shoplists.push(format_list)
+        });
+      } else {
+        state.shoplists = []
+      }
+    } else {
+      state.categories = []
+      state.shoplists = []
+    }
+  },
+  allDeleteShopList(state) {
+    state.shoplists = []
   }
 }
