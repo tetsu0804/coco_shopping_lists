@@ -226,4 +226,104 @@ describe('/store/mutatios', () => {
       });
     });
   });
+
+  describe('createAllShopList', () => {
+    let categories, shoplists, category_shoplists, date
+    beforeEach(() => {
+      date = Date.parse("2021-10-22T00:00:00")
+      categories = [
+        { id: 1, category_name: 'ご飯' },
+        { id: 2, category_name: 'おやつ' },
+        { id: 3, category_name: 'おもちゃ' },
+        { id: 4, category_name: 'しつけ' },
+      ]
+
+      shoplists = [
+        { id: 1, list_name: 'ロイヤルカナン', price: 5000, purchasedate: date, user_id: 1 },
+        { id: 2, list_name: 'ちゅーる', price: 500, purchasedate: date, user_id: 1 },
+        { id: 3, list_name: 'しつけちゅーる', price: 700, purchasedate: date, user_id: 1 },
+        { id: 4, list_name: '野球ボール', price: 800, purchasedate: date, user_id: 1 },
+        { id: 5, list_name: 'サッカーボール', price: 800, purchasedate: date, user_id: 1 }
+      ]
+
+      category_shoplists = [
+        { id: 1 , category_id: 1, shop_list_id: 1 },
+        { id: 2, category_id: 2, shop_list_id: 2 },
+        { id: 3, category_id: 2, shop_list_id: 3 },
+        { id: 4, category_id: 4, shop_list_id: 3 },
+        { id: 5, category_id: 3, shop_list_id: 4 },
+        { id: 6, category_id: 3, shop_list_id: 5 }
+      ]
+    });
+
+    it('state.shoplistsの値は適切か？', () => {
+      mutations.createAllShopList(state, { categories: categories, shoplists: shoplists, category_shoplists: category_shoplists})
+      expect(state.shoplists).toMatchObject([
+        { id: 1, list_name: 'ロイヤルカナン', price: 5000, purchasedate: date, user_id: 1, categories: [1] },
+        { id: 2, list_name: 'ちゅーる', price: 500, purchasedate: date, user_id: 1, categories: [2] },
+        { id: 3, list_name: 'しつけちゅーる', price: 700, purchasedate: date, user_id: 1, categories: [2, 4] },
+        { id: 4, list_name: '野球ボール', price: 800, purchasedate: date, user_id: 1, categories: [3] },
+        { id: 5, list_name: 'サッカーボール', price: 800, purchasedate: date, user_id: 1, categories: [3] }
+      ])
+    });
+
+    it('categoriesの引数のデータが０の時は state.categoriesは 空になる', () => {
+      state.categories = [{id: 5, category_name: '日用品'}]
+      mutations.createAllShopList(state, { categories: [], shoplists: [], category_shoplists: []})
+      expect(state.categories).toEqual([]);
+    });
+
+    it('引数categories > 0 で 引数shoplists === 0 の場合は state.categoriesはそのままで state.shoplistsは空になる', () => {
+      state.categories = categories
+      state.shoplists = [{id: 7, list_name: 'ちゅーる芋味', price: 800, user_id: 1}]
+      mutations.createAllShopList(state, { categories: categories, shoplists: [], category_shoplists: []});
+      expect(state.shoplists).toEqual([]);
+      expect(state.categories).toMatchObject(
+        [
+          { id: 1, category_name: 'ご飯' },
+          { id: 2, category_name: 'おやつ' },
+          { id: 3, category_name: 'おもちゃ' },
+          { id: 4, category_name: 'しつけ' },
+        ]
+      );
+    });
+  });
+
+
+  describe('allDeleteShopList', () => {
+    let categories, shoplists, category_shoplists, date
+    beforeEach(() => {
+      date = Date.parse("2021-10-22T00:00:00")
+      categories = [
+        { id: 1, category_name: 'ご飯' },
+        { id: 2, category_name: 'おやつ' },
+        { id: 3, category_name: 'おもちゃ' },
+        { id: 4, category_name: 'しつけ' },
+      ]
+
+      shoplists = [
+        { id: 1, list_name: 'ロイヤルカナン', price: 5000, purchasedate: date, user_id: 1 },
+        { id: 2, list_name: 'ちゅーる', price: 500, purchasedate: date, user_id: 1 },
+        { id: 3, list_name: 'しつけちゅーる', price: 700, purchasedate: date, user_id: 1 },
+        { id: 4, list_name: '野球ボール', price: 800, purchasedate: date, user_id: 1 },
+        { id: 5, list_name: 'サッカーボール', price: 800, purchasedate: date, user_id: 1 }
+      ]
+
+      category_shoplists = [
+        { id: 1 , category_id: 1, shop_list_id: 1 },
+        { id: 2, category_id: 2, shop_list_id: 2 },
+        { id: 3, category_id: 2, shop_list_id: 3 },
+        { id: 4, category_id: 4, shop_list_id: 3 },
+        { id: 5, category_id: 3, shop_list_id: 4 },
+        { id: 6, category_id: 3, shop_list_id: 5 }
+      ]
+      mutations.createAllShopList(state, { categories: categories, shoplists: shoplists, category_shoplists: category_shoplists});
+    });
+
+    it('state.shoplistsが空になる', () => {
+      expect(state.shoplists.length).toEqual(5);
+      mutations.allDeleteShopList(state);
+      expect(state.shoplists.length).toEqual(0);
+    });
+  });
 });
