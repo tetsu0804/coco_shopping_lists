@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-container">
     <template v-if="loding">
       Loding ...
     </template>
@@ -17,31 +17,30 @@
         <div @click="logoutClick">ログアウト</div>
       </template>
 
-      <flash
-        v-if="flash.status"
-        :flash="$route.params.flash"
-        @closeFlash="flash = { message: '', status: ''}"
-      >
-      </flash>
-      home
-      <p>---------------</p>
-      <div v-if="error">
-        {{ error }}
-      </div>
-      <div v-for="category in allCategories" :key="category.id">
-        {{ category.category_name }}
-      </div>
-      <div>
-        {{ $store.state.categories }}
-      </div>
-      <p>-------------</p>
-      <div>
-        {{ allCategories }}
-      </div>
-      <shop-list-create
-        :allCategories="allCategories"
-        :userLoggedIn="userLoggedIn"
-      ></shop-list-create>
+      <transition name="shop-list-home">
+        <div class="home-sub-container" v-if="homeState">
+          <flash
+            v-if="flash.status"
+            :flash="flash"
+            @closeFlash="flash = { message: '', status: ''}"
+          >
+          </flash>
+          home
+          <create-btn
+            @createBtnClick="slideStart"
+          >購入品作成</create-btn>
+        </div>
+      </transition>
+      <transition name="shop-list-create">
+        <div class="home-sub-container" v-if="shoplistState">
+          <shop-list-create
+            :allCategories="allCategories"
+            :userLoggedIn="userLoggedIn"
+            @shopListStatus="flash = $event"
+            @closeModal="slideEnd"
+          ></shop-list-create>
+        </div>
+      </transition>
     </template>
   </div>
 </template>
@@ -50,18 +49,22 @@
 import { mapGetters } from 'vuex'
 import Flash from '../atoms/Flash.vue'
 import ShopListCreate from '../molcules/ShopListCreate.vue'
+import CreateBtn from '../atoms/CreateBtn.vue'
 
   export default {
     components: {
       Flash,
-      ShopListCreate
+      ShopListCreate,
+      CreateBtn
     },
-    computed: mapGetters(['userLoggedIn', 'allCategories']),
+    computed: mapGetters(['userLoggedIn', 'allCategories', 'allShoplists']),
     data() {
       return {
         flash: { message: '', status: ''},
         loding: null,
-        error: null
+        error: null,
+        homeState: true,
+        shoplistState: false
       }
     },
     created() {
@@ -101,7 +104,56 @@ import ShopListCreate from '../molcules/ShopListCreate.vue'
           this.error = error.response.data.message
           this.loding = false
         })
+      },
+      slideStart() {
+        this.homeState = false;
+        this.shoplistState = true;
+      },
+      slideEnd() {
+        this.shoplistState = false
+        let self = this
+        window.setTimeout(function() {
+          self.homeState = true;
+        }, 2100)
       }
     }
   }
 </script>
+
+<style scoped>
+  .home-container {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+  .home-sub-container {
+    width: 90%;
+    margin: 0 auto;
+    background-color: rgba(70, 85, 30, 0.17);
+  }
+  .shop-list-home-enter, .shop-list-home-leave-to {
+    opacity: 0;
+  }
+  .shop-list-home-enter-to, .shop-list-home-leave {
+    opacity: 1;
+  }
+  .shop-list-home-enter-active {
+    transition: opacity 2s;
+  }
+  .shop-list-home-leave-active {
+    transition: opacity 0s;
+  }
+  .shop-list-create-enter-active {
+    animation: rale 2s;
+  }
+  .shop-list-create-leave-active {
+    animation: rale 2s reverse;
+  }
+  @keyframes rale {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+</style>
