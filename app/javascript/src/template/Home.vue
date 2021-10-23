@@ -73,13 +73,15 @@ import CreateBtn from '../atoms/CreateBtn.vue'
     },
     created() {
       if (this.$route.params.loggedIn) {
-        this.getCategoryData();
+        //this.getDataBase();
+        this.getAllDataBase();
       }
     },
     mounted() {
       if (this.$route.params.flash) {
         this.getFlash();
       }
+
     },
     methods: {
       logoutClick() {
@@ -95,7 +97,7 @@ import CreateBtn from '../atoms/CreateBtn.vue'
       getFlash() {
         this.flash = this.$route.params.flash
       },
-      getCategoryData() {
+      getDataBase() {
         this.loding = true
         this.axios.get('/api/v1/category')
         .then(response => {
@@ -119,6 +121,21 @@ import CreateBtn from '../atoms/CreateBtn.vue'
         window.setTimeout(function() {
           self.homeState = true;
         }, 2100)
+      },
+      getAllDataBase() {
+        this.loding = true
+        this.axios.get('/api/v1/all')
+        .then(response => {
+          this.$store.dispatch('fetchAllCreateShopList', { categories: response.data.categories, shoplists: response.data.shoplists, category_shoplists: response.data.category_shoplists})
+          this.error = false
+          this.loding = false
+        })
+        .catch(error => {
+          this.$store.dispatch('fetchAllDeleteCategory');
+          this.$store.dispatch('fetchAllDeleteShopList');
+          this.error = error.response.data.message
+          this.loding = false
+        })
       }
     }
   }
