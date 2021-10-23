@@ -6,7 +6,8 @@ describe('/store/mutatios', () => {
     state = {
       users: [],
       loggedIn: { signedIn: false, user: '' },
-      categories: []
+      categories: [],
+      shoplists: []
     }
     user = { id: 1, last_name: '吉田', first_name: '太朗', email: 'test@test.com' }
   });
@@ -207,7 +208,22 @@ describe('/store/mutatios', () => {
           expect(state.categories.length).toEqual(2);
         });
       });
-    })
+    });
+  });
 
+  describe('shop_list', () => {
+    let shoplist, categories
+    beforeEach(() => {
+      categories = [1, 2]
+      shoplist = { id:1, list_name: 'ロイヤルカナン', price: 5000, purchasedate: '2021-10-20T00:00:00.000Z', user_id: 1}
+    });
+    describe('createShopList', () => {
+      it('state.shoplistsに追加される', () => {
+        mutations.createShopList(state, { shoplist: shoplist, categories: categories})
+        expect(state.shoplists).toMatchObject([
+          { id:1, list_name: 'ロイヤルカナン', price: 5000, purchasedate: '2021-10-20T00:00:00.000Z', user_id: 1, categories: [1, 2]}
+        ])
+      });
+    });
   });
 });
