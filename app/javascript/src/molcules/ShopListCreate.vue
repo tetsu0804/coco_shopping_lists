@@ -1,6 +1,13 @@
 <template>
   <div class="shop-list-container">
-    shoplist
+    <p class="close-modal-click" @click="closeModalClick">X</p>
+    <h3>購入品作成</h3>
+    <flash
+      v-if="flash.status"
+      :flash="flash"
+      @closeFlash="flash = { message: '', status: ''}"
+    ></flash>
+
     <div class="shop-list-base-container">
       <div v-for="category in allCategories" :key="category.id" class="shop-list-category">
         <input-form
@@ -54,16 +61,21 @@
 </template>
 
 <script>
-import InputForm from '../atoms/InputForm'
-import CreateBtn from '../atoms/CreateBtn'
+import InputForm from '../atoms/InputForm.vue'
+import CreateBtn from '../atoms/CreateBtn.vue'
+import Flash from '../atoms/Flash.vue'
   export default {
     components: {
       InputForm,
-      CreateBtn
+      CreateBtn,
+      Flash
     },
     props: {
       allCategories: {
         type: Array
+      },
+      userLoggedIn: {
+        type: Object
       }
     },
     data() {
@@ -73,6 +85,7 @@ import CreateBtn from '../atoms/CreateBtn'
         listName: { id: 'list-name', kinds: 'text', label: '', place: '例: ロイヤルカナン', value: '' },
         price: { id: 'price', kinds: 'number', label: '', place: '例: 500', value: '' },
         datetime: { id: 'datetime', kinds: 'date', label: '', place: '', value: '' },
+        flash: { message: '', status: ''}
       }
     },
     methods: {
@@ -82,9 +95,6 @@ import CreateBtn from '../atoms/CreateBtn'
         status.label = category.category_name
         status.true_box = category.id
         return status
-      },
-      createShopList() {
-        console.log('createbtn')
       },
       changeCheckValue(value, category) {
         this.checked = [];
@@ -107,6 +117,33 @@ import CreateBtn from '../atoms/CreateBtn'
       },
       falseCheck() {
         return this.checked.filter(Boolean);
+      },
+      closeModalClick() {
+        this.$emit('closeModal');
+      },
+      createShopList() {
+        this.axios.post('/api/v1/shop_list', { list_name: this.listName.value, price: this.price.value, purchasedate: this.datetime.value, user_id: this.userLoggedIn.user.id, categories: this.falseCheck()})
+        .then(response => {
+          this.dataClear();
+          this.$store.dispatch('fetchCreateShopList', { shoplist: response.data.shop_list, categories: response.data.categories});
+          const success_format = { message: '', status: '' }
+          success_format.message = `${response.data.shop_list.list_name} を作成しました。`
+          success_format.status = response.status
+          this.$emit('shopListStatus', success_format);
+          this.$emit('closeModal');
+        })
+        .catch(error => {
+          this.dataClear();
+          this.flash.message = !!error.response && !!error.response.data && !!error.response.data.message ? error.response.data.message : 'もう一度フォームに入力してください。'
+          this.flash.status = !!error.response && !!error.response.status ? error.response.status : 400
+        })
+      },
+      dataClear() {
+        this.checkformat = {}
+        this.checked = []
+        this.listName = { id: 'list-name', kinds: 'text', label: '', place: '例: ロイヤルカナン', value: '' }
+        this.price = { id: 'price', kinds: 'number', label: '', place: '例: 500', value: '' }
+        this.datetime = { id: 'datetime', kinds: 'date', label: '', place: '', value: '' }
       }
     }
   }
@@ -114,16 +151,36 @@ import CreateBtn from '../atoms/CreateBtn'
 <style scoped>
   .shop-list-container {
     width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
     background-color: rgba(0, 0, 0, 0.16);
+  }
+  .close-modal-click {
+    width: 5%;
+    text-align: center;
+    float: right;
+    padding: 0;
+    margin: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .close-modal-click:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.5);
   }
   .shop-list-base-container {
     width: 100%;
     background-color: rgb(226, 215, 199);
   }
+  h3 {
+    text-align: center;
+  }
   .shop-list-category {
     width: 30%;
     padding: 0;
-    margin: 5px 1.4%;
+    margin: 5px 1.2%;
     border: 1px solid rgb(0, 0, 0);
     border-radius: 4px;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
