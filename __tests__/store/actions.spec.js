@@ -91,4 +91,46 @@ describe('/store/actioins', () => {
       expect(commit).toHaveBeenCalledWith('createShopList', { shoplist: shoplist, categories: categories });
     });
   });
+
+  describe('fetchAllCreateShopList', () => {
+    let categories, shoplists, category_shoplists, date
+    beforeEach(() => {
+      date = Date.parse("2021-10-22T00:00:00")
+      categories = [
+        { id: 1, category_name: 'ご飯' },
+        { id: 2, category_name: 'おやつ' },
+        { id: 3, category_name: 'おもちゃ' },
+        { id: 4, category_name: 'しつけ' },
+      ]
+
+      shoplists = [
+        { id: 1, list_name: 'ロイヤルカナン', price: 5000, purchasedate: date, user_id: 1 },
+        { id: 2, list_name: 'ちゅーる', price: 500, purchasedate: date, user_id: 1 },
+        { id: 3, list_name: 'しつけちゅーる', price: 700, purchasedate: date, user_id: 1 },
+        { id: 4, list_name: '野球ボール', price: 800, purchasedate: date, user_id: 1 },
+        { id: 5, list_name: 'サッカーボール', price: 800, purchasedate: date, user_id: 1 }
+      ]
+
+      category_shoplists = [
+        { id: 1 , category_id: 1, shop_list_id: 1 },
+        { id: 2, category_id: 2, shop_list_id: 2 },
+        { id: 3, category_id: 2, shop_list_id: 3 },
+        { id: 4, category_id: 4, shop_list_id: 3 },
+        { id: 5, category_id: 3, shop_list_id: 4 },
+        { id: 6, category_id: 3, shop_list_id: 5 }
+      ]
+    });
+
+    it('commit の引数が categories と shoplists と category_shoplistsになっているか？', () => {
+      actions.fetchAllCreateShopList({ commit }, { categories: categories, shoplists: shoplists, category_shoplists: category_shoplists});
+      expect(commit).toHaveBeenCalledWith('createAllShopList', { categories: categories, shoplists: shoplists, category_shoplists: category_shoplists});
+    });
+  });
+
+  describe('fetchAllDeleteShopList', () => {
+    it('commit の引数が allDeleteShopList になっているか？', () => {
+      actions.fetchAllDeleteShopList({ commit });
+      expect(commit).toHaveBeenCalledWith('allDeleteShopList');
+    });
+  });
 });
