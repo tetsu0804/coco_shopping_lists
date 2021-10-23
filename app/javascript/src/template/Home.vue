@@ -41,6 +41,10 @@
           ></shop-list-create>
         </div>
       </transition>
+
+      <div v-for="list in allShoplists" :key="list.id">
+        id: {{list.id}}, 商品名: {{ list.list_name}}, 値段: {{ list.price }}
+      </div>
     </template>
   </div>
 </template>
