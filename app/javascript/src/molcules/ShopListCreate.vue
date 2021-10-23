@@ -154,7 +154,6 @@ import Flash from '../atoms/Flash.vue'
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
-    background-color: rgba(0, 0, 0, 0.16);
   }
   .close-modal-click {
     width: 5%;
@@ -172,7 +171,6 @@ import Flash from '../atoms/Flash.vue'
   }
   .shop-list-base-container {
     width: 100%;
-    background-color: rgb(226, 215, 199);
   }
   h3 {
     text-align: center;
