@@ -1,4 +1,6 @@
 import getters from '@/store/getters'
+import date from '@/src/modules/date'
+import shoplist from '@/src/modules/shoplist'
 
 describe('/store/getters', () => {
   let state
@@ -12,8 +14,10 @@ describe('/store/getters', () => {
       categories: [
         { id: 1, category_name: 'ご飯', user_id: 1 },
         { id: 2, category_name: 'おやつ', user_id: 2 },
-        { id: 3, category_name: 'しつけ', user_id: 1 }
-      ]
+        { id: 3, category_name: 'しつけ', user_id: 1 },
+        { id: 4, category_name: 'おもちゃ', user_id: 2}
+      ],
+      shoplists: []
     }
   });
   describe('allUsers', () => {
@@ -48,10 +52,11 @@ describe('/store/getters', () => {
 
   describe('allCategories', () =>{
     it('state.categoriesの値と同じである', () => {
-      expect(getters.allCategories(state)).toMatchObject([
-        { id: 1, category_name: 'ご飯' },
-        { id: 2, category_name: 'おやつ' },
-        { id: 3, category_name: 'しつけ' }
+      expect(getters.allCategories(state)).toEqual([
+        { id: 1, category_name: 'ご飯', user_id: 1 },
+        { id: 2, category_name: 'おやつ', user_id: 2 },
+        { id: 3, category_name: 'しつけ', user_id: 1 },
+        { id: 4, category_name: 'おもちゃ', user_id: 2}
       ]);
     });
   });
@@ -66,9 +71,179 @@ describe('/store/getters', () => {
     });
     it('category_idが存在しない場合は { id: "", category_name: "登録なし", user_id: ""} となる', () => {
       selected = getters.selectedCategory(state)
-      expect(selected(4)).toEqual(
+      expect(selected(5)).toEqual(
         { id: '', category_name: '登録なし', user_id: '' }
       )
+    });
+  });
+
+  describe('state.shoplists', () => {
+    let another_shoplists = [], format_shoplist, dates =[], category_shoplists = [], date_now, another_date, new_date, change_id, category_shoplist_format
+    beforeEach(() => {
+      // state.shoplistsを作成している 合計 366個作成
+      // {id: 1, list_name: 'ショップリスト1', price: 5000, purchasedate: 今日 - 365}
+      // .
+      // .
+      // {id: 366, list_name: '366', price: 5000, purchasedate: 今日}
+
+      // category_shoplistsを作成している 合計 366個作成
+      // {id: 1, category_id: ?, shop_list_id: 1}
+      // .
+      // .
+      // {id: 366, category_id: ?, shop_list_id: 366}
+      for (let i = 0; i < 366; i++) {
+        another_date = 365 - i
+        date_now = new Date();
+        new_date = new Date(date_now.setDate(date_now.getDate() - another_date ));
+        change_id = i + 1
+        format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: new_date.toJSON() , user_id: 1 }
+        if (i % 7 === 0) {
+          category_shoplist_format = { category_id: 3, shop_list_id: change_id }
+        } else if (i % 5 === 0) {
+          category_shoplist_format = { category_id: 4, shop_list_id: change_id }
+        } else if (i % 3 === 0) {
+          category_shoplist_format = { category_id: 1, shop_list_id: change_id }
+        } else {
+          category_shoplist_format = { category_id: 2, shop_list_id: change_id}
+        }
+        state.shoplists.push(format_shoplist)
+        category_shoplists.push(category_shoplist_format)
+      }
+    });
+
+    describe('thisMonthShopList', () => {
+      let this_month_list, this_month_last_num, today_this_month_shoplist, test_month, test_regexp, filter_shoplists, sort_shoplists
+      beforeEach(() => {
+        this_month_list = getters.thisMonthShopList(state)
+
+      });
+      it('引数に 0 (今月) を渡すと 今月のShopListが取得できる (降順)', () => {
+
+        // test_month=2021-00-00T13:35:22.912Z オブジェクト
+        test_month = date.getThisMonth(0);
+        // /2021-00-00/ 正規表現 RegExpオブジェクト
+        test_regexp = date.regexpYearMonth(test_month);
+        // 2021-00月のstate.shoplistsデータ
+        filter_shoplists = state.shoplists.filter(shoplist => test_regexp.test(shoplist.purchasedate));
+        // filter_shoplistsの降順データ
+        sort_shoplists = shoplist.descendingOrderShopLists(filter_shoplists);
+
+        expect(this_month_list(0)).toEqual(sort_shoplists);
+      });
+
+      it('引数に 1 (先月) を渡すと 先月のShopListが取得できる (降順)', () => {
+        // test_month=2021-00-00T13:35:22.912Z オブジェクト
+        test_month = date.getThisMonth(1);
+        // /2021-00-00/ 正規表現 RegExpオブジェクト
+        test_regexp = date.regexpYearMonth(test_month);
+        // 2021-00月のstate.shoplistsデータ
+        filter_shoplists = state.shoplists.filter(shoplist => test_regexp.test(shoplist.purchasedate));
+        // filter_shoplistsの降順データ
+        sort_shoplists = shoplist.descendingOrderShopLists(filter_shoplists);
+
+        expect(this_month_list(1)).toEqual(sort_shoplists);
+      });
+
+      it('引数に 3 (3ヶ月前) を渡すと 先月のShopListが取得できる (降順)', () => {
+        // test_month=2021-00-00T13:35:22.912Z オブジェクト
+        test_month = date.getThisMonth(3);
+        // /2021-00-00/ 正規表現 RegExpオブジェクト
+        test_regexp = date.regexpYearMonth(test_month);
+        // 2021-00月のstate.shoplistsデータ
+        filter_shoplists = state.shoplists.filter(shoplist => test_regexp.test(shoplist.purchasedate));
+        // filter_shoplistsの降順データ
+        sort_shoplists = shoplist.descendingOrderShopLists(filter_shoplists);
+
+        expect(this_month_list(3)).toEqual(sort_shoplists);
+      });
+
+      it('state.shoplistsにデータがない時', () => {
+        let other_this_month_list
+        state.shoplists = [];
+        other_this_month_list = getters.thisMonthShopList(state);
+        expect(other_this_month_list(0)).toEqual([]);
+      });
+
+      it('state.shoplistsにデータはあるがその月にデータがない時', () => {
+        expect(this_month_list(13)).toEqual([]);
+      });
+    });
+
+    describe('mainDisplay', () => {
+      let format_list =  {last_shoplist: '', total_price: '', month_display: ''}, main_display, this_month, now_judge, now, test_regexp, this_shoplists, descending_sort_shop_lists
+      beforeEach(() => {
+        main_display = getters.mainDisplay(state, getters);
+      });
+      it('0 今月を引数に渡した時に "今月" と "合計金額" と "最後の購入品" ', () => {
+        now = new Date();
+        // month_display取得('今月' or '20xx年xx月')
+        this_month = date.getThisMonth(0);
+        now_judge = date.regexpYearMonth(now);
+        format_list.month_display = shoplist.thisMonthDisplayTitle(this_month, now_judge);
+        //---
+        // total_price の取得
+        test_regexp = date.regexpYearMonth(this_month);
+        this_shoplists = state.shoplists.filter(shoplist => test_regexp.test(shoplist.purchasedate));
+        format_list.total_price = shoplist.thisMonthTotalPrice(this_shoplists);
+        //--
+
+        // last_shoplist 最後の購入品
+        descending_sort_shop_lists = shoplist.descendingOrderShopLists(this_shoplists);
+        format_list.last_shoplist = shoplist.thisMonthLastShopList(descending_sort_shop_lists);
+        //-- ここまで {last_shoplist: { shoplist }, total_price: 1xxxx, month_display: '今月' } を作成した
+        expect(main_display(0)).toEqual(format_list);
+
+      });
+      it('1 先月を引数に渡した時に "先月の〇〇年〇〇月" と "合計金額" と "最後の購入品" ', () => {
+        now = new Date();
+        // month_display取得('今月' or '20xx年xx月')
+        this_month = date.getThisMonth(1);
+        now_judge = date.regexpYearMonth(now);
+        format_list.month_display = shoplist.thisMonthDisplayTitle(this_month, now_judge);
+        //---
+        // total_price の取得
+        test_regexp = date.regexpYearMonth(this_month);
+        this_shoplists = state.shoplists.filter(shoplist => test_regexp.test(shoplist.purchasedate));
+        format_list.total_price = shoplist.thisMonthTotalPrice(this_shoplists);
+        //--
+
+        // last_shoplist 最後の購入品
+        descending_sort_shop_lists = shoplist.descendingOrderShopLists(this_shoplists);
+        format_list.last_shoplist = shoplist.thisMonthLastShopList(descending_sort_shop_lists);
+        //-- ここまで {last_shoplist: { shoplist }, total_price: 1xxxx, month_display: '今月' } を作成した
+        expect(main_display(1)).toEqual(format_list);
+
+      });
+      it('12 一年前を引数に渡した時に "先月の〇〇年〇〇月" と "合計金額" と "最後の購入品" ', () => {
+        now = new Date();
+        // month_display取得('今月' or '20xx年xx月')
+        this_month = date.getThisMonth(12);
+        now_judge = date.regexpYearMonth(now);
+        format_list.month_display = shoplist.thisMonthDisplayTitle(this_month, now_judge);
+        //---
+        // total_price の取得
+        test_regexp = date.regexpYearMonth(this_month);
+        this_shoplists = state.shoplists.filter(shoplist => test_regexp.test(shoplist.purchasedate));
+        format_list.total_price = shoplist.thisMonthTotalPrice(this_shoplists);
+        //--
+
+        // last_shoplist 最後の購入品
+        descending_sort_shop_lists = shoplist.descendingOrderShopLists(this_shoplists);
+        format_list.last_shoplist = shoplist.thisMonthLastShopList(descending_sort_shop_lists);
+        //-- ここまで {last_shoplist: { shoplist }, total_price: 1xxxx, month_display: '今月' } を作成した
+        expect(main_display(12)).toEqual(format_list);
+      });
+      it('データのない月 を渡すと', () => {
+        now = new Date();
+        // month_display取得('今月' or '20xx年xx月')
+        this_month = date.getThisMonth(13);
+        now_judge = date.regexpYearMonth(now);
+        format_list.month_display = shoplist.thisMonthDisplayTitle(this_month, now_judge);
+        format_list.last_shoplist = { id: '', list_name: 'まだ購入していません。', purchasedate: '', price: '', user_id: ''}
+        format_list.total_price = 0
+
+        expect(main_display(13)).toEqual(format_list);
+      });
     });
   });
 });
