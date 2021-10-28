@@ -50,7 +50,6 @@ export default {
   mainDisplay(state, getters) {
     return (date_num) => {
       let now = new Date(), total_price = 0, format_display = {last_shoplist: '', total_price: '', month_display: ''}, date_num_month_shoplists, this_month, now_judge, split_date, month_display, last_shoplist
-
       date_num_month_shoplists = getters.thisMonthShopList(date_num);
 
       format_display.total_price = shoplist.thisMonthTotalPrice(date_num_month_shoplists);
@@ -63,6 +62,16 @@ export default {
       format_display.month_display = shoplist.thisMonthDisplayTitle(this_month, now_judge);
 
       return format_display
+    }
+  },
+  arrowRight(state) {
+    return (date_num) =>{
+      let now = new Date(), order_shoplists, last_shoplist, num_length
+      order_shoplists = shoplist.descendingOrderShopLists(state.shoplists);
+
+      last_shoplist = order_shoplists[order_shoplists.length -1];
+      num_length = date.monthToMonthNumber(now, last_shoplist);
+      return date_num < num_length ? true : false
     }
   }
 }
