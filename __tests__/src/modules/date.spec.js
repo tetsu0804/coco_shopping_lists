@@ -32,4 +32,28 @@ describe('/modules/date', () => {
       expect(date.regexpYearMonth(new Date('2000-09-10'))).toEqual(/2000-09/);
     });
   });
+
+  describe('monthToMonthNumber (この月からその月までの 月数を計算する)', () => {
+    let one, two
+    it('2021-10-20 〜 2021-09-10 なので 1', () => {
+      one = new Date('2021-10-20T00:00:00.000Z')
+      two = { purchasedate: '2021-09-10T00:00:00.000Z'}
+      expect(date.monthToMonthNumber(one, two)).toEqual(1);
+    });
+    it('2021-10-20 〜 2021-08-10 なので 2', () => {
+      one = new Date('2021-10-20T00:00:00.000Z')
+      two = { purchasedate: '2021-08-10T00:00:00.000Z'}
+      expect(date.monthToMonthNumber(one, two)).toEqual(2);
+    });
+    it('2021-10-20 〜 2021-01-10 なので 2', () => {
+      one = new Date('2021-10-20T00:00:00.000Z')
+      two = { purchasedate: '2021-01-10T00:00:00.000Z'}
+      expect(date.monthToMonthNumber(one, two)).toEqual(9);
+    });
+    it('2021-10-20 〜 2020-10-20 なので 2', () => {
+      one = new Date('2021-10-20T00:00:00.000Z')
+      two = { purchasedate: '2020-10-20T00:00:00.000Z'}
+      expect(date.monthToMonthNumber(one, two)).toEqual(12);
+    });
+  });
 });
