@@ -170,9 +170,14 @@ describe('/store/getters', () => {
     });
 
     describe('mainDisplay', () => {
-      let format_list =  {last_shoplist: '', total_price: '', month_display: ''}, main_display, this_month, now_judge, now, test_regexp, this_shoplists, descending_sort_shop_lists
+      let format_list =  {last_shoplist: '', total_price: '', month_display: ''}, main_display, this_month, now_judge, now, test_regexp, this_shoplists, descending_sort_shop_lists, other_getters
+
       beforeEach(() => {
-        main_display = getters.mainDisplay(state, getters);
+        other_getters = {
+          thisMonthShopList: getters.thisMonthShopList(state)
+        }
+
+        main_display = getters.mainDisplay(state, other_getters);
       });
       it('0 今月を引数に渡した時に "今月" と "合計金額" と "最後の購入品" ', () => {
         now = new Date();
@@ -243,6 +248,29 @@ describe('/store/getters', () => {
         format_list.total_price = 0
 
         expect(main_display(13)).toEqual(format_list);
+      });
+    });
+
+    describe('arrowRight (state.shoplistsを元にしているデータ)', () => {
+      // state.shoplistsのpurchasedateの最後から二番目のデータの日付(月) まで true で最後の日付(月) は false
+      let arrow_right
+      beforeEach(() => {
+        arrow_right = getters.arrowRight(state);
+      });
+      it('今月 (0) を入れると true', () => {
+        expect(arrow_right(0)).toEqual(true);
+      });
+      it('先月 (1) を入れると true', () => {
+        expect(arrow_right(1)).toEqual(true);
+      });
+      it('11ヶ月前 (11) を入れると true', () => {
+        expect(arrow_right(11)).toEqual(true);
+      });
+      it('state.shoplistsの一番古いデータは丁度一年前なので 12 を入れると false', () => {
+        expect(arrow_right(12)).toEqual(false);
+      });
+      it('state.shoplistsの一番古いデータより前のデータ 12以上 を入れると false', () => {
+        expect(arrow_right(13)).toEqual(false);
       });
     });
   });
