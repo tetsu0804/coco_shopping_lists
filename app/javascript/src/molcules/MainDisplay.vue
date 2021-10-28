@@ -3,13 +3,13 @@
     <h1>{{ mainDisplay(dateNum).month_display}}</h1>
     <div class="arrow-price">
       <div class="arrow-price-split arrows arrow-left">
-        <i class="far fa-arrow-alt-circle-left fa-3x"></i>
+        <i class="far fa-arrow-alt-circle-left fa-3x" @click="minusOne"></i>
       </div>
       <div class="arrow-price-split total-price">
         {{ mainDisplay(dateNum).total_price}}
       </div>
       <div class="arrow-price-split arrows arrow-right">
-        <i class="far fa-arrow-alt-circle-right fa-3x"></i>
+        <i class="far fa-arrow-alt-circle-right fa-3x" @click="plusOne"></i>
       </div>
       <div class="clear-float"></div>
     </div>
@@ -25,6 +25,27 @@
       },
       dateNum: {
         type: Number
+      },
+      arrowRight: {
+        type: Function
+      }
+    },
+    computed: {
+      number: {
+        get: function() {
+          return this.dateNum
+        },
+        set: function(value) {
+          this.$emit('changeNum', value);
+        }
+      }
+    },
+    methods: {
+      plusOne() {
+        this.number = +1
+      },
+      minusOne() {
+        this.number = -1
       }
     }
   }
