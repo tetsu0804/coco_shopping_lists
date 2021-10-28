@@ -16,7 +16,9 @@
         <router-link :to="{ name: 'Signup' }">ユーザー登録</router-link>
         <div @click="logoutClick">ログアウト</div>
       </template>
-
+      <div v-if="error">
+        {{ error }}
+      </div>
       <transition name="shop-list-home">
         <div class="home-sub-container" v-if="homeState">
           <flash
@@ -26,6 +28,13 @@
           >
           </flash>
           home
+          <p>dateNum: {{ dateNum }}</p>
+          <main-display
+            :mainDisplay="mainDisplay"
+            :dateNum="dateNum"
+            :arrowRight="arrowRight"
+            @changeNum="dateNum += $event"
+          ></main-display>
           <create-btn
             @createBtnClick="slideStart"
           >購入品作成</create-btn>
@@ -43,7 +52,7 @@
       </transition>
 
       <div v-for="list in allShoplists" :key="list.id">
-        id: {{list.id}}, 商品名: {{ list.list_name}}, 値段: {{ list.price }}
+        id: {{list.id}}, 商品名: {{ list.list_name}}, 値段: {{ list.price }}, 購入日: {{ list.purchasedate }}
       </div>
     </template>
   </div>
@@ -53,22 +62,25 @@
 import { mapGetters } from 'vuex'
 import Flash from '../atoms/Flash.vue'
 import ShopListCreate from '../molcules/ShopListCreate.vue'
+import MainDisplay from '../molcules/MainDisplay.vue'
 import CreateBtn from '../atoms/CreateBtn.vue'
 
   export default {
     components: {
       Flash,
       ShopListCreate,
+      MainDisplay,
       CreateBtn
     },
-    computed: mapGetters(['userLoggedIn', 'allCategories', 'allShoplists']),
+    computed: mapGetters(['userLoggedIn', 'allCategories', 'allShoplists', 'mainDisplay', 'arrowRight']),
     data() {
       return {
         flash: { message: '', status: ''},
         loding: null,
         error: null,
         homeState: true,
-        shoplistState: false
+        shoplistState: false,
+        dateNum: 0
       }
     },
     created() {
@@ -149,7 +161,7 @@ import CreateBtn from '../atoms/CreateBtn.vue'
   .home-sub-container {
     width: 90%;
     margin: 0 auto;
-    background-color: rgba(70, 85, 30, 0.17);
+    background-color: rgba(28, 54, 106, 0.17);
   }
   .shop-list-home-enter, .shop-list-home-leave-to {
     opacity: 0;
