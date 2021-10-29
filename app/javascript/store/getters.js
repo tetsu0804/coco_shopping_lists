@@ -73,5 +73,15 @@ export default {
       num_length = date.monthToMonthNumber(now, last_shoplist);
       return date_num < num_length ? true : false
     }
+  },
+  pageSplit(state, getters) {
+    return (date_num, page_num, page_in_total) => {
+      let this_month_shoplists, page_num_x_page_total, slice_shoplists
+      this_month_shoplists = getters.thisMonthShopList(date_num);
+      page_num_x_page_total = page_num * page_in_total
+      slice_shoplists = this_month_shoplists.slice(page_num_x_page_total, page_num_x_page_total + page_in_total)
+      
+      return slice_shoplists.length > 0 ? slice_shoplists : [{id: '', list_name: 'ページ範囲外になっています', price: '', purchasedae: '', user_id: ''}]
+    }
   }
 }
