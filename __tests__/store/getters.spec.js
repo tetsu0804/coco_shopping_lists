@@ -273,5 +273,66 @@ describe('/store/getters', () => {
         expect(arrow_right(13)).toEqual(false);
       });
     });
+
+    describe('pageSplit', () => {
+      let page_split, other_getters, this_month_shoplists, page_num, page_in_total, page_num_x_page_total, slice_this_month_shoplists
+      beforeEach(() => {
+        other_getters = {
+          thisMonthShopList: getters.thisMonthShopList(state)
+        }
+        page_split = getters.pageSplit(state, other_getters);
+      });
+
+      it('今月 date_num = 0, ページ内 10個 page_in_total = 10, 現在のページナンバー 0p page_num = 0 を入れると state.shoplists の 今月 降順 0-10個のデータが表示する', () => {
+        this_month_shoplists = getters.thisMonthShopList(state);
+        page_num = 0
+        page_in_total = 10
+        page_num_x_page_total = page_num * page_in_total
+        slice_this_month_shoplists = this_month_shoplists(0).slice(page_num_x_page_total, page_num_x_page_total + page_in_total)
+        expect(page_split(0, 0, 10)).toEqual(slice_this_month_shoplists);
+      });
+
+      it('今月 date_num = 0, ページ内 10個 page_in_total = 10, 現在のページナンバー 1p page_num = 1 を入れると state.shoplists の 今月 降順 10-20個のデータが表示する', () => {
+        this_month_shoplists = getters.thisMonthShopList(state);
+        page_num = 1
+        page_in_total = 10
+        page_num_x_page_total = page_num * page_in_total
+        slice_this_month_shoplists = this_month_shoplists(0).slice(page_num_x_page_total, page_num_x_page_total + page_in_total)
+        expect(page_split(0, 1, 10)).toEqual(slice_this_month_shoplists);
+      });
+
+      it('先月 date_num = 1, ページ内 10個 page_in_total = 10, 現在のページナンバー 0p page_num = 0 を入れると state.shoplists の 先月 降順 0-10個のデータが表示する', () => {
+        this_month_shoplists = getters.thisMonthShopList(state);
+        page_num = 0
+        page_in_total = 10
+        page_num_x_page_total = page_num * page_in_total
+        slice_this_month_shoplists = this_month_shoplists(1).slice(page_num_x_page_total, page_num_x_page_total + page_in_total)
+        expect(page_split(1, 0, 10)).toEqual(slice_this_month_shoplists);
+      });
+
+      it('先月 date_num = 1, ページ内 10個 page_in_total = 10, 現在のページナンバー 1p page_num = 1 を入れると state.shoplists の 先月 降順 10-20個のデータが表示する', () => {
+        this_month_shoplists = getters.thisMonthShopList(state);
+        page_num = 1
+        page_in_total = 10
+        page_num_x_page_total = page_num * page_in_total
+        slice_this_month_shoplists = this_month_shoplists(1).slice(page_num_x_page_total, page_num_x_page_total + page_in_total)
+        expect(page_split(1, 1, 10)).toEqual(slice_this_month_shoplists);
+      });
+
+      it('一年前 date_num = 12, ページ内 10個 page_in_total = 10, 現在のページナンバー 0p page_num = 0 を入れると state.shoplists の 一年前 降順 0-10個のデータが表示する', () => {
+        this_month_shoplists = getters.thisMonthShopList(state);
+        page_num = 0
+        page_in_total = 10
+        page_num_x_page_total = page_num * page_in_total
+        slice_this_month_shoplists = this_month_shoplists(12).slice(page_num_x_page_total, page_num_x_page_total + page_in_total)
+        expect(page_split(12, 0, 10)).toEqual(slice_this_month_shoplists);
+      });
+
+      it('13ヶ月前 (データ無し) date_num = 13, ページ内 10個 page_in_total = 10, 現在のページナンバー 0p page_num = 0 を入れると state.shoplists の 一年前 降順 0-10個のデータが表示する', () => {
+        expect(page_split(13, 0, 10)).toEqual([
+          {id: '', list_name: 'ページ範囲外になっています', price: '', purchasedae: '', user_id: ''}
+        ]);
+      });
+    });
   });
 });
