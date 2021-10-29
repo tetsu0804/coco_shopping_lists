@@ -334,5 +334,100 @@ describe('/store/getters', () => {
         ]);
       });
     });
+
+    describe('pageNation', () => {
+      let page_nation, other_getters, target_style, base_style
+      beforeEach(() => {
+        other_getters = {
+          thisMonthShopList: getters.thisMonthShopList(state)
+        }
+        page_nation = getters.pageNation(state, other_getters)
+        target_style = 'width: 2.5rem; height: 2.5rem; text-align: center; border-radius: 50%; position: relative; top: -10%; line-height: 2.5rem;'
+        base_style = 'width: 2rem; height: 2rem; border-radius: 50%; text-align: center;'
+      });
+      describe('先月=1 ページ内総数=10', () => {
+        it('ページ数 1', () => {
+          // 先月のshoplistの数は 30
+          expect(page_nation(1, 1, 10)).toEqual(
+            {
+              pages: [
+                { text: 1, style: target_style, click: 1 },
+                { text: 3, style: base_style, click: 3},
+                { text: '次', style: base_style, click: +1}
+              ],
+              page_container: 'width: 7rem;'
+            }
+          );
+        });
+        it('ページ数 2', () => {
+          // 先月のshoplistの数は 30
+          expect(page_nation(1, 2, 10)).toEqual(
+            {
+              pages: [
+                { text: '前', style: base_style, click: -1 },
+                { text: 1, style: base_style, click: 1 },
+                { text: 2, style: target_style, click: 2},
+                { text: 3, style: base_style, click: 3},
+                { text: '次', style: base_style, click: +1}
+              ],
+              page_container: 'width: 11rem;'
+            }
+          );
+        });
+
+        it('ページ数 3 (ラストページ)', () => {
+          // 先月のshoplistの数は 30
+          expect(page_nation(1, 3, 10)).toEqual(
+            {
+              pages: [
+                { text: '前', style: base_style, click: -1 },
+                { text: 1, style: base_style, click: 1 },
+                { text: 3, style: target_style, click: 3},
+              ],
+              page_container: 'width: 7rem;'
+            }
+          );
+        });
+        it('ページ数が 1 より 小さい数', () => {
+          // 先月のshoplistの数は 30
+          expect(page_nation(1, 0, 10)).toEqual(
+            {
+              pages: [
+                { text: 1, style: target_style, click: 1 },
+                { text: 3, style: base_style, click: 3},
+                { text: '次', style: base_style, click: +1}
+              ],
+              page_container: 'width: 7rem;'
+            }
+          );
+        });
+        it('ページ数が -1 (マイナス)数', () => {
+          // 先月のshoplistの数は 30
+          expect(page_nation(1, -1, 10)).toEqual(
+            {
+              pages: [
+                { text: 1, style: target_style, click: 1 },
+                { text: 3, style: base_style, click: 3},
+                { text: '次', style: base_style, click: +1}
+              ],
+              page_container: 'width: 7rem;'
+            }
+          );
+        });
+        it('ページ数 4 (ラストページより多い数)', () => {
+          // 先月のshoplistの数は 30
+          expect(page_nation(1, 4, 10)).toEqual(
+            {
+              pages: [
+                { text: '前', style: base_style, click: -1 },
+                { text: 1, style: base_style, click: 1 },
+                { text: 3, style: target_style, click: 3},
+              ],
+              page_container: 'width: 7rem;'
+            }
+          );
+        });
+      });
+    });
   });
 });
