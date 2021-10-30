@@ -14,7 +14,7 @@ const router = new VueRouter({
     { path: '/signup', component: Signup, name: 'Signup' },
     { path: '/login', component: Login, name: 'Login' },
     { path: '/categories', component: CategoryCreate, name: 'CategoryCreate', meta: { requiresAuth: true } },
-    { path: '/month_detail/:date_number', component: MonthDetail, name: 'MonthDetail', meta: { requiresAuth: true } },
+    { path: '/month_detail', component: MonthDetail, name: 'MonthDetail', meta: { requiresAuth: true } },
   ]
 });
 
