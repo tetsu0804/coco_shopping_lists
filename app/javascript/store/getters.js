@@ -87,46 +87,47 @@ export default {
   },
   pageNation(state, getters) {
     return (date_num, page_num, page_in_total) => {
-      let format_pagenation = { pages: '', page_container: ''},this_month_shoplists, total_num, next_page, prev_page, first_page, base_style, normal_page, collect_pages, target_style, last_page
+      let format_pagenation = { pages: '', page_container: ''},this_month_shoplists, total_num, next_page, prev_page, first_page, base_style, normal_page, collect_pages, target_style, last_page, page_number
       this_month_shoplists = getters.thisMonthShopList(date_num);
-
+      page_number = page_num + 1;
       if (this_month_shoplists.length > 0) {
         total_num = Math.ceil(this_month_shoplists.length / page_in_total);
-        base_style = 'width: 2rem; height: 2rem; border-radius: 50%; text-align: center;'
-        target_style = 'width: 2.5rem; height: 2.5rem; text-align: center; border-radius: 50%; position: relative; top: -10%; line-height: 2.5rem;'
-        next_page = { text: '次', style: base_style, click: +1 }
-        prev_page = { text: '前', style: base_style, click: -1 }
-        first_page = { text: 1, style: base_style, click: 1}
-        last_page = { text: '', style: base_style, click: ''}
-        normal_page = { text: '', style: base_style, click: 0 }
+        base_style = 'width: 2rem; height: 2rem; border-radius: 50%; text-align: center; margin-left: 4px; line-height: 2rem;'
+        target_style = 'width: 2.5rem; height: 2.5rem; text-align: center; border-radius: 50%; position: relative; top: -10%; line-height: 2.5rem; margin-left: 4px;'
+        next_page = { text: '次', style: base_style, click: +1, target: '' }
+        prev_page = { text: '前', style: base_style, click: -1, target: '' }
+        first_page = { text: 1, style: base_style, click: 1, target: 'first'}
+        last_page = { text: '', style: base_style, click: '', target: 'last'}
+        normal_page = { text: '', style: base_style, click: 0, target: '' }
+
         if (total_num <= 0 ) {
-          format_pagenation.page_container = "width: 2.5rem;"
+          format_pagenation.page_container = "width: 3rem;"
           normal_page.text = '・'
-          collect_pages = normal_page
+          collect_pages = pagenation.pagenatePush(normal_page)
         } else if (total_num > 0) {
           if(total_num === 1) {
-            format_pagenation.page_container = "width: 2.5rem;"
+            format_pagenation.page_container = "width: 3rem;"
             first_page.style = target_style
-            collect_pages = first_page
+            collect_pages = pagenation.pagenatePush(first_page)
           } else if (total_num > 1) {
-            if (page_num <= 1) {
-              format_pagenation.page_container = "width: 7rem;"
+            if (page_number <= 1) {
+              format_pagenation.page_container = "width: 7.5rem;"
               first_page.style = target_style
               first_page.click = 1
               last_page.click = total_num
               last_page.text = total_num
               collect_pages = pagenation.pagenatePush(first_page, last_page, next_page)
-            } else if ((page_num ) >= total_num) {
-              format_pagenation.page_container = "width: 7rem;"
+            } else if ((page_number ) >= total_num) {
+              format_pagenation.page_container = "width: 7.5rem;"
               last_page.text = total_num
               last_page.style = target_style
               last_page.click = total_num
               collect_pages = pagenation.pagenatePush(prev_page, first_page, last_page)
             } else {
-              format_pagenation.page_container = "width: 11rem;"
-              normal_page.text = page_num
+              format_pagenation.page_container = "width: 11.5rem;"
+              normal_page.text = page_number
               normal_page.style = target_style
-              normal_page.click = page_num
+              normal_page.click = page_number
               last_page.text = total_num
               last_page.click = total_num
               collect_pages = pagenation.pagenatePush(prev_page, first_page, normal_page, last_page, next_page)
