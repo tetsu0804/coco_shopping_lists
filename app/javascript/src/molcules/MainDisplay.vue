@@ -13,7 +13,8 @@
       </div>
       <div class="clear-float"></div>
     </div>
-    <p class="last-shopping">最後に購入した商品: {{ mainDisplay(dateNum).last_shoplist.list_name}}</p>
+    <router-link :to="{ name: 'MonthDetail', params: { date_number: dateNum }}" class="last-shopping">最後に購入した商品: {{ mainDisplay(dateNum).last_shoplist.list_name}}</router-link>
+    <div class="clear-right"></div>
   </div>
 </template>
 
@@ -100,6 +101,15 @@
     text-align: left;
   }
   .last-shopping {
-    text-align: right;
+    float: right;
+  }
+  .clear-right {
+    clear: right;
+  }
+  .far {
+    cursor: pointer;
+  }
+  .far:hover {
+    color: rgba(0, 0, 0, 0.5);
   }
 </style>

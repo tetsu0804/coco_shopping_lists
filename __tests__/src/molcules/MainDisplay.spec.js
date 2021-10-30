@@ -1,7 +1,11 @@
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import MainDisplay from '@/src/molcules/MainDisplay'
 import getters from '@/store/getters'
 import date from '@/src/modules/date'
+import VueRouter from 'vue-router'
+
+const localVue = createLocalVue();
+localVue.use(VueRouter);
 
 describe('/molcules/MainDisplay', () => {
   let main_display, state, shoplists, other_getters
@@ -21,7 +25,7 @@ describe('/molcules/MainDisplay', () => {
       thisMonthShopList: getters.thisMonthShopList(state)
     }
 
-    main_display = shallowMount(MainDisplay, {
+    main_display = shallowMount(MainDisplay, {localVue,
       propsData: {
         mainDisplay: getters.mainDisplay(state, other_getters),
         dateNum: 0,

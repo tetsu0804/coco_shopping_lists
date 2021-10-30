@@ -82,10 +82,6 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
     height: 30px;
   }
-  .category-modal {
-    position: absolute;
-    top: 25%;
-  }
   .clickIcon {
     width: 1rem;
     height: 1rem;
