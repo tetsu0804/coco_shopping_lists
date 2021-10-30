@@ -342,7 +342,7 @@ describe('/store/getters', () => {
           thisMonthShopList: getters.thisMonthShopList(state)
         }
         page_nation = getters.pageNation(state, other_getters)
-        target_style = 'width: 2.5rem; height: 2.5rem; text-align: center; border-radius: 50%; position: relative; top: -10%; line-height: 2.5rem;'
+        target_style = 'width: 2.5rem; height: 2.5rem; text-align: center; border-radius: 50%; position: relative; top: -10%; line-height: 2.5rem; margin-left: 4px;'
         base_style = 'width: 2rem; height: 2rem; border-radius: 50%; text-align: center; margin-left: 4px; line-height: 2rem;'
       });
       describe('先月=1 ページ内総数=10', () => {
@@ -355,7 +355,7 @@ describe('/store/getters', () => {
                 { text: 3, style: base_style, click: 3, target: 'last'},
                 { text: '次', style: base_style, click: +1, target: ''}
               ],
-              page_container: 'width: 7rem;'
+              page_container: 'width: 7.5rem;'
             }
           );
         });
@@ -370,7 +370,7 @@ describe('/store/getters', () => {
                 { text: 3, style: base_style, click: 3, target: 'last'},
                 { text: '次', style: base_style, click: +1, target: ''}
               ],
-              page_container: 'width: 11rem;'
+              page_container: 'width: 11.5rem;'
             }
           );
         });
@@ -384,7 +384,7 @@ describe('/store/getters', () => {
                 { text: 1, style: base_style, click: 1, target: 'first' },
                 { text: 3, style: target_style, click: 3, target: 'last'},
               ],
-              page_container: 'width: 7rem;'
+              page_container: 'width: 7.5rem;'
             }
           );
         });
@@ -397,7 +397,7 @@ describe('/store/getters', () => {
                 { text: 3, style: base_style, click: 3, target: 'last'},
                 { text: '次', style: base_style, click: +1, target: ''}
               ],
-              page_container: 'width: 7rem;'
+              page_container: 'width: 7.5rem;'
             }
           );
         });
@@ -410,11 +410,38 @@ describe('/store/getters', () => {
                 { text: 1, style: base_style, click: 1, target: 'first' },
                 { text: 3, style: target_style, click: 3, target: 'last'},
               ],
-              page_container: 'width: 7rem;'
+              page_container: 'width: 7.5rem;'
             }
           );
         });
       });
+    });
+  });
+
+  describe('userSearchId', () => {
+    let user_search
+    beforeEach(() => {
+      user_search = getters.userSearchId(state);
+    });
+    it('user.id = 1 の 吉田太朗 を取得する', () => {
+      expect(user_search(1)).toEqual(
+        { id: 1, last_name: '吉田', first_name: '太朗', email: 'test@test.com' }
+      );
+    });
+    it('user.id = 2 の 吉田二郎 を取得する', () => {
+      expect(user_search(2)).toEqual(
+        { id: 2, last_name: '田中', first_name: '二郎', email: 'test1@test.com' }
+      );
+    });
+    it('user.id = 3 登録されていない id を取得しようとすると 登録なしとでる', () => {
+      expect(user_search(3)).toEqual(
+        { id: '', last_name: '登録なし', first_name: '登録なし', email: '' }
+      );
+    });
+    it('user.id = -1 登録されていない id を取得しようとすると 登録なしとでる', () => {
+      expect(user_search(-1)).toEqual(
+        { id: '', last_name: '登録なし', first_name: '登録なし', email: '' }
+      );
     });
   });
 });
