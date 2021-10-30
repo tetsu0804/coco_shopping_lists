@@ -90,16 +90,17 @@ export default {
       let format_pagenation = { pages: '', page_container: ''},this_month_shoplists, total_num, next_page, prev_page, first_page, base_style, normal_page, collect_pages, target_style, last_page, page_number
       this_month_shoplists = getters.thisMonthShopList(date_num);
       page_number = page_num + 1;
+
+      base_style = 'width: 2rem; height: 2rem; border-radius: 50%; text-align: center; margin-left: 4px; line-height: 2rem;'
+      target_style = 'width: 2.5rem; height: 2.5rem; text-align: center; border-radius: 50%; position: relative; top: -10%; line-height: 2.5rem; margin-left: 4px;'
+      next_page = { text: '次', style: base_style, click: +1, target: '' }
+      prev_page = { text: '前', style: base_style, click: -1, target: '' }
+      first_page = { text: 1, style: base_style, click: 1, target: 'first'}
+      last_page = { text: '', style: base_style, click: '', target: 'last'}
+      normal_page = { text: '', style: base_style, click: 0, target: '' }
+
       if (this_month_shoplists.length > 0) {
         total_num = Math.ceil(this_month_shoplists.length / page_in_total);
-        base_style = 'width: 2rem; height: 2rem; border-radius: 50%; text-align: center; margin-left: 4px; line-height: 2rem;'
-        target_style = 'width: 2.5rem; height: 2.5rem; text-align: center; border-radius: 50%; position: relative; top: -10%; line-height: 2.5rem; margin-left: 4px;'
-        next_page = { text: '次', style: base_style, click: +1, target: '' }
-        prev_page = { text: '前', style: base_style, click: -1, target: '' }
-        first_page = { text: 1, style: base_style, click: 1, target: 'first'}
-        last_page = { text: '', style: base_style, click: '', target: 'last'}
-        normal_page = { text: '', style: base_style, click: 0, target: '' }
-
         if (total_num <= 0 ) {
           format_pagenation.page_container = "width: 3rem;"
           normal_page.text = '・'
@@ -137,7 +138,7 @@ export default {
       } else {
         format_pagenation.page_container = "width: 2.5rem;"
         normal_page.text = '・'
-        collect_pages = normal_page
+        collect_pages = pagenation.pagenatePush(normal_page);
       }
 
       format_pagenation.pages = collect_pages;
