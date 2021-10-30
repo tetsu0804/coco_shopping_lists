@@ -1,25 +1,22 @@
 <template>
   <div class="month-details-container">
-    <router-link :to="{ name: 'Home'}">home</router-link>
-    <div>{{ mainDisplay(dateNum).month_display }}</div>
-    detail
-    <div>
-      {{ dateNum }}
-    </div>
-    <router-link :to="{ name: 'MonthDetail', params: { date_number: dateNum + 1}}">+1</router-link>
-    <router-link :to="{ name: 'MonthDetail', params: { date_number: dateNum - 1}}">-1</router-link>
-    <div v-for="shoplist in splitPages" :key="shoplist.id">
-      {{ shoplist.list_name }}
+    <div class="month-details-head-container">
+      <router-link :to="{ name: 'Home'}">home</router-link>
+      <change-date
+        :dateNum="dateNum"
+        :mainDisplay="mainDisplay"
+        @changeNum="changeDateNum($event)"
+      ></change-date>
+
+      <shoplist-detail
+        :pageSplit="pageSplit"
+        :dateNum="dateNum"
+        :pageNum="pageNum"
+        :pageTotal="pageTotal"
+        :userSearchId="userSearchId"
+      ></shoplist-detail>
     </div>
 
-    <p>page_container: {{ pageNation(dateNum, pageNum, pageTotal).page_container }}</p>
-    <p>dateNum: {{ dateNum }}</p>
-    <p>pageNum: {{ pageNum }}</p>
-    <p>pageTotal: {{ pageTotal }}</p>
-
-    <div>
-      {{ pageNation(dateNum, pageNum, pageTotal) }}
-    </div>
 
     <pagenation
       :pageNation="pageNation"
@@ -34,26 +31,28 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import ChangeDate from '../molcules/ChangeDate'
 import Pagenation from '../molcules/Pagenation.vue'
+import ShoplistDetail from '../molcules/ShoplistDetail.vue'
   export default {
     components: {
-      Pagenation
+      ChangeDate,
+      Pagenation,
+      ShoplistDetail
     },
     data() {
       return {
+        dateNum: 0,
         pageNum: 0,
         pageTotal: 10
       }
     },
-    computed: {
-      dateNum() {
-        return Number(this.$route.params.date_number)
-      },
-      splitPages() {
-        return this.pageSplit(this.dateNum, this.pageNum, this.pageTotal)
-      },
-      ...mapGetters(['mainDisplay', 'pageSplit', 'pageNation'])
+    created() {
+      if (this.$route.params && this.$route.params.date_number) {
+        this.dateNum = this.$route.params.date_number
+      }
     },
+    computed: mapGetters(['mainDisplay', 'pageSplit', 'pageNation', 'userSearchId']),
     methods: {
       changePageNum(value) {
         if (!!value.target) {
@@ -61,6 +60,16 @@ import Pagenation from '../molcules/Pagenation.vue'
         } else {
           this.pageNum += value.click
         }
+      },
+      changePlusDateNum() {
+        this.dateNum += 1
+      },
+      changeMinusDateNum() {
+        this.dateNum -= 1
+      },
+      changeDateNum(value) {
+        this.dateNum += value
+        this.pageNum = 0
       }
     }
   }
@@ -68,6 +77,24 @@ import Pagenation from '../molcules/Pagenation.vue'
 
 <style scoped>
   .month-details-container {
+    width: 90%;
+    height: 100vh;
+    margin: 0 auto;
+  }
+  .month-details-head-container {
     width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 80%;
+  }
+  .arrow-date {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .arrow-date-split {
+    float: left;
+  }
+  .clear-float {
+    clear: left;
   }
 </style>
