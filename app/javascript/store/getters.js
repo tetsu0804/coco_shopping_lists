@@ -143,5 +143,12 @@ export default {
       format_pagenation.pages = collect_pages;
       return format_pagenation
     }
+  },
+  userSearchId(state) {
+    return (user_id) => {
+      let get_user
+      get_user = state.users.filter((user) => user.id === user_id);
+      return get_user.length > 0 ? get_user[0] : { id: '', last_name: '登録なし', first_name: '登録なし', email: ''}
+    }
   }
 }
