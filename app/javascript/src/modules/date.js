@@ -1,7 +1,13 @@
 export default {
   getThisMonth(date_num) {
-    let other_today = new Date()
-    return new Date(other_today.setMonth(other_today.getMonth() - date_num));
+    let now = new Date(), other_today = new Date(), this_get_month
+    let this_month = new Date(other_today.setMonth(other_today.getMonth() - date_num));
+    if (now.getDate() !== this_month.getDate()) {
+      this_get_month = new Date(this_month.setDate(0))
+    } else {
+      this_get_month = this_month
+    }
+    return this_get_month
   },
   regexpYearMonth(date) {
     let json_date, match_date

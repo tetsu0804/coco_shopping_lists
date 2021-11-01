@@ -133,4 +133,24 @@ describe('/store/actioins', () => {
       expect(commit).toHaveBeenCalledWith('allDeleteShopList');
     });
   });
+
+  describe('fetchUpdateShopList', () => {
+    let update_shoplist, date, categories
+    it('commit の引数が updateShopList と update_shoplistになっているか？', () => {
+      date = "2021-10-22T00:00:00"
+      update_shoplist = { id: 1, list_name: 'ちゅーる', price: 500, purchasedate: date, user_id: 1 }
+      categories = [1, 3]
+      actions.fetchUpdateShopList({ commit }, { update_shoplist: update_shoplist, categories: categories });
+      expect(commit).toHaveBeenCalledWith('updateShopList', { update_shoplist: update_shoplist, categories: categories });
+    });
+  });
+
+  describe('fetchDeleteShopList', () => {
+    let shoplist_id
+    it('commit の引数が deleteShopList と shoplist_id になっているか？', () => {
+      shoplist_id = 1
+      actions.fetchDeleteShopList( { commit }, shoplist_id);
+      expect(commit).toHaveBeenCalledWith('deleteShopList', shoplist_id);
+    });
+  });
 });

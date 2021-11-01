@@ -23,6 +23,9 @@
       },
       mainDisplay: {
         type: Function
+      },
+      arrowRight: {
+        type: Function
       }
     },
     computed: {
@@ -35,10 +38,10 @@
         }
       },
       leftArrow() {
-        return true
+        return this.number > 0 ? true : false
       },
       rightArrow() {
-        return true
+        return this.arrowRight(this.number);
       }
     },
     methods: {
@@ -72,6 +75,10 @@
   }
   .arrow-date {
     width: 30%;
+    cursor: pointer;
+  }
+  .arrow-date:hover {
+    color: rgba(0, 0, 0, 0.5);
   }
   .arrow-date-center {
     width: 40%;

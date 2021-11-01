@@ -8,8 +8,9 @@ const localVue = createLocalVue();
 localVue.use(VueRouter);
 
 describe('/molcules/MainDisplay', () => {
-  let main_display, state, shoplists, other_getters
+  let main_display, state, shoplists, other_getters, month_to_month, now
   beforeEach(() => {
+    now = new Date();
     shoplists = [
       {id:1, list_name: 'ちゅーる8月10味', price: 600, purchasedate: '2021-08-10T00:00:00.000Z', user_id: 1},
       {id:2, list_name: 'ちゅーる8月20味', price: 700, purchasedate: '2021-08-20T00:00:00.000Z', user_id: 1},
@@ -24,11 +25,11 @@ describe('/molcules/MainDisplay', () => {
     other_getters = {
       thisMonthShopList: getters.thisMonthShopList(state)
     }
-
+    month_to_month = date.monthToMonthNumber(now, shoplists[shoplists.length - 1]);
     main_display = shallowMount(MainDisplay, {localVue,
       propsData: {
         mainDisplay: getters.mainDisplay(state, other_getters),
-        dateNum: 0,
+        dateNum: month_to_month,
         arrowRight: getters.arrowRight(state)
       }
     });
@@ -56,7 +57,12 @@ describe('/molcules/MainDisplay', () => {
           expect(arrow_price_splits.exists()).toEqual(true);
         });
         it('at(0) dateNum=0 (今月) なので 左矢印はv-if="false" になっている', () => {
-          expect(arrow_price_splits.at(0).find('i').exists()).toEqual(false);
+          if (month_to_month > 0) {
+            expect(arrow_price_splits.at(0).find('i').exists()).toEqual(true);
+          } else {
+            expect(arrow_price_splits.at(0).find('i').exists()).toEqual(false);
+          }
+
         });
         it('at(1) テキスト "1100円" となっている', () => {
           expect(arrow_price_splits.at(1).text()).toEqual('2100円');
@@ -84,7 +90,7 @@ describe('/molcules/MainDisplay', () => {
   describe('computed', () => {
     describe('number', () => {
       it('dateNum の値をそのまま返す, dateNumが 0なら 0', () => {
-        expect(main_display.vm.number).toEqual(0);
+        expect(main_display.vm.number).toEqual(month_to_month);
       });
       it('dateNumを 2にすると number も 2となる', async () => {
         await main_display.setProps({

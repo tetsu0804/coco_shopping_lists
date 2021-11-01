@@ -64,5 +64,23 @@ export default {
   },
   allDeleteShopList(state) {
     state.shoplists = []
+  },
+  updateShopList(state, { update_shoplist: update_shoplist, categories: categories }) {
+    let match_shoplist_index, change_shoplist
+    change_shoplist = update_shoplist
+    if (!!change_shoplist) {
+      change_shoplist.categories = categories
+      match_shoplist_index = state.shoplists.findIndex(shoplist => shoplist.id === update_shoplist.id);
+      if (match_shoplist_index >= 0) {
+        state.shoplists.splice(match_shoplist_index, 1, change_shoplist)
+      }
+    }
+  },
+  deleteShopList(state, shoplist_id) {
+    let match_shoplist_index
+    match_shoplist_index = state.shoplists.findIndex(shoplist => shoplist.id === shoplist_id);
+    if (match_shoplist_index >= 0) {
+      state.shoplists.splice(match_shoplist_index, 1);
+    }
   }
 }
