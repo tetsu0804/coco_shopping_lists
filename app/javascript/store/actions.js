@@ -31,5 +31,11 @@ export default {
   },
   fetchAllDeleteShopList( { commit }) {
     commit('allDeleteShopList')
+  },
+  fetchUpdateShopList( { commit }, { update_shoplist: update_shoplist, categories: categories }) {
+    commit('updateShopList', { update_shoplist: update_shoplist, categories: categories })
+  },
+  fetchDeleteShopList( { commit }, shoplist_id) {
+    commit('deleteShopList', shoplist_id)
   }
 }
