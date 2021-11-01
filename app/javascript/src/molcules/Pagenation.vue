@@ -56,6 +56,7 @@
     box-sizing: border-box;
     float: left;
     border: 1px solid rgb(0, 0, 0);
+    cursor: pointer;
   }
   .pages:hover {
     background-color: rgba(0, 0, 0, 0.5);
