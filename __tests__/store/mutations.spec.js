@@ -326,4 +326,90 @@ describe('/store/mutatios', () => {
       expect(state.shoplists.length).toEqual(0);
     });
   });
+
+  describe('updateShopList', () => {
+    let dummy_shoplist, change_shoplist, categories
+    beforeEach(() => {
+      dummy_shoplist = { id: 1, list_name: 'ちゅーる', price: 500, purchasedate: "2021-10-22T00:00:00", user_id: 1}
+      state.shoplists.push(dummy_shoplist)
+    });
+
+    it('idは変更せずに list_nameが ロイヤルカナンに変更している', () => {
+      expect(state.shoplists[0]).toEqual({ id: 1, list_name: 'ちゅーる', price: 500, purchasedate: "2021-10-22T00:00:00", user_id: 1});
+      change_shoplist = {id: 1, list_name: 'ロイヤルカナン', price: 500, purchasedate: "2021-10-22T00:00:00", user_id: 1};
+      categories = [1, 3]
+      mutations.updateShopList(state, { update_shoplist: change_shoplist, categories: categories });
+      expect(state.shoplists[0]).toEqual({id: 1, list_name: 'ロイヤルカナン', price: 500, purchasedate: "2021-10-22T00:00:00", user_id: 1, categories: [1, 3]});
+    });
+  });
+
+  describe('deleteShopList', () => {
+    let shoplists, date
+    beforeEach(() => {
+      date = "2021-10-22T00:00:00"
+      shoplists = [
+        { id: 1, list_name: 'リストA', price: 100, purchasedate: date, user_id: 1},
+        { id: 2, list_name: 'リストB', price: 200, purchasedate: date, user_id: 1},
+        { id: 3, list_name: 'リストC', price: 300, purchasedate: date, user_id: 1},
+        { id: 4, list_name: 'リストD', price: 400, purchasedate: date, user_id: 1},
+        { id: 5, list_name: 'リストE', price: 500, purchasedate: date, user_id: 1},
+      ]
+      state.shoplists = shoplists
+    });
+
+    it('id 2 の list_name "リストB" が削除されて state.shoplists.length 4 になる', () => {
+      expect(state.shoplists.length).toEqual(5)
+      mutations.deleteShopList(state, 2)
+      expect(state.shoplists.length).toEqual(4)
+      expect(state.shoplists).toEqual(
+        [
+          { id: 1, list_name: 'リストA', price: 100, purchasedate: date, user_id: 1},
+          { id: 3, list_name: 'リストC', price: 300, purchasedate: date, user_id: 1},
+          { id: 4, list_name: 'リストD', price: 400, purchasedate: date, user_id: 1},
+          { id: 5, list_name: 'リストE', price: 500, purchasedate: date, user_id: 1},
+        ]
+      );
+    });
+    it('id 4 の list_name "リストD" が削除されて state.shoplists.length 4 になる', () => {
+      expect(state.shoplists.length).toEqual(5)
+      mutations.deleteShopList(state, 4)
+      expect(state.shoplists.length).toEqual(4)
+      expect(state.shoplists).toEqual(
+        [
+          { id: 1, list_name: 'リストA', price: 100, purchasedate: date, user_id: 1},
+          { id: 2, list_name: 'リストB', price: 200, purchasedate: date, user_id: 1},
+          { id: 3, list_name: 'リストC', price: 300, purchasedate: date, user_id: 1},
+          { id: 5, list_name: 'リストE', price: 500, purchasedate: date, user_id: 1},
+        ]
+      );
+    });
+    it('shoplist_idが一致しない場合はstate.shoplistは何も変更しない', () => {
+      expect(state.shoplists.length).toEqual(5)
+      mutations.deleteShopList(state, 6)
+      expect(state.shoplists.length).toEqual(5)
+      expect(state.shoplists).toEqual(
+        [
+          { id: 1, list_name: 'リストA', price: 100, purchasedate: date, user_id: 1},
+          { id: 2, list_name: 'リストB', price: 200, purchasedate: date, user_id: 1},
+          { id: 3, list_name: 'リストC', price: 300, purchasedate: date, user_id: 1},
+          { id: 4, list_name: 'リストD', price: 400, purchasedate: date, user_id: 1},
+          { id: 5, list_name: 'リストE', price: 500, purchasedate: date, user_id: 1},
+        ]
+      );
+    });
+    it('shoplist_idが (- マイナス) の場合はstate.shoplistは何も変更しない', () => {
+      expect(state.shoplists.length).toEqual(5)
+      mutations.deleteShopList(state, -1)
+      expect(state.shoplists.length).toEqual(5)
+      expect(state.shoplists).toEqual(
+        [
+          { id: 1, list_name: 'リストA', price: 100, purchasedate: date, user_id: 1},
+          { id: 2, list_name: 'リストB', price: 200, purchasedate: date, user_id: 1},
+          { id: 3, list_name: 'リストC', price: 300, purchasedate: date, user_id: 1},
+          { id: 4, list_name: 'リストD', price: 400, purchasedate: date, user_id: 1},
+          { id: 5, list_name: 'リストE', price: 500, purchasedate: date, user_id: 1},
+        ]
+      );
+    });
+  });
 });
