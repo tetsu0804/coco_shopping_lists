@@ -148,8 +148,23 @@ export default {
   userSearchId(state) {
     return (user_id) => {
       let get_user
-      get_user = state.users.filter((user) => user.id === user_id);
-      return get_user.length > 0 ? get_user[0] : { id: '', last_name: '登録なし', first_name: '登録なし', email: ''}
+      if (state.users.length > 0) {
+        get_user = state.users.filter((user) => user.id === user_id);
+        return get_user.length > 0 ? get_user[0] : { id: '', last_name: '登録なし', first_name: '登録なし', email: ''}
+      } else {
+        return { id: '', last_name: '登録なし', first_name: '登録なし', email: ''}
+      }
+    }
+  },
+  selectedShoplist(state) {
+    return (shoplist_id) => {
+      let get_shoplist
+      if (state.shoplists.length > 0) {
+        get_shoplist = state.shoplists.filter(shoplist => shoplist.id === shoplist_id);
+        return get_shoplist.length > 0 ? get_shoplist[0] : { id: '', list_name: '登録なし', price: '', purchasedate: '', user_id: ''}
+      } else {
+        return { id: '', list_name: '登録なし', price: '', purchasedate: '', user_id: ''}
+      }
     }
   }
 }
