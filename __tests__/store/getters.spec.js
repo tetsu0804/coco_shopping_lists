@@ -293,12 +293,26 @@ describe('/store/getters', () => {
       });
 
       it('今月 date_num = 0, ページ内 10個 page_in_total = 10, 現在のページナンバー 1p page_num = 1 を入れると state.shoplists の 今月 降順 10-20個のデータが表示する', () => {
+        let format_this_month_shoplists, no_shoplists
+        no_shoplists = [
+          {
+            id: '',
+            list_name: 'ページ範囲外になっています',
+            price: '',
+            purchasedae: '',
+            user_id: ''
+          }
+        ]
+
         this_month_shoplists = getters.thisMonthShopList(state);
         page_num = 1
         page_in_total = 10
         page_num_x_page_total = page_num * page_in_total
         slice_this_month_shoplists = this_month_shoplists(0).slice(page_num_x_page_total, page_num_x_page_total + page_in_total)
-        expect(page_split(0, 1, 10)).toEqual(slice_this_month_shoplists);
+
+        format_this_month_shoplists = slice_this_month_shoplists.length > 0 ? slice_this_month_shoplists : no_shoplists
+
+        expect(page_split(0, 1, 10)).toEqual(no_shoplists);
       });
 
       it('先月 date_num = 1, ページ内 10個 page_in_total = 10, 現在のページナンバー 0p page_num = 0 を入れると state.shoplists の 先月 降順 0-10個のデータが表示する', () => {
@@ -336,7 +350,7 @@ describe('/store/getters', () => {
     });
 
     describe('pageNation', () => {
-      let page_nation, other_getters, target_style, base_style
+      let page_nation, other_getters, target_style, base_style, page_in_total, page_all_num
       beforeEach(() => {
         other_getters = {
           thisMonthShopList: getters.thisMonthShopList(state)
@@ -346,13 +360,17 @@ describe('/store/getters', () => {
         base_style = 'width: 2rem; height: 2rem; border-radius: 50%; text-align: center; margin-left: 4px; line-height: 2rem;'
       });
       describe('先月=1 ページ内総数=10', () => {
+        beforeEach(() => {
+          page_in_total = 10
+          page_all_num = Math.ceil(other_getters.thisMonthShopList(1).length / page_in_total);
+        });
         it('ページ数 1', () => {
           // 先月のshoplistの数は 30
           expect(page_nation(1, 0, 10)).toEqual(
             {
               pages: [
                 { text: 1, style: target_style, click: 1, target: 'first' },
-                { text: 3, style: base_style, click: 3, target: 'last'},
+                { text: page_all_num, style: base_style, click: page_all_num, target: 'last'},
                 { text: '次', style: base_style, click: +1, target: ''}
               ],
               page_container: 'width: 7.5rem;'
@@ -367,7 +385,7 @@ describe('/store/getters', () => {
                 { text: '前', style: base_style, click: -1, target: '' },
                 { text: 1, style: base_style, click: 1, target: 'first' },
                 { text: 2, style: target_style, click: 2, target: ''},
-                { text: 3, style: base_style, click: 3, target: 'last'},
+                { text: page_all_num, style: base_style, click: page_all_num, target: 'last'},
                 { text: '次', style: base_style, click: +1, target: ''}
               ],
               page_container: 'width: 11.5rem;'
@@ -377,12 +395,13 @@ describe('/store/getters', () => {
 
         it('ページ数 3 (ラストページ)', () => {
           // 先月のshoplistの数は 30
-          expect(page_nation(1, 2, 10)).toEqual(
+
+          expect(page_nation(1, page_all_num -1 , 10)).toEqual(
             {
               pages: [
                 { text: '前', style: base_style, click: -1, target: '' },
                 { text: 1, style: base_style, click: 1, target: 'first' },
-                { text: 3, style: target_style, click: 3, target: 'last'},
+                { text: page_all_num, style: target_style, click: page_all_num, target: 'last'},
               ],
               page_container: 'width: 7.5rem;'
             }
@@ -394,7 +413,7 @@ describe('/store/getters', () => {
             {
               pages: [
                 { text: 1, style: target_style, click: 1, target: 'first' },
-                { text: 3, style: base_style, click: 3, target: 'last'},
+                { text: page_all_num, style: base_style, click: page_all_num, target: 'last'},
                 { text: '次', style: base_style, click: +1, target: ''}
               ],
               page_container: 'width: 7.5rem;'
@@ -408,12 +427,46 @@ describe('/store/getters', () => {
               pages: [
                 { text: '前', style: base_style, click: -1, target: '' },
                 { text: 1, style: base_style, click: 1, target: 'first' },
-                { text: 3, style: target_style, click: 3, target: 'last'},
+                { text: page_all_num, style: target_style, click: page_all_num, target: 'last'},
               ],
               page_container: 'width: 7.5rem;'
             }
           );
         });
+      });
+    });
+
+    describe('selectedShoplist', () => {
+      let selected_shoplist
+      beforeEach(() => {
+        selected_shoplist = getters.selectedShoplist(state);
+      });
+      it('今日のshoplistを取得', () => {
+        expect(selected_shoplist(366)).toEqual(
+          state.shoplists[365]
+        );
+      });
+      it('id 1 の shoplist', () => {
+        expect(selected_shoplist(1)).toEqual(
+          state.shoplists[0]
+        );
+      });
+      it('登録さていないidが渡ると list_name=登録なし となる', () => {
+        expect(selected_shoplist(367)).toEqual(
+          { id: '', list_name: '登録なし', price: '', purchasedate: '', user_id: ''}
+        );
+      });
+      it('登録さていないid (-1) が渡ると list_name=登録なし となる', () => {
+        expect(selected_shoplist(-1)).toEqual(
+          { id: '', list_name: '登録なし', price: '', purchasedate: '', user_id: ''}
+        );
+      });
+      it('state.shoplistsの中身がからだとlist_name=登録なし となる', () => {
+        state.shoplists = [];
+        selected_shoplist = getters.selectedShoplist(state);
+        expect(selected_shoplist(365)).toEqual(
+          { id: '', list_name: '登録なし', price: '', purchasedate: '', user_id: ''}
+        );
       });
     });
   });
