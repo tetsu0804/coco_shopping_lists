@@ -9,8 +9,13 @@ describe('/modules/date', () => {
     });
 
     it('1 先月の現在時刻', () => {
+      let last_month, other_now, test_date
       now = new Date();
-      expect(date.getThisMonth(1)).toEqual(new Date(now.setMonth(now.getMonth() - 1)));
+      other_now = new Date();
+      last_month = new Date(now.setMonth(now.getMonth() - 1));
+      test_date = other_now.getDate() === last_month.getDate() ? last_month : new Date(last_month.setDate(0))
+      expect(date.getThisMonth(1)).toEqual(test_date);
+
     });
 
     it('12 一年前の現在時刻', () => {
@@ -19,8 +24,13 @@ describe('/modules/date', () => {
     });
 
     it('-1 来月の現在時刻', () => {
+      let next_month, other_now, test_date
+      other_now = new Date();
       now = new Date();
-      expect(date.getThisMonth(-1)).toEqual(new Date(now.setMonth(now.getMonth() - -1)));
+      next_month = new Date(now.setMonth(now.getMonth() - -1))
+
+      test_date = other_now.getDate() === next_month.getDate() ? next_month : new Date(next_month.setDate(0));
+      expect(date.getThisMonth(-1)).toEqual(test_date);
     });
   });
 
