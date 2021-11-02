@@ -17,13 +17,18 @@ export default {
   },
   monthToMonthNumber(now, other_day) {
     let last_purchasedate, now_year, now_month, last_year, last_month, now_num, last_num
-    last_purchasedate = new Date(other_day.purchasedate);
-    now_year = Number(now.getFullYear());
-    now_month = Number(now.getMonth());
-    last_year = Number(last_purchasedate.getFullYear());
-    last_month = Number(last_purchasedate.getMonth());
-    now_num = now_year * 12 + now_month
-    last_num = last_year * 12 + last_month
-    return  now_num - last_num
+    if (!!other_day && !!other_day.purchasedate) {
+      last_purchasedate = new Date(other_day.purchasedate);
+      now_year = Number(now.getFullYear());
+      now_month = Number(now.getMonth());
+      last_year = Number(last_purchasedate.getFullYear());
+      last_month = Number(last_purchasedate.getMonth());
+      now_num = now_year * 12 + now_month
+      last_num = last_year * 12 + last_month
+      return  now_num - last_num
+    } else {
+      return -1
+    }
+
   }
 }
