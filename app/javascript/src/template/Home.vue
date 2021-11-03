@@ -4,17 +4,19 @@
       Loding ...
     </template>
     <template v-else>
-      <header-link
-        :userLoggedIn="userLoggedIn"
-        @logoutStatus="flash =  $event"
-      >
-      </header-link>
-      <flash
-        v-if="flash.status"
-        :flash="flash"
-        @closeFlash="flash = { message: '', status: ''}"
-      >
-      </flash>
+      <div class="home-sub-container">
+        <header-link
+          :userLoggedIn="userLoggedIn"
+          @logoutStatus="flash =  $event"
+        >
+        </header-link>
+        <flash
+          v-if="flash.status"
+          :flash="flash"
+          @closeFlash="flash = { message: '', status: ''}"
+        >
+        </flash>
+      </div>
 
       <transition name="shop-list-home">
         <div class="home-sub-container" v-if="homeState">
@@ -134,12 +136,10 @@ import HeaderLink from './HeaderLink.vue'
 <style scoped>
   .home-container {
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.06);
   }
   .home-sub-container {
     width: 90%;
     margin: 0 auto;
-    background-color: rgba(28, 54, 106, 0.17);
   }
   .home-sub-btn {
     margin: 10px 0;
