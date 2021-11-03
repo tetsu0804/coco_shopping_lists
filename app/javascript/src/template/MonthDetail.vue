@@ -53,9 +53,6 @@
         ></shoplist-modal>
       </div>
     </transition>
-    <div v-for="(shoplist, index) in $store.state.shoplists" :key="shoplist.id">
-      n: {{index +1}}, id: {{shoplist.id}}, list_name: {{ shoplist.list_name}}, price: {{shoplist.price}}, categories: {{shoplist.categories}}
-    </div>
   </div>
 </template>
 
