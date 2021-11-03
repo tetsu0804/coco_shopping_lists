@@ -1,5 +1,9 @@
 <template>
   <div class="month-details-container">
+    <header-link
+      :userLoggedIn="userLoggedIn"
+      @logoutStatus="flash =  $event"
+    ></header-link>
     <div class="month-details-head-container">
       <div class="month-details-flash">
         <flash
@@ -10,7 +14,6 @@
         </flash>
       </div>
 
-      <router-link :to="{ name: 'Home'}">home</router-link>
       <change-date
         :dateNum="dateNum"
         :mainDisplay="mainDisplay"
@@ -63,13 +66,15 @@ import Pagenation from '../molcules/Pagenation.vue'
 import ShoplistDetail from '../molcules/ShoplistDetail.vue'
 import ShoplistModal from '../molcules/ShoplistModal.vue'
 import Flash from '../atoms/Flash.vue'
+import HeaderLink from './HeaderLink.vue'
   export default {
     components: {
       ChangeDate,
       Pagenation,
       ShoplistDetail,
       ShoplistModal,
-      Flash
+      Flash,
+      HeaderLink
     },
     data() {
       return {
