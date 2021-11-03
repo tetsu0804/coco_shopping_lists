@@ -4,26 +4,20 @@
       Loding ...
     </template>
     <template v-else>
-      <template v-if="userLoggedIn.signedIn">
-        <div> {{ userLoggedIn.user.first_name }} さん</div>
-        <div @click="logoutClick">ログアウト</div>
-        <router-link :to="{ name: 'CategoryCreate'}">カテゴリ作成</router-link>
-      </template>
-      <template v-else>
-        <router-link :to="{ name: 'Signup' }">ユーザー登録</router-link>
-        <div @click="logoutClick">ログアウト</div>
-      </template>
-      <div v-if="error">
-        {{ error }}
-      </div>
+      <header-link
+        :userLoggedIn="userLoggedIn"
+        @logoutStatus="flash =  $event"
+      >
+      </header-link>
+      <flash
+        v-if="flash.status"
+        :flash="flash"
+        @closeFlash="flash = { message: '', status: ''}"
+      >
+      </flash>
+
       <transition name="shop-list-home">
         <div class="home-sub-container" v-if="homeState">
-          <flash
-            v-if="flash.status"
-            :flash="flash"
-            @closeFlash="flash = { message: '', status: ''}"
-          >
-          </flash>
           <main-display
             :mainDisplay="mainDisplay"
             :dateNum="dateNum"
@@ -55,13 +49,14 @@ import Flash from '../atoms/Flash.vue'
 import ShopListCreate from '../molcules/ShopListCreate.vue'
 import MainDisplay from '../molcules/MainDisplay.vue'
 import CreateBtn from '../atoms/CreateBtn.vue'
-
+import HeaderLink from './HeaderLink.vue'
   export default {
     components: {
       Flash,
       ShopListCreate,
       MainDisplay,
-      CreateBtn
+      CreateBtn,
+      HeaderLink
     },
     computed: mapGetters(['userLoggedIn', 'allCategories', 'allShoplists', 'mainDisplay', 'arrowRight']),
     data() {
@@ -87,16 +82,6 @@ import CreateBtn from '../atoms/CreateBtn.vue'
 
     },
     methods: {
-      logoutClick() {
-        this.axios.delete('/api/v1/logout')
-        .then(response => {
-          this.$store.dispatch('fetchLogoutUser');
-          this.$router.push({ name: 'Login' });
-        })
-        .catch(error => {
-          this.flash = 'ログアウトできませんでした。'
-        })
-      },
       getFlash() {
         this.flash = this.$route.params.flash
       },
