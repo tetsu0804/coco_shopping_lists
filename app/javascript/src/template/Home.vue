@@ -24,9 +24,11 @@
             :arrowRight="arrowRight"
             @changeNum="dateNum += $event"
           ></main-display>
-          <create-btn
-            @createBtnClick="slideStart"
-          >購入品作成</create-btn>
+          <div class="home-sub-btn">
+            <create-btn
+              @createBtnClick="slideStart"
+            >購入品作成</create-btn>
+          </div>
         </div>
       </transition>
       <transition name="shop-list-create">
@@ -138,6 +140,11 @@ import HeaderLink from './HeaderLink.vue'
     width: 90%;
     margin: 0 auto;
     background-color: rgba(28, 54, 106, 0.17);
+  }
+  .home-sub-btn {
+    margin: 10px 0;
+    width: 100%;
+    height: 40px;
   }
   .shop-list-home-enter, .shop-list-home-leave-to {
     opacity: 0;
