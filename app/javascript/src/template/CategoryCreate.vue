@@ -1,11 +1,13 @@
 <template>
   <div class="category-create-container">
-    <router-link :to="{ name: 'Home' }">Home</router-link>
-    category
-    <div v-for="category in allCategories" :key="category.id">
-      {{ category.category_name }}
+    <div class="category-create-header">
+      <div class="category-create-header-link">
+        <header-link
+        :userLoggedIn="userLoggedIn"
+        @logoutStatus="flash =  $event"
+        ></header-link>
+      </div>
     </div>
-
     <flash
       :flash="flash"
       @closeFlash="flash = { message: '', status: '' }"
@@ -42,13 +44,15 @@
   import CategoryList from '../molcules/CategoryList.vue'
   import Flash from '../atoms/Flash.vue'
   import CategoryModal from '../molcules/CategoryModal.vue'
+  import HeaderLink from './HeaderLink.vue'
   import { mapGetters } from 'vuex'
   export default {
     components: {
       CategoryForm,
       CategoryList,
       CategoryModal,
-      Flash
+      Flash,
+      HeaderLink
     },
     data() {
       return {
@@ -63,6 +67,14 @@
 <style scoped>
   .category-create-container {
     width: 100%;
+  }
+  .category-create-header {
+    width: 90%;
+    margin: 10px auto;
+  }
+  .category-create-header-link {
+    width: 96%;
+    margin: 10px 0;
   }
   .non-category-msg {
     border: 1px solid rgb(92, 21, 21);
