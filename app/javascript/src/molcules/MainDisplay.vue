@@ -102,6 +102,11 @@
   }
   .last-shopping {
     float: right;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+  }
+  .last-shopping:hover {
+    color: rgba(0, 0, 0, 0.5);
   }
   .clear-right {
     clear: right;

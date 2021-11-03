@@ -4,35 +4,33 @@
       Loding ...
     </template>
     <template v-else>
-      <template v-if="userLoggedIn.signedIn">
-        <div> {{ userLoggedIn.user.first_name }} さん</div>
-        <div @click="logoutClick">ログアウト</div>
-        <router-link :to="{ name: 'CategoryCreate'}">カテゴリ作成</router-link>
-      </template>
-      <template v-else>
-        <router-link :to="{ name: 'Signup' }">ユーザー登録</router-link>
-        <div @click="logoutClick">ログアウト</div>
-      </template>
-      <div v-if="error">
-        {{ error }}
+      <div class="home-sub-container">
+        <header-link
+          :userLoggedIn="userLoggedIn"
+          @logoutStatus="flash =  $event"
+        >
+        </header-link>
+        <flash
+          v-if="flash.status"
+          :flash="flash"
+          @closeFlash="flash = { message: '', status: ''}"
+        >
+        </flash>
       </div>
+
       <transition name="shop-list-home">
         <div class="home-sub-container" v-if="homeState">
-          <flash
-            v-if="flash.status"
-            :flash="flash"
-            @closeFlash="flash = { message: '', status: ''}"
-          >
-          </flash>
           <main-display
             :mainDisplay="mainDisplay"
             :dateNum="dateNum"
             :arrowRight="arrowRight"
             @changeNum="dateNum += $event"
           ></main-display>
-          <create-btn
-            @createBtnClick="slideStart"
-          >購入品作成</create-btn>
+          <div class="home-sub-btn">
+            <create-btn
+              @createBtnClick="slideStart"
+            >購入品作成</create-btn>
+          </div>
         </div>
       </transition>
       <transition name="shop-list-create">
@@ -55,13 +53,14 @@ import Flash from '../atoms/Flash.vue'
 import ShopListCreate from '../molcules/ShopListCreate.vue'
 import MainDisplay from '../molcules/MainDisplay.vue'
 import CreateBtn from '../atoms/CreateBtn.vue'
-
+import HeaderLink from './HeaderLink.vue'
   export default {
     components: {
       Flash,
       ShopListCreate,
       MainDisplay,
-      CreateBtn
+      CreateBtn,
+      HeaderLink
     },
     computed: mapGetters(['userLoggedIn', 'allCategories', 'allShoplists', 'mainDisplay', 'arrowRight']),
     data() {
@@ -87,16 +86,6 @@ import CreateBtn from '../atoms/CreateBtn.vue'
 
     },
     methods: {
-      logoutClick() {
-        this.axios.delete('/api/v1/logout')
-        .then(response => {
-          this.$store.dispatch('fetchLogoutUser');
-          this.$router.push({ name: 'Login' });
-        })
-        .catch(error => {
-          this.flash = 'ログアウトできませんでした。'
-        })
-      },
       getFlash() {
         this.flash = this.$route.params.flash
       },
@@ -147,12 +136,15 @@ import CreateBtn from '../atoms/CreateBtn.vue'
 <style scoped>
   .home-container {
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.06);
   }
   .home-sub-container {
     width: 90%;
     margin: 0 auto;
-    background-color: rgba(28, 54, 106, 0.17);
+  }
+  .home-sub-btn {
+    margin: 10px 0;
+    width: 100%;
+    height: 40px;
   }
   .shop-list-home-enter, .shop-list-home-leave-to {
     opacity: 0;
