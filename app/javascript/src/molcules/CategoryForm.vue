@@ -67,7 +67,7 @@ import CreateBtn from '../atoms/CreateBtn.vue'
 <style scoped>
   .category-form-container {
     width: 90%;
-    margin: 0 auto;
+    margin: 30px auto 0 auto;
   }
   .input-category-container {
     width: 100%;
