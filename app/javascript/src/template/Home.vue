@@ -8,9 +8,6 @@
         <div> {{ userLoggedIn.user.first_name }} さん</div>
         <div @click="logoutClick">ログアウト</div>
         <router-link :to="{ name: 'CategoryCreate'}">カテゴリ作成</router-link>
-        <div>
-          {{ userLoggedIn }}
-        </div>
       </template>
       <template v-else>
         <router-link :to="{ name: 'Signup' }">ユーザー登録</router-link>
@@ -27,8 +24,6 @@
             @closeFlash="flash = { message: '', status: ''}"
           >
           </flash>
-          home
-          <p>dateNum: {{ dateNum }}</p>
           <main-display
             :mainDisplay="mainDisplay"
             :dateNum="dateNum"
@@ -50,10 +45,6 @@
           ></shop-list-create>
         </div>
       </transition>
-
-      <div v-for="list in allShoplists" :key="list.id">
-        id: {{list.id}}, 商品名: {{ list.list_name}}, 値段: {{ list.price }}, 購入日: {{ list.purchasedate }}
-      </div>
     </template>
   </div>
 </template>
