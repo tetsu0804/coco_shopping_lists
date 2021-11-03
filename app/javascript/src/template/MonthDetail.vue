@@ -1,9 +1,12 @@
 <template>
   <div class="month-details-container">
-    <header-link
-      :userLoggedIn="userLoggedIn"
-      @logoutStatus="flash =  $event"
-    ></header-link>
+    <div class="month-details-header-sub">
+      <header-link
+        :userLoggedIn="userLoggedIn"
+        @logoutStatus="flash =  $event"
+      ></header-link>
+    </div>
+
     <div class="month-details-head-container">
       <div class="month-details-flash">
         <flash
@@ -117,6 +120,10 @@ import HeaderLink from './HeaderLink.vue'
   .month-details-container {
     width: 90%;
     height: 100vh;
+    margin: 0 auto;
+  }
+  .month-details-header-sub {
+    width: 96%;
     margin: 0 auto;
   }
   .month-details-head-container {
