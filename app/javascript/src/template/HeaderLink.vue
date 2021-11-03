@@ -1,11 +1,11 @@
 <template>
-  <ul id="nav" v-if="userLoggedIn.signedIn">
-    <li><router-link :to="{ name: 'Home'}" class="nav-link">Home</router-link></li>
-    <li>{{ userLoggedIn.user.first_name }} さん</li>
-    <li><router-link :to="{ name: 'CategoryCreate'}" class="nav-link">カテゴリ作成</router-link></li>
-    <li@click="logoutClick">ログアウト</li>
+  <div id="nav" v-if="userLoggedIn.signedIn">
+    <div class="nav-li li-left"><router-link :to="{ name: 'Home'}" class="nav-link">Home</router-link></div>
+    <div class="nav-li li-center">{{ userLoggedIn.user.first_name }} さん</div>
+    <div class="nav-li li-center"><router-link :to="{ name: 'CategoryCreate'}" class="nav-link">カテゴリ作成</router-link></div>
+    <div class="nav-li li-right"@click="logoutClick">ログアウト</div>
     <div class="clear-left"></div>
-  </ul>
+  </div>
 </template>
 
 <script>
@@ -39,10 +39,11 @@
 
 <style scoped>
   #nav {
-    list-style: none;
+    width: 100%;
     margin: 10px 0;
   }
-  #nav li {
+  #nav .nav-li {
+    box-sizing: border-box;
     color: rgb(0, 0, 0);
     float: left;
     width: 20%;
@@ -50,21 +51,29 @@
     line-height: 40px;
     text-align: center;
     padding: 0;
-    margin: 0 1.8%;
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
     cursor: pointer;
   }
-  #nav li:hover {
+  #nav .nav-li:hover {
     color: rgb(255, 255, 255);
     background-color: rgba(0, 0, 0, 0.5);
   }
-  #nav li .nav-link {
+  #nav .li-left {
+    margin: 0 3.3% 0 0;
+  }
+  #nav .li-center {
+    margin: 0 3.3%;
+  }
+  #nav .li-right {
+    margin: 0 0 0 3.3%;
+  }
+  #nav .nav-li .nav-link {
     color: rgb(0, 0, 0);
     text-decoration: none;
   }
-  #nav li .nav-link:hover {
+  #nav .nav-li .nav-link:hover {
     color: rgb(255, 255, 255);
   }
   .clear-left {
