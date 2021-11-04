@@ -1,67 +1,29 @@
 <template>
-<!--  <div >-->
-    <form class="input-container">
-      <div class="input-field">
-        <input-form
-          :status="email"
-          @inputFormValue="email.value = $event"
-        ></input-form>
-      </div>
-      <div class="input-field">
-        <input-form
-          :status="password"
-          @inputFormValue="password.value = $event"
-        ></input-form>
-      </div>
-      <div class="input-field">
-        <input-form
-          :status="login_state"
-          @inputFormValue="login_state.value = $event"
-        ></input-form>
-      </div>
-      <div class="input-field">
-        <create-btn
-          @createBtnClick="loginClick"
-        ></create-btn>
-      </div>
+  <form class="input-container">
+    <div class="input-field">
+      <input-form
+        :status="email"
+        @inputFormValue="email.value = $event"
+      ></input-form>
     </div>
-      <!-- <div class="input-container">
-        <div class="input-field">
-          <input-form
-            :status="email"
-            @inputFormValue="email.value = $event"
-          ></input-form>
-        </div>
-      </div>
-      <div> {{ password.value }}</div>
-      <div class="input-container">
-        <div class="input-field">
-          <input-form
-            :status="password"
-            @inputFormValue="password.value = $event"
-          ></input-form>
-        </div>
-      </div>
-      <div> {{ login_state.value}}</div>
-
-      <div class="input-container">
-        <div class="input-field">
-          <input-form
-            :status="login_state"
-            @inputFormValue="login_state.value = $event"
-          ></input-form>
-        </div>
-      </div>
-
-      <div class="input-container">
-        <div class="input-field">
-          <create-btn
-            @createBtnClick="loginClick"
-          ></create-btn>
-        </div>
-      </div> -->
-    </form>
-<!--  </div>-->
+    <div class="input-field">
+      <input-form
+        :status="password"
+        @inputFormValue="password.value = $event"
+      ></input-form>
+    </div>
+    <div class="input-field">
+      <input-form
+        :status="login_state"
+        @inputFormValue="login_state.value = $event"
+      ></input-form>
+    </div>
+    <div class="input-field">
+      <create-btn
+        @createBtnClick="loginClick"
+      ></create-btn>
+    </div>
+  </form>
 </template>
 
 <script>
