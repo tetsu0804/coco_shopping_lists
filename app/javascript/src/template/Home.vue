@@ -1,46 +1,56 @@
 <template>
   <div class="home-container">
     <template v-if="loding">
-      Loding ...
+      <div class="loding-container">
+        <div class="loding-sub-container">
+          Loding ...
+        </div>
+      </div>
     </template>
     <template v-else>
       <div class="home-sub-container">
-        <header-link
-          :userLoggedIn="userLoggedIn"
-          @logoutStatus="flash =  $event"
-        >
-        </header-link>
-        <flash
-          v-if="flash.status"
-          :flash="flash"
-          @closeFlash="flash = { message: '', status: ''}"
-        >
-        </flash>
+        <div class="home-base-container">
+          <header-link
+            :userLoggedIn="userLoggedIn"
+            @logoutStatus="flash =  $event"
+          >
+          </header-link>
+          <flash
+            v-if="flash.status"
+            :flash="flash"
+            @closeFlash="flash = { message: '', status: ''}"
+          >
+          </flash>
+        </div>
       </div>
 
       <transition name="shop-list-home">
         <div class="home-sub-container" v-if="homeState">
-          <main-display
-            :mainDisplay="mainDisplay"
-            :dateNum="dateNum"
-            :arrowRight="arrowRight"
-            @changeNum="dateNum += $event"
-          ></main-display>
-          <div class="home-sub-btn">
-            <create-btn
-              @createBtnClick="slideStart"
-            >購入品作成</create-btn>
+          <div class="home-base-container">
+            <main-display
+              :mainDisplay="mainDisplay"
+              :dateNum="dateNum"
+              :arrowRight="arrowRight"
+              @changeNum="dateNum += $event"
+            ></main-display>
+            <div class="home-sub-btn">
+              <create-btn
+                @createBtnClick="slideStart"
+              >購入品作成</create-btn>
+            </div>
           </div>
         </div>
       </transition>
       <transition name="shop-list-create">
         <div class="home-sub-container" v-if="shoplistState">
-          <shop-list-create
-            :allCategories="allCategories"
-            :userLoggedIn="userLoggedIn"
-            @shopListStatus="flash = $event"
-            @closeModal="slideEnd"
-          ></shop-list-create>
+          <div class="home-base-container">
+            <shop-list-create
+              :allCategories="allCategories"
+              :userLoggedIn="userLoggedIn"
+              @shopListStatus="flash = $event"
+              @closeModal="slideEnd"
+            ></shop-list-create>
+        </div>
         </div>
       </transition>
     </template>
@@ -66,11 +76,11 @@ import HeaderLink from './HeaderLink.vue'
     data() {
       return {
         flash: { message: '', status: ''},
-        loding: null,
         error: null,
         homeState: true,
         shoplistState: false,
-        dateNum: 0
+        dateNum: 0,
+        loding: null
       }
     },
     created() {
@@ -83,7 +93,6 @@ import HeaderLink from './HeaderLink.vue'
       if (this.$route.params.flash) {
         this.getFlash();
       }
-
     },
     methods: {
       getFlash() {
@@ -136,16 +145,43 @@ import HeaderLink from './HeaderLink.vue'
 <style scoped>
   .home-container {
     width: 100%;
+    height: 100vh;
+  }
+  .loding-container {
+    display: table;
+    width: 100%;
+    height: 100%;
+  }
+  .loding-sub-container {
+    font-size: 3rem;
+    margin:0;
+    padding:0;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
   }
   .home-sub-container {
     width: 90%;
     margin: 0 auto;
+    padding: 0;
+  }
+  .home-base-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0;
   }
   .home-sub-btn {
     margin: 10px 0;
     width: 100%;
     height: 40px;
   }
+@media screen and (max-width: 480px) {
+  .home-base-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+}
   .shop-list-home-enter, .shop-list-home-leave-to {
     opacity: 0;
   }
