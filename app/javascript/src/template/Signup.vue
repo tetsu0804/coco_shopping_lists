@@ -2,37 +2,19 @@
   <div class="signup-container">
     <div class="signup-sub-container">
       <h1>ユーザー登録</h1>
-      <!-- <div class="signup-flash" v-if="flash.status">
-        <div class="signup-sub-flash"> -->
         <div class="signup-base-container">
           <flash
             v-if="flash.status"
             :flash="flash"
             @closeFlash="flash = { message: '', status: ''}"
           ></flash>
-          <!-- </div>
-        </div> -->
           <signup-form
             @signupErrorStatus="flash = $event"
           ></signup-form>
           <router-link :to="{ name: 'Login' }" class="signup-link">ログイン</router-link>
         </div>
-
     </div>
   </div>
-  <!-- <h1>ユーザー登録</h1>
-  <div class="signup-flash" v-if="flash.status">
-    <div class="signup-sub-flash">
-      <flash
-        :flash="flash"
-        @closeFlash="flash = { message: '', status: ''}"
-      ></flash>
-    </div>
-  </div>
-  <signup-form
-    @signupErrorStatus="flash = $event"
-  ></signup-form>
-  <router-link :to="{ name: 'Login' }">ログイン</router-link> -->
 </template>
 
 <script>
@@ -83,17 +65,4 @@
       padding: 0;
     }
   }
-  /* .signup-flash {
-    width: 90%;
-    height: 40px;
-    margin: 0 auto 10px auto;
-    border: 0px none;
-  }
-  .signup-sub-flash {
-    box-sizing: border-box;
-    width: 96%;
-    height: 100%;
-    border: 0px none;
-    margin: 0 auto;
-  } */
 </style>
