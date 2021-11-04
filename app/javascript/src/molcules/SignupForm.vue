@@ -1,58 +1,50 @@
 <template>
-  <div>
-    <form>
-      <div class="input-container">
-        <div class="input-field-double">
-          <input-form
-           :status="last_name"
-           @inputFormValue="last_name.value = $event"
-          ></input-form>
-        </div>
-        <div class="input-field-double">
-          <input-form
-            :status="first_name"
-            @inputFormValue="first_name.value = $event"
-          ></input-form>
-        </div>
-        <div class="clear-left"></div>
+  <form class="signup-input-container">
+    <div class="signup-field">
+      <div class="input-field-double field-left">
+        <input-form
+         :status="last_name"
+         @inputFormValue="last_name.value = $event"
+        ></input-form>
       </div>
-
-      <div class="input-container">
-        <div class="input-field">
-          <input-form
-            :status="email"
-            @inputFormValue="email.value = $event"
-          ></input-form>
-        </div>
+      <div class="input-field-double field-right">
+        <input-form
+          :status="first_name"
+          @inputFormValue="first_name.value = $event"
+        ></input-form>
       </div>
+      <div class="clear-left"></div>
+    </div>
 
-      <div class="input-container">
-        <div class="input-field-double">
-          <input-form
-            :status="password"
-            @inputFormValue="password.value = $event"
-          ></input-form>
-        </div>
-        <div class="input-field-double">
-          <input-form
-            :status="password_confirmation"
-            @inputFormValue="password_confirmation.value = $event"
-          ></input-form>
-        </div>
-        <div class="clear-left"></div>
+    <div class="signup-field">
+      <input-form
+        :status="email"
+        @inputFormValue="email.value = $event"
+      ></input-form>
+    </div>
+
+    <div class="signup-field">
+      <div class="input-field-double field-left">
+        <input-form
+          :status="password"
+          @inputFormValue="password.value = $event"
+        ></input-form>
       </div>
-
-      <div class="input-container">
-        <div class="input-field">
-          <create-btn
-            @createBtnClick="signupClick"
-          ></create-btn>
-        </div>
+      <div class="input-field-double field-right">
+        <input-form
+          :status="password_confirmation"
+          @inputFormValue="password_confirmation.value = $event"
+        ></input-form>
       </div>
+      <div class="clear-left"></div>
+    </div>
 
-    </form>
-
-  </div>
+    <div class="signup-field">
+      <create-btn
+        @createBtnClick="signupClick"
+      ></create-btn>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -101,26 +93,29 @@
 </script>
 
 <style scoped>
-  form {
-    width: 90%;
-    margin: 0 auto;
-  }
-  .input-container {
+  .signup-input-container {
     width: 100%;
-    margin-top: 10px;
+    margin: 0;
+    padding: 0;
+  }
+  .signup-field {
+    width: 100%;
+    padding: 0;
+    margin: 10px 0;
+    height: 40px;
   }
   .input-field-double {
-    width: 46%;
-    margin: 0 2%;
-    height: 40px;
     float: left;
+    width: 46%;
+    height: 100%;
+  }
+  .field-left {
+    margin: 0 4% 0 0;
+  }
+  .field-right {
+    margin: 0 0 0 4%;
   }
   .clear-left {
     clear: left;
-  }
-  .input-field {
-    width: 96%;
-    height: 40px;
-    margin: 0 auto;
   }
 </style>
