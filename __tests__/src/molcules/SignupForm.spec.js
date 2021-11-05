@@ -58,40 +58,34 @@ describe('/molcules/SignupForm', () => {
 
   describe('DOM', () => {
     describe('class', () => {
-      let input_containers, input_field_doubles, input_field_doubles2, input_field, input_field2
-      beforeEach(() => {
-        input_containers = signup_form.findAll('.input-container');
-      });
-      describe('input-container', () => {
-        it('存在するのか?', () => {
-          expect(input_containers.exists()).toEqual(true);
+      let signup_input_container, input_fields, signup_field
+      describe('signup-input-container', () => {
+        beforeEach(() => {
+          signup_input_container = signup_form.find('.signup-input-container');
         });
-        it('input-container は 4つある', () => {
-          expect(input_containers.length).toEqual(4);
+        it('存在するのか?', () => {
+          expect(signup_input_container.exists()).toEqual(true);
+        });
+      });
+
+      describe('signup-field', () => {
+        beforeEach(() => {
+          signup_field = signup_form.findAll('.signup-field');
+        });
+        it('signup-fieldは4つある', () => {
+          expect(signup_field.length).toEqual(4)
         });
       });
 
       describe('input-field-double', () => {
+        beforeEach(() => {
+          input_fields = signup_form.findAll('.input-field-double');
+        });
         it('存在するのか？', () => {
-          input_field_doubles = input_containers.at(0).findAll('.input-field-double');
-          input_field_doubles2 = input_containers.at(2).findAll('.input-field-double');
-          expect(input_field_doubles.exists()).toEqual(true);
-          expect(input_field_doubles2.exists()).toEqual(true);
+          expect(input_fields.exists()).toEqual(true);
         });
         it('input-field-double の数は4つある', () => {
-          input_field_doubles = input_containers.at(0).findAll('.input-field-double');
-          input_field_doubles2 = input_containers.at(2).findAll('.input-field-double');
-          expect(input_field_doubles.length).toEqual(2);
-          expect(input_field_doubles2.length).toEqual(2);
-        });
-      });
-
-      describe('input-field', () => {
-        it('存在するのか？', () => {
-          input_field = input_containers.at(1).find('.input-field');
-          input_field2 = input_containers.at(3).find('.input-field');
-          expect(input_field.exists()).toEqual(true);
-          expect(input_field2.exists()).toEqual(true);
+          expect(input_fields.length).toEqual(4);
         });
       });
     });
