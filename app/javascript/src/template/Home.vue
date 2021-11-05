@@ -9,7 +9,7 @@
     </template>
     <template v-else>
       <div class="home-sub-container">
-        <div class="home-base-container">
+        <div class="home-head-container">
           <header-link
             :userLoggedIn="userLoggedIn"
             @logoutStatus="flash =  $event"
@@ -22,11 +22,9 @@
           >
           </flash>
         </div>
-      </div>
 
-      <transition name="shop-list-home">
-        <div class="home-sub-container" v-if="homeState">
-          <div class="home-base-container">
+        <transition name="shop-list-home">
+          <div class="home-center-container" v-if="homeState">
             <main-display
               :mainDisplay="mainDisplay"
               :dateNum="dateNum"
@@ -39,20 +37,24 @@
               >購入品作成</create-btn>
             </div>
           </div>
-        </div>
-      </transition>
-      <transition name="shop-list-create">
-        <div class="home-sub-container" v-if="shoplistState">
-          <div class="home-base-container">
+        </transition>
+        <transition name="shop-list-create">
+          <div class="home-center-container"  v-if="shoplistState">
             <shop-list-create
               :allCategories="allCategories"
               :userLoggedIn="userLoggedIn"
               @shopListStatus="flash = $event"
               @closeModal="slideEnd"
             ></shop-list-create>
+          </div>
+        </transition>
+
+        <div class="home-footer-container">
+          <sub-display
+            :userLoggedIn="userLoggedIn"
+          ></sub-display>
         </div>
-        </div>
-      </transition>
+      </div>
     </template>
   </div>
 </template>
@@ -64,13 +66,15 @@ import ShopListCreate from '../molcules/ShopListCreate.vue'
 import MainDisplay from '../molcules/MainDisplay.vue'
 import CreateBtn from '../atoms/CreateBtn.vue'
 import HeaderLink from './HeaderLink.vue'
+import SubDisplay from '../molcules/SubDisplay.vue'
   export default {
     components: {
       Flash,
       ShopListCreate,
       MainDisplay,
       CreateBtn,
-      HeaderLink
+      HeaderLink,
+      SubDisplay
     },
     computed: mapGetters(['userLoggedIn', 'allCategories', 'allShoplists', 'mainDisplay', 'arrowRight']),
     data() {
@@ -146,6 +150,9 @@ import HeaderLink from './HeaderLink.vue'
   .home-container {
     width: 100%;
     height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(229, 0, 249, 0.33);
   }
   .loding-container {
     display: table;
@@ -162,24 +169,60 @@ import HeaderLink from './HeaderLink.vue'
   }
   .home-sub-container {
     width: 90%;
+    height: 100%;
     margin: 0 auto;
     padding: 0;
   }
-  .home-base-container {
+
+
+  .home-head-container {
     width: 80%;
-    margin: 0 auto;
+    margin: 8%  auto 0 auto;
     padding: 0;
+    height: 10%;
+    background-color: rgba(255, 32, 32, 0.59);
+  }
+  .home-center-container {
+    width: 80%;
+    margin: 4% auto 0 auto;
+    padding: 0;
+    background-color: rgba(0, 102, 255, 0.43);
+    height: 50%;
+  }
+  .home-footer-container {
+    width: 80%;
+    margin: 8%  auto 0 auto;
+    padding: 0;
+    background-color: rgba(250, 255, 0, 0.44);
+    height: 25%;
   }
   .home-sub-btn {
-    margin: 10px 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
-    height: 40px;
+    height: 12%;
   }
 @media screen and (max-width: 480px) {
-  .home-base-container {
+  .home-head-container {
     width: 100%;
-    margin: 0 auto;
+    margin: 8%  auto 0 auto;
     padding: 0;
+    height: 10%;
+    background-color: rgba(255, 32, 32, 0.59);
+  }
+  .home-center-container {
+    width: 100%;
+    margin: 4% auto 0 auto;
+    padding: 0;
+    background-color: rgba(0, 102, 255, 0.43);
+    height: 50%;
+  }
+  .home-footer-container {
+    width: 100%;
+    margin: 20%  auto 0 auto;
+    padding: 0;
+    background-color: rgba(250, 255, 0, 0.44);
+    height: 25%;
   }
 }
   .shop-list-home-enter, .shop-list-home-leave-to {
