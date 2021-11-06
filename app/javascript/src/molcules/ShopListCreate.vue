@@ -208,7 +208,11 @@ import Flash from '../atoms/Flash.vue'
   .close-modal-click {
     margin: 0;
     padding: 0;
+    cursor: pointer;
     float: right;
+  }
+  .close-modal-click:hover {
+    color: rgba(0, 0, 0, 0.5);
   }
   .right-clear {
     clear: right;
