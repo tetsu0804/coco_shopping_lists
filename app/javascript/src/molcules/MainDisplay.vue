@@ -20,11 +20,21 @@
       <router-link :to="{ name: 'MonthDetail', params: { date_number: dateNum }}" class="last-shopping">最後に購入した商品: {{ mainDisplay(dateNum).last_shoplist.list_name}}</router-link>
       <div class="clear-right"></div>
     </div>
+
+    <div class="main-create-btn">
+      <create-btn
+        @createBtnClick="createBtnCatch"
+      ></create-btn>
+    </div>
   </div>
 </template>
 
 <script>
+import CreateBtn from '../atoms/CreateBtn.vue'
   export default {
+    components: {
+      CreateBtn
+    },
     props: {
       mainDisplay: {
         type: Function
@@ -58,6 +68,9 @@
       },
       minusOne() {
         this.number = -1
+      },
+      createBtnCatch() {
+        this.$emit('clickStart')
       }
     }
   }
@@ -74,7 +87,7 @@
   .main-display-title {
     width:100%;
     background-color: rgb(149, 57, 129);
-    height: 40%;
+    height: 30%;
     margin: 0;
     padding: 0;
     display: table;
@@ -92,7 +105,7 @@
 
   .arrow-price {
     width: 100%;
-    height: 50%;
+    height: 40%;
     margin: 0;
     padding: 0;
     background-color: rgb(19, 193, 181);
@@ -149,6 +162,10 @@
   }
   .far:hover {
     color: rgba(0, 0, 0, 0.5);
+  }
+  .main-create-btn {
+    width: 100%;
+    height: 20%;
   }
   @media screen and (max-width: 480px) {
     .last-shopping {
