@@ -30,13 +30,15 @@
               :dateNum="dateNum"
               :arrowRight="arrowRight"
               @changeNum="dateNum += $event"
+              @clickStart="slideStart"
             ></main-display>
-            <div class="home-sub-btn">
+            <!-- <div class="home-sub-btn">
               <create-btn
-                @createBtnClick="slideStart"
+                @cu7uiureateBtnClick="slideStart"
               >購入品作成</create-btn>
-            </div>
+            </div> -->
           </div>
+
         </transition>
         <transition name="shop-list-create">
           <div class="home-center-container"  v-if="shoplistState">
@@ -186,12 +188,12 @@ import SubDisplay from '../molcules/SubDisplay.vue'
     width: 80%;
     margin: 4% auto 0 auto;
     padding: 0;
-    background-color: rgba(0, 102, 255, 0.43);
+    /* background-color: rgba(0, 102, 255, 0.43); */
     height: 50%;
   }
   .home-footer-container {
     width: 80%;
-    margin: 8%  auto 0 auto;
+    margin:  5% auto 0 auto;
     padding: 0;
     background-color: rgba(250, 255, 0, 0.44);
     height: 25%;
