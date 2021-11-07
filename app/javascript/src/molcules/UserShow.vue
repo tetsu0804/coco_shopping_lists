@@ -4,6 +4,18 @@
   </div>
 </template>
 
+<script>
+  export default {
+    props: {
+      userLoggedIn: {
+        type: Object
+      }
+    },
+    computed: {
+      
+    }
+  }
+</script>
 <style scoped>
   .user-show-container {
     width: 100%;
