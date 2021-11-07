@@ -57,11 +57,13 @@
 
 <style scoped>
   .change-data-container {
-    width: 90%;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
   }
   .change-data-sub-container {
     width: 100%;
+    height: 100%;
     height: 50px;
   }
   .change-data-split {
@@ -83,5 +85,39 @@
   .arrow-date-center {
     width: 40%;
     font-size: 2rem;
+  }
+
+  @media screen and (max-width: 1025px) {
+    .arrow-date {
+      width: 25%;
+      cursor: pointer;
+    }
+    .arrow-date-center {
+      width: 50%;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+  }
+  @media screen and (max-width: 620px) {
+    .arrow-date {
+      width: 25%;
+      cursor: pointer;
+    }
+    .arrow-date-center {
+      width: 50%;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .arrow-date {
+      width: 20%;
+      cursor: pointer;
+    }
+    .arrow-date-center {
+      width: 60%;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
   }
 </style>
