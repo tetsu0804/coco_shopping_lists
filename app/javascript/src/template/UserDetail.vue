@@ -9,6 +9,7 @@
       </div>
       <div class="user-detail-show-container">
         <user-show
+          :userLoggedIn="userLoggedIn"
         ></user-show>
       </div>
     </div>
