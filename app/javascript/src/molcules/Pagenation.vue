@@ -45,8 +45,8 @@
 
 <style scoped>
   .pagenation-container {
-    width: 80%;
-    margin: 15px auto;
+    width: 100%;
+    margin: 0 auto;
   }
   .pagenation-sub-container {
     margin: 0 auto;
