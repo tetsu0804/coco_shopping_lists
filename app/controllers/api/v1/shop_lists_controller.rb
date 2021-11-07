@@ -18,7 +18,7 @@ class Api::V1::ShopListsController < ApplicationController
         render json: { message: 'もう一度フォームに入力してください。'}, status: 400
       end
     else
-      render json: { message: '商品のカテゴリをチェックしてください。カテゴリ項目が無ければ作成してください。'}, status: 400
+      render json: { message: 'カテゴリをチェックしてください'}, status: 400
     end
   end
 
