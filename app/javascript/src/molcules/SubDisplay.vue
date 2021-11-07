@@ -2,7 +2,7 @@
   <div class="sub-display-container">
     <div class="sub-display-li sub-display-left">
       <div class="sub-display">
-        <p class="sub-display-text">{{ userName }}</p>
+        <router-link :to="{name: 'UserDetail'}" class="sub-display-text">{{ userName }}</router-link>
       </div>
     </div>
     <div class="sub-display-li sub-display-right">
@@ -52,6 +52,7 @@
     height: 100%;
   }
   .sub-display-text {
+    text-decoration: none;
     font-size: 2rem;
     color: rgb(0, 0, 0);
     cursor: pointer;
