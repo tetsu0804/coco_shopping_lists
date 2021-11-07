@@ -1,41 +1,43 @@
 <template>
   <div class="category-create-container">
-    <div class="category-create-header">
-      <div class="category-create-header-link">
+    <div class="category-create-sub-container">
+      <div class="category-create-head-container">
         <header-link
         :userLoggedIn="userLoggedIn"
         @logoutStatus="flash =  $event"
         ></header-link>
+        <flash
+          :flash="flash"
+          @closeFlash="flash = { message: '', status: '' }"
+        ></flash>
       </div>
-    </div>
-    <flash
-      :flash="flash"
-      @closeFlash="flash = { message: '', status: '' }"
-    ></flash>
-    <category-form
-      :userLoggedIn="userLoggedIn"
-      @categoryStatus="flash = $event"
-    ></category-form>
 
-    <category-list
-      :allCategories="allCategories"
-      :userLoggedIn="userLoggedIn"
-      @categoryUpdate="matchedNum = $event"
-      @categoryStatus="flash = $event"
-    ></category-list>
-    <p>------</p>
-    <p>matchedNum</p>
-    <p>{{ !!matchedNum}}</p>
-    <transition name="category-modal">
-      <div class="category-modal-all-container" v-if="!!matchedNum">
-        <category-modal
-          class="category-modal"
-          :selectedCategory="selectedCategory(matchedNum)"
-          @closeUpdateClick="matchedNum = ''"
+      <div class="category-create-form-container">
+        <category-form
+          :userLoggedIn="userLoggedIn"
           @categoryStatus="flash = $event"
-        ></category-modal>
+        ></category-form>
       </div>
-    </transition>
+
+      <div class="category-create-footer-container">
+        <category-list
+          :allCategories="allCategories"
+          :userLoggedIn="userLoggedIn"
+          @categoryUpdate="matchedNum = $event"
+          @categoryStatus="flash = $event"
+        ></category-list>
+      </div>
+      <transition name="category-modal">
+        <div class="category-modal-all-container" v-if="!!matchedNum">
+          <category-modal
+            class="category-modal"
+            :selectedCategory="selectedCategory(matchedNum)"
+            @closeUpdateClick="matchedNum = ''"
+            @categoryStatus="flash = $event"
+          ></category-modal>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -67,33 +69,68 @@
 <style scoped>
   .category-create-container {
     width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
   }
-  .category-create-header {
+  .category-create-sub-container {
     width: 90%;
-    margin: 10px auto;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
   }
-  .category-create-header-link {
-    width: 96%;
-    margin: 10px 0;
+  .category-create-head-container {
+    width: 80%;
+    margin: 8% auto 0 auto;
+    padding: 0;
+    height: 10%;
   }
-  .non-category-msg {
-    border: 1px solid rgb(92, 21, 21);
+  .category-create-form-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0;
+    height: 20%;
   }
-  .category-ids {
-    border-bottom: 1px solid rgb(0, 0, 0);
+  .category-create-footer-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0;
+    height: 70%;
   }
   .category-modal-all-container {
+    background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
   }
   .category-modal {
     position: absolute;
     top: 20%;
     left: 5%;
+    width: 90%;
+  }
+
+  @media screen and (max-width: 480px) {
+    .category-create-head-container {
+      width: 100%;
+      margin: 8% auto 0 auto;
+      padding: 0;
+      height: 10%;
+    }
+    .category-create-form-container {
+      width: 100%;
+      margin: 0 auto;
+      padding: 0;
+      height: 20%;
+    }
+    .category-create-footer-container {
+      width: 100%;
+      margin: 0 auto;
+      padding: 0;
+      height: 70%;
+    }
   }
   .category-modal-enter, .category-modal-leave-to {
     opacity: 0;

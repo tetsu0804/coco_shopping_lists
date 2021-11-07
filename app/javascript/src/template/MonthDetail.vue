@@ -1,14 +1,14 @@
 <template>
   <div class="month-details-container">
-    <div class="month-details-header-sub">
-      <header-link
-        :userLoggedIn="userLoggedIn"
-        @logoutStatus="flash =  $event"
-      ></header-link>
-    </div>
+    <div class="month-details-sub-container">
+      <div class="month-details-head-container">
+        <header-link
+          :userLoggedIn="userLoggedIn"
+          @logoutStatus="flash =  $event"
+        ></header-link>
+      </div>
 
-    <div class="month-details-head-container">
-      <div class="month-details-flash">
+      <div class="details-month-flash-container">
         <flash
           v-if="flash.status"
           :flash="flash"
@@ -17,48 +17,51 @@
         </flash>
       </div>
 
-      <change-date
-        :dateNum="dateNum"
-        :mainDisplay="mainDisplay"
-        :arrowRight="arrowRight"
-        @changeNum="changeDateNum($event)"
-      ></change-date>
-
-      <shoplist-detail
-        :userLoggedIn="userLoggedIn"
-        :pageSplit="pageSplit"
-        :dateNum="dateNum"
-        :pageNum="pageNum"
-        :pageTotal="pageTotal"
-        :userSearchId="userSearchId"
-        @shoplistUpdate="matchedShoplistId = $event"
-        @shoplistStatus="flash = $event"
-      ></shoplist-detail>
-    </div>
-    <p>{{ matchedShoplistId }}</p>
-
-    <div class="month-detail-pagenation">
-      <pagenation
-        :pageNation="pageNation"
-        :dateNum="dateNum"
-        :pageNum="pageNum"
-        :pageTotal="pageTotal"
-        @pageNumChange="changePageNum($event)"
-      >
-      </pagenation>
-    </div>
-
-
-    <transition name="shop-list-modal">
-      <div class="month-detail-hidden-container" v-if="!!matchedShoplistId">
-        <shoplist-modal
-          class="shoplist-modal"
-          :selectedShoplist="selectedShoplist(matchedShoplistId)"
-          @closeUpdateClick="matchedShoplistId = ''"
-          @shoplistStatus="flash = $event"
-        ></shoplist-modal>
+      <div class="month-details-changedate-container">
+        <change-date
+          :dateNum="dateNum"
+          :mainDisplay="mainDisplay"
+          :arrowRight="arrowRight"
+          @changeNum="changeDateNum($event)"
+        ></change-date>
       </div>
-    </transition>
+
+      <div class="month-details-shoplist-container">
+        <shoplist-detail
+          :userLoggedIn="userLoggedIn"
+          :pageSplit="pageSplit"
+          :dateNum="dateNum"
+          :pageNum="pageNum"
+          :pageTotal="pageTotal"
+          :userSearchId="userSearchId"
+          @shoplistUpdate="matchedShoplistId = $event"
+          @shoplistStatus="flash = $event"
+        ></shoplist-detail>
+      </div>
+
+      <div class="month-detail-pagenation">
+        <pagenation
+          :pageNation="pageNation"
+          :dateNum="dateNum"
+          :pageNum="pageNum"
+          :pageTotal="pageTotal"
+          @pageNumChange="changePageNum($event)"
+        >
+        </pagenation>
+      </div>
+
+
+      <transition name="shop-list-modal">
+        <div class="month-detail-hidden-container" v-if="!!matchedShoplistId">
+          <shoplist-modal
+            class="shoplist-modal"
+            :selectedShoplist="selectedShoplist(matchedShoplistId)"
+            @closeUpdateClick="matchedShoplistId = ''"
+            @shoplistStatus="flash = $event"
+          ></shoplist-modal>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -118,62 +121,62 @@ import HeaderLink from './HeaderLink.vue'
 
 <style scoped>
   .month-details-container {
-    width: 90%;
+    width: 100%;
     height: 100vh;
-    margin: 0 auto;
   }
-  .month-details-header-sub {
-    width: 96%;
+  .month-details-sub-container {
+    width: 90%;
+    height: 100%;
     margin: 0 auto;
   }
   .month-details-head-container {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    height: 80%;
-  }
-  .month-detail-pagenation {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    height: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .month-details-flash {
-    height: 40px;
-  }
-  .arrow-date {
-    width: 90%;
+    width: 80%;
     margin: 0 auto;
+    height: 10%;
+    padding: 0;
   }
-  .arrow-date-split {
-    float: left;
+
+  .details-month-flash-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0;
+    height: 5%;
   }
-  .clear-float {
-    clear: left;
+
+  .month-details-changedate-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0;
+    height: 10%;
   }
+  .month-details-shoplist-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0;
+    height: 59%;
+  }
+
+  .month-detail-pagenation {
+    width: 80%;
+    margin: 5% auto 0 auto;
+    padding: 0;
+    height: 5%;
+  }
+
   .month-detail-hidden-container {
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
   }
   .shoplist-modal {
     position: absolute;
     top: 20%;
     left: 5%;
+    width: 90%;
   }
-  .shop-list-modal-enter, .shop-list-modal-leave-to {
-    opacity: 0;
-  }
-  .shop-list-modal-enter-active, .shop-list-modal-leave-active {
-    transition: opacity 1000ms linear;
-  }
-  .shop-list-modal-enter-to, .shop-list-modal-leave {
-    opacity: 1;
-  }
+
 </style>

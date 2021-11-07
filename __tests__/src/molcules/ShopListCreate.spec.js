@@ -72,16 +72,10 @@ describe('/molcules/ShopListCreate', () => {
         expect(shop_list_create.find('.shop-list-container').exists()).toEqual(true);
       });
 
-      it('shop-list-base-container が存在するか？', () => {
-        shop_list_base_containers = shop_list_create.findAll('.shop-list-base-container');
-        expect(shop_list_base_containers.exists()).toEqual(true);
-        expect(shop_list_base_containers.length).toEqual(5);
-      });
-
-      it('shop-list-field が存在するか？ ４つあるか？', () => {
+      it('shop-list-field が存在するか？ 3つあるか？', () => {
         shop_list_fields = shop_list_create.findAll('.shop-list-field');
         expect(shop_list_fields.exists()).toEqual(true);
-        expect(shop_list_fields.length).toEqual(4);
+        expect(shop_list_fields.length).toEqual(3);
       });
     });
 

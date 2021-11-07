@@ -66,10 +66,6 @@ describe('/molcules/CategoryForm', () => {
         expect(category_form.findAll('.input-category-container').exists()).toEqual(true);
         expect(category_form.findAll('.input-category-container').length).toEqual(2);
       });
-      it('input-category-field が存在するか？', () => {
-        expect(category_form.findAll('.input-category-field').exists()).toEqual(true);
-        expect(category_form.findAll('.input-category-field').length).toEqual(2);
-      });
     });
     describe('子コンポーネント', () => {
       describe('InputForm', () => {

@@ -1,48 +1,57 @@
 <template>
   <div class="home-container">
     <template v-if="loding">
-      Loding ...
+      <div class="loding-container">
+        <div class="loding-sub-container">
+          Loding ...
+        </div>
+      </div>
     </template>
     <template v-else>
       <div class="home-sub-container">
-        <header-link
-          :userLoggedIn="userLoggedIn"
-          @logoutStatus="flash =  $event"
-        >
-        </header-link>
-        <flash
-          v-if="flash.status"
-          :flash="flash"
-          @closeFlash="flash = { message: '', status: ''}"
-        >
-        </flash>
-      </div>
-
-      <transition name="shop-list-home">
-        <div class="home-sub-container" v-if="homeState">
-          <main-display
-            :mainDisplay="mainDisplay"
-            :dateNum="dateNum"
-            :arrowRight="arrowRight"
-            @changeNum="dateNum += $event"
-          ></main-display>
-          <div class="home-sub-btn">
-            <create-btn
-              @createBtnClick="slideStart"
-            >購入品作成</create-btn>
-          </div>
-        </div>
-      </transition>
-      <transition name="shop-list-create">
-        <div class="home-sub-container" v-if="shoplistState">
-          <shop-list-create
-            :allCategories="allCategories"
+        <div class="home-head-container">
+          <header-link
             :userLoggedIn="userLoggedIn"
-            @shopListStatus="flash = $event"
-            @closeModal="slideEnd"
-          ></shop-list-create>
+            @logoutStatus="flash =  $event"
+          >
+          </header-link>
+          <flash
+            v-if="flash.status"
+            :flash="flash"
+            @closeFlash="flash = { message: '', status: ''}"
+          >
+          </flash>
         </div>
-      </transition>
+
+        <transition name="shop-list-home">
+          <div class="home-center-container" v-if="homeState">
+            <main-display
+              :mainDisplay="mainDisplay"
+              :dateNum="dateNum"
+              :arrowRight="arrowRight"
+              @changeNum="dateNum += $event"
+              @clickStart="slideStart"
+            ></main-display>
+          </div>
+
+        </transition>
+        <transition name="shop-list-create">
+          <div class="home-center-container"  v-if="shoplistState">
+            <shop-list-create
+              :allCategories="allCategories"
+              :userLoggedIn="userLoggedIn"
+              @shopListStatus="flash = $event"
+              @closeModal="slideEnd"
+            ></shop-list-create>
+          </div>
+        </transition>
+
+        <div class="home-footer-container">
+          <sub-display
+            :userLoggedIn="userLoggedIn"
+          ></sub-display>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -54,28 +63,29 @@ import ShopListCreate from '../molcules/ShopListCreate.vue'
 import MainDisplay from '../molcules/MainDisplay.vue'
 import CreateBtn from '../atoms/CreateBtn.vue'
 import HeaderLink from './HeaderLink.vue'
+import SubDisplay from '../molcules/SubDisplay.vue'
   export default {
     components: {
       Flash,
       ShopListCreate,
       MainDisplay,
       CreateBtn,
-      HeaderLink
+      HeaderLink,
+      SubDisplay
     },
     computed: mapGetters(['userLoggedIn', 'allCategories', 'allShoplists', 'mainDisplay', 'arrowRight']),
     data() {
       return {
         flash: { message: '', status: ''},
-        loding: null,
         error: null,
         homeState: true,
         shoplistState: false,
-        dateNum: 0
+        dateNum: 0,
+        loding: null
       }
     },
     created() {
       if (this.$route.params.loggedIn) {
-        //this.getDataBase();
         this.getAllDataBase();
       }
     },
@@ -83,7 +93,6 @@ import HeaderLink from './HeaderLink.vue'
       if (this.$route.params.flash) {
         this.getFlash();
       }
-
     },
     methods: {
       getFlash() {
@@ -136,16 +145,75 @@ import HeaderLink from './HeaderLink.vue'
 <style scoped>
   .home-container {
     width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  .loding-container {
+    display: table;
+    width: 100%;
+    height: 100%;
+  }
+  .loding-sub-container {
+    font-size: 3rem;
+    margin:0;
+    padding:0;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
   }
   .home-sub-container {
     width: 90%;
+    height: 100%;
     margin: 0 auto;
+    padding: 0;
+  }
+
+
+  .home-head-container {
+    width: 80%;
+    margin: 8%  auto 0 auto;
+    padding: 0;
+    height: 10%;
+  }
+  .home-center-container {
+    width: 80%;
+    margin: 4% auto 0 auto;
+    padding: 0;
+    height: 50%;
+  }
+  .home-footer-container {
+    width: 80%;
+    margin:  5% auto 0 auto;
+    padding: 0;
+    height: 25%;
   }
   .home-sub-btn {
-    margin: 10px 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
-    height: 40px;
+    height: 12%;
   }
+@media screen and (max-width: 480px) {
+  .home-head-container {
+    width: 100%;
+    margin: 8%  auto 0 auto;
+    padding: 0;
+    height: 10%;
+  }
+  .home-center-container {
+    width: 100%;
+    margin: 4% auto 0 auto;
+    padding: 0;
+    height: 50%;
+  }
+  .home-footer-container {
+    width: 100%;
+    margin: 20%  auto 0 auto;
+    padding: 0;
+    height: 25%;
+  }
+}
   .shop-list-home-enter, .shop-list-home-leave-to {
     opacity: 0;
   }

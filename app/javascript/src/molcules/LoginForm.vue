@@ -1,47 +1,29 @@
 <template>
-  <div>
-    <div v-if="flash">
-      {{ flash }}
+  <form class="input-container">
+    <div class="input-field">
+      <input-form
+        :status="email"
+        @inputFormValue="email.value = $event"
+      ></input-form>
     </div>
-    <form>
-      <div>{{ email.value }}</div>
-      <div class="input-container">
-        <div class="input-field">
-          <input-form
-            :status="email"
-            @inputFormValue="email.value = $event"
-          ></input-form>
-        </div>
-      </div>
-      <div> {{ password.value }}</div>
-      <div class="input-container">
-        <div class="input-field">
-          <input-form
-            :status="password"
-            @inputFormValue="password.value = $event"
-          ></input-form>
-        </div>
-      </div>
-      <div> {{ login_state.value}}</div>
-
-      <div class="input-container">
-        <div class="input-field">
-          <input-form
-            :status="login_state"
-            @inputFormValue="login_state.value = $event"
-          ></input-form>
-        </div>
-      </div>
-
-      <div class="input-container">
-        <div class="input-field">
-          <create-btn
-            @createBtnClick="loginClick"
-          ></create-btn>
-        </div>
-      </div>
-    </form>
-  </div>
+    <div class="input-field">
+      <input-form
+        :status="password"
+        @inputFormValue="password.value = $event"
+      ></input-form>
+    </div>
+    <div class="input-field">
+      <input-form
+        :status="login_state"
+        @inputFormValue="login_state.value = $event"
+      ></input-form>
+    </div>
+    <div class="input-field">
+      <create-btn
+        @createBtnClick="loginClick"
+      ></create-btn>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -56,8 +38,7 @@
       return {
         email: { id: 'input-email', kinds: 'email', place: 'メールアドレス', label: '', value: ''},
         password: { id: 'input-password', kinds: 'password', place: 'パスワード', label: '', value: ''},
-        login_state: { id: 'input-check-box', kinds: 'checkbox', label: 'ログイン状態を保持', true_box: '1', false_box: '0', value: '0', checkbox_be: true },
-        flash: ''
+        login_state: { id: 'input-check-box', kinds: 'checkbox', label: 'ログイン状態を保持', true_box: '1', false_box: '0', value: '0', checkbox_be: true }
       }
     },
     methods: {
@@ -86,17 +67,13 @@
 </script>
 
 <style scoped>
-  form {
-    width: 90%;
-    margin: 0 auto;
-  }
   .input-container {
     width: 100%;
-    margin-top: 10px;
   }
   .input-field {
-    width: 96%;
+    width: 100%;
     height: 40px;
-    margin: 0 auto;
+    margin: 10px 0;
+    padding: 0;
   }
 </style>

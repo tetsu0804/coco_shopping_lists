@@ -1,23 +1,17 @@
 <template>
-  <div>
-    <form class="category-form-container">
-      <div class="input-category-container">
-        <div class="input-category-field">
-          <input-form
-            :status="category_name"
-            @inputFormValue="category_name.value = $event"
-          ></input-form>
-        </div>
-      </div>
-      <div class="input-category-container">
-        <div class="input-category-field">
-          <create-btn
-            @createBtnClick="createCategoryClick"
-          >カテゴリ登録</create-btn>
-        </div>
-      </div>
-    </form>
-  </div>
+  <form class="category-form-container">
+    <div class="input-category-container">
+      <input-form
+        :status="category_name"
+        @inputFormValue="category_name.value = $event"
+      ></input-form>
+    </div>
+    <div class="input-category-container">
+      <create-btn
+        @createBtnClick="createCategoryClick"
+      >カテゴリ登録</create-btn>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -66,15 +60,14 @@ import CreateBtn from '../atoms/CreateBtn.vue'
 
 <style scoped>
   .category-form-container {
-    width: 90%;
-    margin: 30px auto 0 auto;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
   }
   .input-category-container {
     width: 100%;
-    margin: 10px 0;
-  }
-  .input-category-field {
-    width: 96%;
-    height: 40px;
+    height: 40%;
+    margin: 2% 0 0 0;
+    padding: 0;
   }
 </style>

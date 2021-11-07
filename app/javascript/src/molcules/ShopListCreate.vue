@@ -1,62 +1,62 @@
 <template>
   <div class="shop-list-container">
-    <p class="close-modal-click" @click="closeModalClick">X</p>
-    <h3>購入品作成</h3>
-    <flash
-      v-if="flash.status"
-      :flash="flash"
-      @closeFlash="flash = { message: '', status: ''}"
-    ></flash>
+    <div class="shop-list-sub-container">
+      <div class="shop-list-head">
+        <p class="close-modal-click" @click="closeModalClick">X</p>
+        <div class="right-clear"></div>
+      </div>
 
-    <div class="shop-list-base-container">
-      <div v-for="category in allCategories" :key="category.id" class="shop-list-category">
-        <input-form
-          :status="changStatus(category)"
-          @inputFormValue="changeCheckValue($event, category)"
-        ></input-form>
+      <div class="shop-list-title">
+        <h3>購入品作成</h3>
       </div>
-      <div class="float-clear"></div>
-    </div>
-    <div>
-      {{ checked }}
-    </div>
-    <div class="shop-list-base-container">
-      <div class="shop-list-field">
-        <input-form
-          :status="listName"
-          @inputFormValue="listName.value = $event"
-        ></input-form>
+      <div class="shop-list-flash">
+        <flash
+          v-if="flash.status"
+          :flash="flash"
+          @closeFlash="flash = { message: '', status: ''}"
+        ></flash>
       </div>
-    </div>
-    <p>{{ listName.value }}</p>
-    <div class="shop-list-base-container">
-      <div class="shop-list-field">
-        <input-form
-          :status="price"
-          @inputFormValue="price.value = $event"
-        ></input-form>
+
+      <div class="shop-list-categories">
+        <div v-for="category in allCategories" :key="category.id" class="shop-list-category">
+          <input-form
+            :status="changStatus(category)"
+            @inputFormValue="changeCheckValue($event, category)"
+          ></input-form>
+        </div>
+        <div class="float-clear"></div>
       </div>
-    </div>
-    <p>{{ price.value }}</p>
-    <div class="shop-list-base-container">
-      <div class="shop-list-field">
-        <input-form
-          :status="datetime"
-          @inputFormValue="datetime.value = $event"
-        ></input-form>
+
+      <div class="shop-list-fields">
+        <div class="shop-list-field">
+          <input-form
+            :status="listName"
+            @inputFormValue="listName.value = $event"
+          ></input-form>
+        </div>
+
+        <div class="shop-list-field">
+          <input-form
+            :status="price"
+            @inputFormValue="price.value = $event"
+          ></input-form>
+        </div>
+
+        <div class="shop-list-field">
+          <input-form
+            :status="datetime"
+            @inputFormValue="datetime.value = $event"
+          ></input-form>
+        </div>
       </div>
-    </div>
-    <p>{{ datetime.value}}</p>
-    <div class="shop-list-base-container">
-      <div class="shop-list-field">
+
+      <div class="shop-list-btn">
         <create-btn
           @createBtnClick="createShopList"
         >
         </create-btn>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -150,35 +150,79 @@ import Flash from '../atoms/Flash.vue'
 </script>
 <style scoped>
   .shop-list-container {
+    box-sizing: border-box;
     width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
   }
-  .close-modal-click {
-    width: 5%;
-    text-align: center;
-    float: right;
+  .shop-list-sub-container {
+    box-sizing: border-box;
+    width: 96%;
+    height: 100%;
+    margin: 0 auto;
     padding: 0;
-    margin: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
+  }
+  .shop-list-head {
+    width: 100%;
+    height: 5%;
+    margin: 0;
+    padding: 0;
+  }
+  .shop-list-title {
+    width: 100%;
+    height: 8%;
+    margin: 0;
+    padding: 0;
+  }
+  .shop-list-flash {
+    width: 100%;
+    height: 8%;
+  }
+  .shop-list-categories {
+    width: 100%;
+    height: 27%;
+  }
+  .shop-list-fields {
+    width: 100%;
+    height: 30%;
+    margin: 0;
+    padding: 0;
+  }
+  .shop-list-btn {
+    width: 100%;
+    height: 15%;
+    margin: 2% auto 0 auto;
+    padding: 0;
+  }
+  .close-modal-click {
+    margin: 0;
+    padding: 0;
     cursor: pointer;
+    float: right;
   }
   .close-modal-click:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5);
   }
-  .shop-list-base-container {
-    width: 100%;
+  .right-clear {
+    clear: right;
+    margin: 0;
+    padding: 0;
   }
   h3 {
+    margin: 0;
+    padding: 0;
     text-align: center;
+    line-height: 200%;
   }
   .shop-list-category {
     width: 30%;
+    height: 25%;
     padding: 0;
-    margin: 5px 1.2%;
+    margin: 0.5% 1.2%;
     border: 1px solid rgb(0, 0, 0);
     border-radius: 4px;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
@@ -189,8 +233,8 @@ import Flash from '../atoms/Flash.vue'
     clear: left;
   }
   .shop-list-field {
-    width: 96.8%;
-    margin: 10px auto;
-    height: 40px;
+    width: 100%;
+    margin: 0 auto 0.5% auto;
+    height: 30%;
   }
 </style>
