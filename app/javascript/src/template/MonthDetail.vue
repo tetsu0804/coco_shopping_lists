@@ -123,20 +123,17 @@ import HeaderLink from './HeaderLink.vue'
   .month-details-container {
     width: 100%;
     height: 100vh;
-    background-color: rgba(18, 18, 18, 0.08);
   }
   .month-details-sub-container {
     width: 90%;
     height: 100%;
     margin: 0 auto;
-    background-color: rgba(17, 17, 17, 0.15);
   }
   .month-details-head-container {
     width: 80%;
     margin: 0 auto;
     height: 10%;
     padding: 0;
-    background-color: rgba(233, 2, 2, 0.1);
   }
 
   .details-month-flash-container {
@@ -144,7 +141,6 @@ import HeaderLink from './HeaderLink.vue'
     margin: 0 auto;
     padding: 0;
     height: 5%;
-    background-color: rgba(57, 125, 242, 0.12);
   }
 
   .month-details-changedate-container {
@@ -152,14 +148,12 @@ import HeaderLink from './HeaderLink.vue'
     margin: 0 auto;
     padding: 0;
     height: 10%;
-    background-color: rgba(255, 245, 0, 0.09);
   }
   .month-details-shoplist-container {
     width: 80%;
     margin: 0 auto;
     padding: 0;
     height: 59%;
-    background-color: rgba(255, 0, 0, 0.11);
   }
 
   .month-detail-pagenation {
@@ -167,11 +161,22 @@ import HeaderLink from './HeaderLink.vue'
     margin: 5% auto 0 auto;
     padding: 0;
     height: 5%;
-    background-color: rgba(0, 10, 255, 0.1);
   }
 
   .month-detail-hidden-container {
-    width: 80%;
     margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
   }
+  .shoplist-modal {
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    width: 90%;
+  }
+
 </style>

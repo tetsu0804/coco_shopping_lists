@@ -90,6 +90,7 @@
   .shoplist-modal-container {
     box-sizing: border-box;
     width: 90%;
+    height: 100%;
     margin: 0 auto;
   }
   .shoplist-modal-sub-container {
@@ -110,7 +111,7 @@
   }
   table {
     width: 90%;
-    margin: 0 auto;
+    margin: 5% auto 0 auto;
     border: 1px solid rgba(0, 0, 0, .5);
     border-collapse: collapse;
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
@@ -140,5 +141,31 @@
   .error-flash {
     text-align: center;
     margin-bottom: 10px;
+  }
+  @media screen and (max-width: 1025px) {
+    .shoplist-update-title {
+      text-align: center;
+      margin: 5% auto 0 auto;
+    }
+    table {
+      width: 90%;
+      margin: 5% auto 0 auto;
+      border: 1px solid rgba(0, 0, 0, .5);
+      border-collapse: collapse;
+      box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .shoplist-update-title {
+      text-align: center;
+      margin: 15% auto 0 auto;
+    }
+    table {
+      width: 90%;
+      margin: 13% auto 0 auto;
+      border: 1px solid rgba(0, 0, 0, .5);
+      border-collapse: collapse;
+      box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .5);
+    }
   }
 </style>

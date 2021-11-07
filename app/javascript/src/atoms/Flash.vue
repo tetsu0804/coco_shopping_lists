@@ -57,7 +57,6 @@
     width: 90%;
     margin: 0;
     padding: 0;
-    background-color: rgb(168, 43, 218);
     float: left;
   }
   .flash-close {
@@ -67,7 +66,6 @@
     margin: 0;
     padding:0;
     width: 10%;
-    background-color: rgb(224, 157, 113);
   }
   .flash-close:hover {
     color: rgb(255, 255, 255);

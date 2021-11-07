@@ -165,22 +165,18 @@ import Flash from '../atoms/Flash.vue'
     height: 100%;
     margin: 0 auto;
     padding: 0;
-    background-color: rgba(102, 102, 102, 0.73);
   }
   .shop-list-head {
     width: 100%;
     height: 5%;
     margin: 0;
     padding: 0;
-    background-color: rgba(255, 222, 0, 0.18);
   }
   .shop-list-title {
     width: 100%;
     height: 8%;
     margin: 0;
     padding: 0;
-    background-color: rgba(0, 102, 255, 0.19);
-    /* display: table; */
   }
   .shop-list-flash {
     width: 100%;
@@ -189,21 +185,18 @@ import Flash from '../atoms/Flash.vue'
   .shop-list-categories {
     width: 100%;
     height: 27%;
-    background-color: rgba(242, 255, 0, 0.19);
   }
   .shop-list-fields {
     width: 100%;
     height: 30%;
     margin: 0;
     padding: 0;
-    background-color: rgba(255, 0, 0, 0.17);
   }
   .shop-list-btn {
     width: 100%;
     height: 15%;
     margin: 2% auto 0 auto;
     padding: 0;
-    background-color: rgba(0, 79, 255, 0.15);
   }
   .close-modal-click {
     margin: 0;
@@ -223,7 +216,6 @@ import Flash from '../atoms/Flash.vue'
     margin: 0;
     padding: 0;
     text-align: center;
-    background-color: rgb(179, 131, 127);
     line-height: 200%;
   }
   .shop-list-category {

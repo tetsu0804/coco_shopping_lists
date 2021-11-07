@@ -72,7 +72,6 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: rgba(255, 0, 0, 0.09);
   }
   .category-create-sub-container {
     width: 90%;
@@ -85,29 +84,26 @@
     margin: 8% auto 0 auto;
     padding: 0;
     height: 10%;
-    background-color: rgba(255, 0, 0, 0.13);
   }
   .category-create-form-container {
     width: 80%;
     margin: 0 auto;
     padding: 0;
     height: 20%;
-    background-color: rgba(13, 0, 255, 0.22);
   }
   .category-create-footer-container {
     width: 80%;
     margin: 0 auto;
     padding: 0;
     height: 70%;
-    background-color: rgba(204, 255, 0, 0.1);
   }
   .category-modal-all-container {
+    background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
   }
   .category-modal {
     position: absolute;
@@ -122,21 +118,18 @@
       margin: 8% auto 0 auto;
       padding: 0;
       height: 10%;
-      background-color: rgba(255, 0, 0, 0.13);
     }
     .category-create-form-container {
       width: 100%;
       margin: 0 auto;
       padding: 0;
       height: 20%;
-      background-color: rgba(13, 0, 255, 0.22);
     }
     .category-create-footer-container {
       width: 100%;
       margin: 0 auto;
       padding: 0;
       height: 70%;
-      background-color: rgba(204, 255, 0, 0.1);
     }
   }
   .category-modal-enter, .category-modal-leave-to {

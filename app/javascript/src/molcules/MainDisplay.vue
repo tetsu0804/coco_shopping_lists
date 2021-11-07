@@ -82,11 +82,9 @@ import CreateBtn from '../atoms/CreateBtn.vue'
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: rgb(89, 149, 210);
   }
   .main-display-title {
     width:100%;
-    background-color: rgb(149, 57, 129);
     height: 30%;
     margin: 0;
     padding: 0;
@@ -96,9 +94,6 @@ import CreateBtn from '../atoms/CreateBtn.vue'
     text-align: center;
     margin-top: 0;
     margin-bottom: 0;
-    /* padding-top: 10%; */
-    /* background-color: rgb(16, 83, 56); */
-    /* height: 20%; */
     display: table-cell;
     vertical-align: middle;
   }
@@ -108,7 +103,6 @@ import CreateBtn from '../atoms/CreateBtn.vue'
     height: 40%;
     margin: 0;
     padding: 0;
-    background-color: rgb(19, 193, 181);
   }
   .arrow-price-split {
     float: left;
@@ -140,13 +134,11 @@ import CreateBtn from '../atoms/CreateBtn.vue'
     height: 10%;
     margin: 0;
     padding: 0;
-    background-color: rgba(200, 222, 138, 0.42);
   }
   .last-shopping {
     float: right;
     text-decoration: none;
     color: rgb(0, 0, 0);
-    background-color:rgb(64, 9, 136);
     font-size: 1rem;
   }
   .last-shopping:hover {
@@ -171,7 +163,6 @@ import CreateBtn from '../atoms/CreateBtn.vue'
     .last-shopping {
       text-decoration: none;
       color: rgb(0, 0, 0);
-      background-color:rgb(64, 9, 136);
       font-size: 0.9rem;
     }
   }

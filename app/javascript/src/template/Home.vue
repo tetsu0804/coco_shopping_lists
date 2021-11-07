@@ -148,7 +148,6 @@ import SubDisplay from '../molcules/SubDisplay.vue'
     height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: rgba(229, 0, 249, 0.33);
   }
   .loding-container {
     display: table;
@@ -176,7 +175,6 @@ import SubDisplay from '../molcules/SubDisplay.vue'
     margin: 8%  auto 0 auto;
     padding: 0;
     height: 10%;
-    background-color: rgba(255, 32, 32, 0.59);
   }
   .home-center-container {
     width: 80%;
@@ -188,7 +186,6 @@ import SubDisplay from '../molcules/SubDisplay.vue'
     width: 80%;
     margin:  5% auto 0 auto;
     padding: 0;
-    background-color: rgba(250, 255, 0, 0.44);
     height: 25%;
   }
   .home-sub-btn {
@@ -203,20 +200,17 @@ import SubDisplay from '../molcules/SubDisplay.vue'
     margin: 8%  auto 0 auto;
     padding: 0;
     height: 10%;
-    background-color: rgba(255, 32, 32, 0.59);
   }
   .home-center-container {
     width: 100%;
     margin: 4% auto 0 auto;
     padding: 0;
-    background-color: rgba(0, 102, 255, 0.43);
     height: 50%;
   }
   .home-footer-container {
     width: 100%;
     margin: 20%  auto 0 auto;
     padding: 0;
-    background-color: rgba(250, 255, 0, 0.44);
     height: 25%;
   }
 }
