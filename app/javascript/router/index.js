@@ -5,6 +5,7 @@ import Signup from '../src/template/Signup.vue'
 import Login from '../src/template/Login.vue'
 import MonthDetail from '../src/template/MonthDetail.vue'
 import CategoryCreate from '../src/template/CategoryCreate.vue'
+import UserDetail from '../src/template/UserDetail.vue'
 import { authorizeLogin } from './gurds'
 Vue.use(VueRouter)
 
@@ -15,6 +16,7 @@ const router = new VueRouter({
     { path: '/login', component: Login, name: 'Login' },
     { path: '/categories', component: CategoryCreate, name: 'CategoryCreate', meta: { requiresAuth: true } },
     { path: '/month_detail', component: MonthDetail, name: 'MonthDetail', meta: { requiresAuth: true } },
+    { path: '/user', component: UserDetail, name: 'UserDetail', meta: { requiresAuth: true } },
   ]
 });
 
