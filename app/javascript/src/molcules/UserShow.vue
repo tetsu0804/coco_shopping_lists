@@ -12,7 +12,12 @@
       }
     },
     computed: {
-      
+      fullName() {
+        return this.userLoggedIn.user.last_name + this.userLoggedIn.user.first_name
+      },
+      userEmail() {
+        return this.userLoggedIn.user.email
+      }
     }
   }
 </script>
