@@ -49,4 +49,9 @@ import { mapGetters } from 'vuex'
     height: 10%;
     margin: 0 auto;
   }
+  .user-detail-show-container {
+    width: 80%;
+    height: 30%;
+    margin: 0 auto;
+  }
 </style>
