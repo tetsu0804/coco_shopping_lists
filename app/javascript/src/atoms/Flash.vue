@@ -1,9 +1,9 @@
 <template>
   <div v-if="flash.status" :class="flashClass" class="base-flash">
-    {{ flash.message }}
-    <div class="flash-close" @click="closeFlashClick">
+    <p class="text-msg">{{ flash.message }}</p>
+    <p class="flash-close" @click="closeFlashClick">
       x
-    </div>
+    </p>
   </div>
 </template>
 
@@ -34,6 +34,8 @@
   .base-flash {
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
     text-align: center;
     border-radius: 4px;
     font-weight: bold;
@@ -42,27 +44,54 @@
     box-sizing: border-box;
     color: rgba(13, 0, 255);
     background-color: rgba(255, 255, 255);
-    border: 5px solid rgba(13, 0, 255);
+    border: 2px solid rgba(13, 0, 255);
   }
   .error-flash {
     box-sizing: border-box;
     color: rgba(254, 0, 0, 0.81);
     background-color: rgba(255, 255, 255);
-    border: 5px solid rgba(254, 0, 0, 0.81);
+    border: 2px solid rgba(254, 0, 0, 0.81);
+  }
+  .text-msg {
+    box-sizing: border-box;
+    width: 90%;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(168, 43, 218);
+    float: left;
   }
   .flash-close {
-    box-sizing: border-box;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
     color: rgba(0, 0, 0, 0.5);
     float: right;
     cursor: pointer;
+    margin: 0;
+    padding:0;
+    width: 10%;
+    background-color: rgb(224, 157, 113);
   }
   .flash-close:hover {
     color: rgb(255, 255, 255);
     background-color: rgba(0, 0, 0, 0.5);
+  }
+  @media screen and (max-width: 332px) {
+    .base-flash {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      border-radius: 4px;
+      font-weight: bold;
+      line-height: 200%;
+    }
+    .text-msg {
+      box-sizing: border-box;
+      width: 90%;
+      margin: 0;
+      padding: 0;
+      background-color: rgb(168, 43, 218);
+      float: left;
+      font-size: 0.8em;
+    }
   }
 </style>
