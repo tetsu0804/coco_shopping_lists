@@ -32,11 +32,6 @@
               @changeNum="dateNum += $event"
               @clickStart="slideStart"
             ></main-display>
-            <!-- <div class="home-sub-btn">
-              <create-btn
-                @cu7uiureateBtnClick="slideStart"
-              >購入品作成</create-btn>
-            </div> -->
           </div>
 
         </transition>
@@ -91,7 +86,6 @@ import SubDisplay from '../molcules/SubDisplay.vue'
     },
     created() {
       if (this.$route.params.loggedIn) {
-        //this.getDataBase();
         this.getAllDataBase();
       }
     },
@@ -188,7 +182,6 @@ import SubDisplay from '../molcules/SubDisplay.vue'
     width: 80%;
     margin: 4% auto 0 auto;
     padding: 0;
-    /* background-color: rgba(0, 102, 255, 0.43); */
     height: 50%;
   }
   .home-footer-container {

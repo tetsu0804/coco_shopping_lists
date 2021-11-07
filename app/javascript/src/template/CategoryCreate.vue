@@ -39,46 +39,6 @@
       </transition>
     </div>
   </div>
-  <!-- <div class="category-create-container">
-    <div class="category-create-sub-container">
-      <div class="category-create-head-container">
-        <div class="category-create-header-link">
-          <header-link
-          :userLoggedIn="userLoggedIn"
-          @logoutStatus="flash =  $event"
-          ></header-link>
-        </div>
-      </div>
-      <flash
-        :flash="flash"
-        @closeFlash="flash = { message: '', status: '' }"
-      ></flash>
-      <category-form
-        :userLoggedIn="userLoggedIn"
-        @categoryStatus="flash = $event"
-      ></category-form>
-
-      <category-list
-        :allCategories="allCategories"
-        :userLoggedIn="userLoggedIn"
-        @categoryUpdate="matchedNum = $event"
-        @categoryStatus="flash = $event"
-      ></category-list>
-      <p>------</p>
-      <p>matchedNum</p>
-      <p>{{ !!matchedNum}}</p>
-      <transition name="category-modal">
-        <div class="category-modal-all-container" v-if="!!matchedNum">
-          <category-modal
-            class="category-modal"
-            :selectedCategory="selectedCategory(matchedNum)"
-            @closeUpdateClick="matchedNum = ''"
-            @categoryStatus="flash = $event"
-          ></category-modal>
-        </div>
-      </transition>
-    </div>
-  </div> -->
 </template>
 
 <script>
@@ -141,17 +101,6 @@
     height: 70%;
     background-color: rgba(204, 255, 0, 0.1);
   }
-  /* .category-create-header-link {
-    width: 96%;
-    margin: 10px 0;
-  } */
-  /* .non-category-msg {
-    border: 1px solid rgb(92, 21, 21);
-  } */
-  /* .category-ids {
-    border-bottom: 1px solid rgb(0, 0, 0);
-  } */
-
   .category-modal-all-container {
     position: absolute;
     top: 0;

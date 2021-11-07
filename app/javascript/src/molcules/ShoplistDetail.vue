@@ -106,21 +106,13 @@
   }
   .shoplist-detail-container table {
     width: 100%;
-    /* margin: 0 auto; */
-    /* padding: 0; */
     border-collapse: collapse ;
   }
-  .shoplist-detail-container table thead {
-    /* height: 100%; */
-  }
-  .shoplist-detail-container table thead tr{
-    /* height: 100%; */
-  }
+
   .shoplist-detail-container table thead tr th {
     box-sizing: border-box;
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-    /* height: 9%; */
-    height: 39px;
+      height: 39px;
     font-size: 1rem;
   }
   .shoplist-detail-container table tbody tr td {
@@ -129,7 +121,6 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
     height: 39px;
     font-size: 1rem;
-    /* height: 30px; */
   }
   .clickIcon {
     width: 1rem;
@@ -150,7 +141,6 @@
     .shoplist-detail-container table thead tr th {
       box-sizing: border-box;
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      /* height: 9%; */
       height: 39px;
       font-size: 0.7rem;
     }
@@ -160,7 +150,6 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       height: 39px;
       font-size: 0.7rem;
-      /* height: 30px; */
     }
   }
 </style>
