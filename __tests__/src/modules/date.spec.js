@@ -43,6 +43,15 @@ describe('/modules/date', () => {
     });
   });
 
+  describe('regexpYear', () => {
+    it('(/2021/)日付を渡すと, RegExpオブジェクトの年が返ってくる', () => {
+      expect(date.regexpYear(new Date('2021-11-13'))).toEqual(/2021/);
+    })
+    it('(/2000/)日付を渡すと, RegExpオブジェクトの年が返ってくる', () => {
+      expect(date.regexpYear(new Date('2000-11-13'))).toEqual(/2000/);
+    });
+  });
+
   describe('monthToMonthNumber (この月からその月までの 月数を計算する)', () => {
     let one, two
     it('2021-10-20 〜 2021-09-10 なので 1', () => {
