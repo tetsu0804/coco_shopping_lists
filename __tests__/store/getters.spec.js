@@ -169,6 +169,30 @@ describe('/store/getters', () => {
       });
     });
 
+    describe('thisYearShopLists', () => {
+      let this_year_shoplists, this_date, regexp_year, filter_shoplists, match_shoplists
+      beforeEach(() => {
+        this_year_shoplists = getters.thisYearShopLists(state);
+      });
+      it('state.shoplists[0].purchasedateと同じ年のshoplistsを全てを抽出している', () => {
+        this_date = new Date(state.shoplists[0].purchasedate);
+        regexp_year = date.regexpYear(this_date);
+
+        filter_shoplists = shoplist.filteringMonthShopList(state.shoplists, regexp_year);
+        match_shoplists = shoplist.descendingOrderShopLists(filter_shoplists);
+        expect(this_year_shoplists(this_date)).toEqual(match_shoplists);
+      });
+      it('state.shoplists[365].purchasedateと同じ年のshoplistsを全てを抽出している', () => {
+        this_date = new Date(state.shoplists[365].purchasedate);
+        regexp_year = date.regexpYear(this_date);
+
+        filter_shoplists = shoplist.filteringMonthShopList(state.shoplists, regexp_year);
+        match_shoplists = shoplist.descendingOrderShopLists(filter_shoplists);
+        expect(this_year_shoplists(this_date)).toEqual(match_shoplists);
+      });
+
+    });
+
     describe('mainDisplay', () => {
       let format_list =  {last_shoplist: '', total_price: '', month_display: ''}, main_display, this_month, now_judge, now, test_regexp, this_shoplists, descending_sort_shop_lists, other_getters
 
@@ -312,7 +336,7 @@ describe('/store/getters', () => {
 
         format_this_month_shoplists = slice_this_month_shoplists.length > 0 ? slice_this_month_shoplists : no_shoplists
 
-        expect(page_split(0, 1, 10)).toEqual(no_shoplists);
+        expect(page_split(0, 1, 10)).toEqual(format_this_month_shoplists);
       });
 
       it('先月 date_num = 1, ページ内 10個 page_in_total = 10, 現在のページナンバー 0p page_num = 0 を入れると state.shoplists の 先月 降順 0-10個のデータが表示する', () => {
@@ -469,6 +493,350 @@ describe('/store/getters', () => {
         );
       });
     });
+
+    describe('periodShopListUser', () => {
+      // {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: new_date.toJSON() , user_id: 1 }
+      let period_shoplist, period_shoplist_month, other_getters, userLoggedIn, add_shoplists, now, add_state_shoplists,single_match, double_match, triple_match, multi_match,  background_match, gray_image_match, delete_shoplists_index, getter_this_year_shoplists, this_year_shoplists
+
+      beforeEach(() => {
+        single_match = /^background-image:\s*conic-gradient\(\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*0%\s*360%\s*\)\s*;/;
+        double_match = /^background-image:\s*conic-gradient\(\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*\)\s*;/
+        triple_match = /^background-image:\s*conic-gradient\(\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*0deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*\)\s*;/
+        background_match = /^background-color:\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*;/;
+        gray_image_match = /^background-color:\s*rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*[1|0].?\d*\s*\)\s*;/;
+
+
+        // background_match = /^background-color:\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*;/;
+        // gray_image_match = /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*;/
+
+        now = new Date();
+        userLoggedIn = { signedIn: true, user: { id: 2, first_name: '二郎', last_name: '吉田', email: 'test2@test.com'}}
+        // add_shoplists = [
+        //   { id: 1000, list_name: 'ショップリスト1000', price: 200, purchasedate: now.toJSON(), user_id: 2},
+        //   { id: 1001, list_name: 'ショップリスト1001', price: 200, purchasedate: now.toJSON(), user_id: 2},
+        // ]
+        state.shoplists.push({ id: 1000, list_name: 'ショップリスト1000', price: 200, purchasedate: now.toJSON(), user_id: 2});
+        state.shoplists.push({ id: 1001, list_name: 'ショップリスト1001', price: 200, purchasedate: now.toJSON(), user_id: 2});
+        state.shoplists.push({ id: 1002, list_name: 'ショップリスト1002', price: 200, purchasedate: now.toJSON(), user_id: 3});
+        state.shoplists.push({ id: 1003, list_name: 'ショップリスト1001', price: 200, purchasedate: now.toJSON(), user_id: 3});
+        //add_state_shoplists = state.shoplists.concat(add_shoplists)
+
+        other_getters = {
+          thisMonthShopList: getters.thisMonthShopList(state)
+        }
+        period_shoplist = getters.periodShopListUser(state, other_getters);
+      });
+
+      describe('month', () => {
+        it('this_month_shoplists.length ==== user__shoplists.length (今月のデータが全て自分のデータの時)', () => {
+          state.shoplists = [
+              { id: 1, list_name: 'ショップリスト1', price: 200, purchasedate: now.toJSON(), user_id: 2},
+              { id: 2, list_name: 'ショップリスト2', price: 200, purchasedate: now.toJSON(), user_id: 2},
+          ]
+          other_getters = {
+            thisMonthShopList: getters.thisMonthShopList(state)
+          }
+          period_shoplist = getters.periodShopListUser(state, other_getters);
+
+          expect(period_shoplist('month', userLoggedIn.user, 'single').style).toMatch(single_match);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].parcent).toEqual(100);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].length).toEqual(2);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].rgb).toMatch(background_match);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].parcent).toEqual(0);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].user).toEqual(-1);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].length).toEqual(0);
+          expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].rgb).toMatch(gray_image_match);
+        });
+
+        describe('single', () => {
+          it('user_idの投稿数 = 0, 他の投稿数 = 0', () => {
+            state.shoplists = []
+            other_getters = {
+              thisMonthShopList: getters.thisMonthShopList(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1]).toEqual({ parcent: 0, user: -1, length: 0, rgb: 'rgba(0, 0, 0, 0.5)' })
+          });
+          it('user_idの投稿数 = n, 他の投稿数 = n', () => {
+
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users.length).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').style).toMatch(double_match);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].length).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].user).toEqual(-1);
+          });
+          it('user_idの投稿数 = 0 , 他のidsの投稿数 = 100', () => {
+            delete_shoplists_index = [];
+            expect(state.shoplists.length).toEqual(370)
+            state.shoplists.forEach((shoplist, index) => {
+              if (shoplist.user_id === 2) {
+                delete_shoplists_index.push(index)
+              }
+            });
+            state.shoplists.splice(delete_shoplists_index[0], 2);
+            other_getters = {
+              thisMonthShopList: getters.thisMonthShopList(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+
+            expect(period_shoplist('month', userLoggedIn.user, 'single').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].parcent).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].parcent).toEqual(100);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].user).toEqual(-1);
+          });
+          it('user_idの投稿数 = 100, 他のidsの投稿数 = 0', () => {
+            state.shoplists = [
+                { id: 1, list_name: 'ショップリスト1', price: 200, purchasedate: now.toJSON(), user_id: 2},
+                { id: 2, list_name: 'ショップリスト2', price: 200, purchasedate: now.toJSON(), user_id: 2},
+            ]
+            other_getters = {
+              thisMonthShopList: getters.thisMonthShopList(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+
+            expect(period_shoplist('month', userLoggedIn.user, 'single').style).toMatch(single_match);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].parcent).toEqual(100);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].length).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[0].rgb).toMatch(background_match);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].parcent).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].user).toEqual(-1);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].length).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'single').users[1].rgb).toMatch(gray_image_match);
+          });
+        });
+
+        describe('multi', () => {
+          beforeEach(() => {
+            multi_match = /^background-image:\s*conic-gradient\(\s*rgb\s*\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*,\s*rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)\s*\d{1,3}deg\s*\d{1,3}deg\s*\)\s*;/
+
+            state.shoplists.push({ id: 1004, list_name: 'ショップリスト1001', price: 200, purchasedate: now.toJSON(), user_id: 4});
+            state.shoplists.push({ id: 1005, list_name: 'ショップリスト1002', price: 200, purchasedate: now.toJSON(), user_id: 4});
+            state.shoplists.push({ id: 1006, list_name: 'ショップリスト1003', price: 200, purchasedate: now.toJSON(), user_id: 5});
+            state.shoplists.push({ id: 1007, list_name: 'ショップリスト1004', price: 200, purchasedate: now.toJSON(), user_id: 5});
+            state.shoplists.push({ id: 1008, list_name: 'ショップリスト1005', price: 200, purchasedate: now.toJSON(), user_id: 5});
+            state.shoplists.push({ id: 1009, list_name: 'ショップリスト1006', price: 200, purchasedate: now.toJSON(), user_id: 5});
+            state.shoplists.push({ id: 1010, list_name: 'ショップリスト1007', price: 200, purchasedate: now.toJSON(), user_id: 5});
+            state.shoplists.push({ id: 1011, list_name: 'ショップリスト1008', price: 200, purchasedate: now.toJSON(), user_id: 5});
+            state.shoplists.push({ id: 1012, list_name: 'ショップリスト1009', price: 200, purchasedate: now.toJSON(), user_id: 6});
+            state.shoplists.push({ id: 1013, list_name: 'ショップリスト1010', price: 200, purchasedate: now.toJSON(), user_id: 6});
+            state.shoplists.push({ id: 1014, list_name: 'ショップリスト1011', price: 200, purchasedate: now.toJSON(), user_id: 6});
+            state.shoplists.push({ id: 1015, list_name: 'ショップリスト1012', price: 200, purchasedate: now.toJSON(), user_id: 6});
+            state.shoplists.push({ id: 1016, list_name: 'ショップリスト1013', price: 200, purchasedate: now.toJSON(), user_id: 6});
+            state.shoplists.push({ id: 1017, list_name: 'ショップリスト1014', price: 200, purchasedate: now.toJSON(), user_id: 7});
+            state.shoplists.push({ id: 1018, list_name: 'ショップリスト1015', price: 200, purchasedate: now.toJSON(), user_id: 7});
+            state.shoplists.push({ id: 1019, list_name: 'ショップリスト1016', price: 200, purchasedate: now.toJSON(), user_id: 7});
+            state.shoplists.push({ id: 1020, list_name: 'ショップリスト1017', price: 200, purchasedate: now.toJSON(), user_id: 7});
+            state.shoplists.push({ id: 1021, list_name: 'ショップリスト1018', price: 200, purchasedate: now.toJSON(), user_id: 7});
+
+            other_getters = {
+              thisMonthShopList: getters.thisMonthShopList(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+
+          });
+          it('user_id=n(2個), 2=n(数値動く), 3=n(2個), 4=n(2個), 5=n(6個), 6=n(5個), 7=n(5個) の時 ', () => {
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users.length).toEqual(7);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').style).toMatch(multi_match);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].length).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+          });
+
+          it('user_id=0(0個), 2=n(数値動く), 3=n(2個), 4=n(2個), 5=n(6個), 6=n(5個), 7=n(5個) の時 ', () => {
+            delete_shoplists_index = [];
+            state.shoplists.forEach((shoplist, index) => {
+              if (shoplist.user_id === 2) {
+                delete_shoplists_index.push(index)
+              }
+            });
+            state.shoplists.splice(delete_shoplists_index[0], 2);
+            other_getters = {
+              thisMonthShopList: getters.thisMonthShopList(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].parcent).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].length).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].parcent).toEqual(100);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].user).toEqual(-1);
+          });
+          it('user_id=0(0個), 他のids=0(個)', () => {
+            state.shoplists = []
+            other_getters = {
+              thisMonthShopList: getters.thisMonthShopList(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].parcent).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].length).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].parcent).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].user).toEqual(-1);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].length).toEqual(0);
+          });
+
+          it('user_id=n(n個), 他のidsの投稿数=0(0個) ', () => {
+            state.shoplists = [
+                { id: 1, list_name: 'ショップリスト1', price: 200, purchasedate: now.toJSON(), user_id: 2},
+                { id: 2, list_name: 'ショップリスト2', price: 200, purchasedate: now.toJSON(), user_id: 2},
+            ]
+            other_getters = {
+              thisMonthShopList: getters.thisMonthShopList(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').style).toMatch(single_match);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].parcent).toEqual(100);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[0].length).toEqual(2);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].parcent).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].user).toEqual(-1);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].length).toEqual(0);
+            expect(period_shoplist('month', userLoggedIn.user, 'multi').users[1].rgb).toMatch(gray_image_match);
+
+          });
+        });
+      });
+
+      describe('year', () => {
+        beforeEach(() => {
+          other_getters = {
+            thisYearShopLists: getters.thisYearShopLists(state)
+          }
+          period_shoplist = getters.periodShopListUser(state, other_getters);
+        });
+        describe('single', () => {
+          it('user_idの投稿数 = 0, 他の投稿数 = 0', () => {
+            state.shoplists = [];
+            other_getters = {
+              thisYearShopLists: getters.thisYearShopLists(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].parcent).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].length).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[1]).toEqual({ parcent: 0, user: -1, length: 0, rgb: 'rgba(0, 0, 0, 0.5)' })
+          });
+          it('user_idの投稿数 = 0, 他の投稿数 = n', () => {
+            delete_shoplists_index = [];
+            state.shoplists.forEach((shoplist, index) => {
+              if (shoplist.user_id === 2) {
+                delete_shoplists_index.push(index)
+              }
+            });
+
+            state.shoplists.splice(delete_shoplists_index[0], 2);
+
+            other_getters = {
+              thisYearShopLists: getters.thisYearShopLists(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].parcent).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].length).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[1].parcent).toEqual(100);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[1].user).toEqual(-1);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[1].rgb).toEqual('rgba(0, 0, 0, 0.5)');
+          });
+          it('user_idの投稿数 = n, 他のidsの投稿数 = 0', () => {
+            state.shoplists = [
+                { id: 1, list_name: 'ショップリスト1', price: 200, purchasedate: now.toJSON(), user_id: 2},
+                { id: 2, list_name: 'ショップリスト2', price: 200, purchasedate: now.toJSON(), user_id: 2},
+            ]
+            other_getters = {
+              thisYearShopLists: getters.thisYearShopLists(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').style).toMatch(single_match);
+          });
+
+          it('user_idの投稿数 = n, 他のidsの投稿数 = n', () => {
+            getter_this_year_shoplists = getters.thisYearShopLists(state);
+            this_year_shoplists = getter_this_year_shoplists(now);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').style).toMatch(double_match);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].user).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[0].rgb).toMatch(background_match);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[1].user).toEqual(-1);
+            expect(period_shoplist('year', userLoggedIn.user, 'single').users[1].rgb).toMatch(background_match);
+          });
+        });
+
+        describe('multi', () => {
+          it('user_idの投稿数 = 0, 他の投稿数 = 0', () => {
+            state.shoplists = [];
+            other_getters = {
+              thisYearShopLists: getters.thisYearShopLists(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].parcent).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].length).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1]).toEqual({ parcent: 0, user: -1, length: 0, rgb: 'rgba(0, 0, 0, 0.5)' })
+          });
+
+          it('user_idの投稿数 = 0, 他の投稿数 = n', () => {
+            delete_shoplists_index = [];
+            state.shoplists.forEach((shoplist, index) => {
+              if (shoplist.user_id === 2) {
+                delete_shoplists_index.push(index)
+              }
+            });
+
+            state.shoplists.splice(delete_shoplists_index[0], 2);
+
+            other_getters = {
+              thisYearShopLists: getters.thisYearShopLists(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').style).toEqual('background-image: conic-gradient(rgba(0, 0, 0, 0.5) 0% 360%);');
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].parcent).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].length).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].parcent).toEqual(100);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].user).toEqual(-1);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].rgb).toEqual('rgba(0, 0, 0, 0.5)');
+          });
+
+          it('user_idの投稿数 = n, 他のidsの投稿数 = 0', () => {
+            state.shoplists = [
+                { id: 1, list_name: 'ショップリスト1', price: 200, purchasedate: now.toJSON(), user_id: 2},
+                { id: 2, list_name: 'ショップリスト2', price: 200, purchasedate: now.toJSON(), user_id: 2},
+            ]
+            other_getters = {
+              thisYearShopLists: getters.thisYearShopLists(state)
+            }
+            period_shoplist = getters.periodShopListUser(state, other_getters);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').style).toMatch(single_match);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].parcent).toEqual(100);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].length).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].rgb).toMatch(background_match);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].parcent).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].user).toEqual(-1);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].length).toEqual(0);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].rgb).toMatch(gray_image_match);
+          });
+
+          it('user_idの投稿数 = n, 他のidsの投稿数 = n', () => {
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').style).toMatch(triple_match);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users.length).toEqual(3);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].length).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].user).toEqual(2);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[0].rgb).toMatch(background_match);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[1].rgb).toMatch(background_match);
+            expect(period_shoplist('year', userLoggedIn.user, 'multi').users[2].rgb).toMatch(background_match);
+          });
+        });
+      });
+    });
   });
 
   describe('userSearchId', () => {
@@ -493,7 +861,7 @@ describe('/store/getters', () => {
     });
     it('user.id = -1 登録されていない id を取得しようとすると 登録なしとでる', () => {
       expect(user_search(-1)).toEqual(
-        { id: '', last_name: '登録なし', first_name: '登録なし', email: '' }
+        { id: '', last_name: 'その他', first_name: 'その他', email: '' }
       );
     });
   });
