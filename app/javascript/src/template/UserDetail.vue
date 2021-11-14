@@ -12,6 +12,44 @@
           :userLoggedIn="userLoggedIn"
         ></user-show>
       </div>
+      <div class="user-shoplist-parcent">
+        <div class="shoplists-pracents">
+          <parcent
+            :userLoggedIn="userLoggedIn"
+            :periodShopListUser="periodShopListUser"
+            :userSearchId="userSearchId"
+            :period="'month'"
+            :kindsType="'single'"
+          ></parcent>
+        </div>
+        <div class="shoplists-pracents">
+          <parcent
+            :userLoggedIn="userLoggedIn"
+            :periodShopListUser="periodShopListUser"
+            :userSearchId="userSearchId"
+            :period="'month'"
+            :kindsType="'multi'"
+          >今月(全体)</parcent>
+        </div>
+        <div class="shoplists-pracents">
+          <parcent
+            :userLoggedIn="userLoggedIn"
+            :periodShopListUser="periodShopListUser"
+            :userSearchId="userSearchId"
+            :period="'year'"
+            :kindsType="'single'"
+          >今年</parcent>
+        </div>
+        <div class="shoplists-pracents">
+          <parcent
+            :userLoggedIn="userLoggedIn"
+            :periodShopListUser="periodShopListUser"
+            :userSearchId="userSearchId"
+            :period="'year'"
+            :kindsType="'multi'"
+          >今年(全体)</parcent>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,18 +57,20 @@
 <script>
 import HeaderLink from './HeaderLink.vue'
 import UserShow from '../molcules/UserShow.vue'
+import Parcent from '../molcules/Parcent.vue'
 import { mapGetters } from 'vuex'
   export default {
     components: {
       HeaderLink,
-      UserShow
+      UserShow,
+      Parcent
     },
     data() {
       return {
         flash: ''
       }
     },
-    computed: mapGetters(['userLoggedIn'])
+    computed: mapGetters(['userLoggedIn', 'periodShopListUser', 'userSearchId'])
   }
 </script>
 
@@ -38,7 +78,6 @@ import { mapGetters } from 'vuex'
   .user-detail-container {
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.06);
   }
   .user-detail-sub-container {
     width: 90%;
@@ -49,10 +88,35 @@ import { mapGetters } from 'vuex'
     width: 80%;
     height: 10%;
     margin: 0 auto;
+    padding:0;
   }
   .user-detail-show-container {
     width: 80%;
-    height: 30%;
+    height: 10%;
     margin: 0 auto;
+    padding: 0;
+  }
+  .user-shoplist-parcent {
+    width: 80%;
+    height: 80%;
+    margin: 0 auto;
+    padding:0;
+  }
+  .shoplists-pracents {
+    box-sizing: border-box;
+    width: 50%;
+    height: 50%;
+    float: left;
+    border: 1px solid rgb(0, 0, 0);
+  }
+  @media screen and (max-width: 480px) {
+    .user-detail-container {
+      width: 100%;
+    }
+    .shoplists-pracents {
+      width: 100%;
+      height: 50%;
+      float: left;
+    }
   }
 </style>
