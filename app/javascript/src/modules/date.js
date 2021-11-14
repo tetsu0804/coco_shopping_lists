@@ -12,7 +12,13 @@ export default {
   regexpYearMonth(date) {
     let json_date, match_date
     json_date = date.toJSON();
-    match_date = json_date.match(/^\d{4}-\d{2}/g)
+    match_date = json_date.match(/^\d{4}-\d{2}/g);
+    return new RegExp(match_date[0]);
+  },
+  regexpYear(date) {
+    let json_date, match_date
+    json_date = date.toJSON();
+    match_date = json_date.match(/^\d{4}/g);
     return new RegExp(match_date[0]);
   },
   monthToMonthNumber(now, other_day) {
