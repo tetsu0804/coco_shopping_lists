@@ -1,6 +1,11 @@
 <template>
   <div class="user-show-container">
-    user
+    <div class="user-details">
+      名前: {{ fullName }}
+    </div>
+    <div class="user-details">
+      email: {{ userEmail }}
+    </div>
   </div>
 </template>
 
@@ -25,5 +30,11 @@
   .user-show-container {
     width: 100%;
     height: 100%;
+  }
+  .user-details {
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1% 0 0 0;
   }
 </style>
