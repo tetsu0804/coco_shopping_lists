@@ -1,7 +1,7 @@
 import chart from '@/src/modules/chart'
 
 describe('/modules/chart', () => {
-  describe('colors', () => {
+  describe('colors rgbカテゴリ', () => {
     describe('randomRGB', () => {
       let matchs = /^rgb\(\s*?\d{1,3},\s*?\d{1,3},\s*?\d{1,3}\)/
       it('ランダムな rgb(n, n, n) ができる', () => {
@@ -10,51 +10,112 @@ describe('/modules/chart', () => {
     });
   });
 
-  describe('shoplist.user_id', () => {
-    let state, another_date, date_now, new_date, change_id, format_shoplist, category_shoplist_format, set_date
-    state = {
-      shoplists: []
-    }
-    for (let i = 0; i < 30; i++) {
-      date_now = new Date();
-      change_id = i + 1
-      if (i < 10) {
-        set_date = new Date(date_now.setDate(10));
-        format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: set_date.toJSON() , user_id: 1 }
-      } else if (i < 20) {
-        set_date = new Date(date_now.setDate(11));
-        format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: set_date.toJSON() , user_id: 2 }
-      } else if (i < 30) {
-        set_date = new Date(date_now.setDate(12));
-        format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: set_date.toJSON() , user_id: 3 }
+  describe('shoplist.user_id shoplistカテゴリ', () => {
+    let state, another_date, date_now, new_date, change_id, format_shoplist, category_shoplist_format, set_date, delete_shoplists_index
+
+    beforeEach(() => {
+      state = {
+        shoplists: []
       }
-      state.shoplists.push(format_shoplist);
-    }
-    // for (let i = 0; i < 30; i++) {
-    //   another_date = 365 - i
-    //date_now = new Date();
-    //   new_date = new Date(date_now.setDate(date_now.getDate() - another_date ));
-      // change_id = i + 1
-      // format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: new_date.toJSON() , user_id: 1 }
-      // if (i % 7 === 0) {
-      //   category_shoplist_format = { category_id: 3, shop_list_id: change_id }
-      // } else if (i % 5 === 0) {
-      //   category_shoplist_format = { category_id: 4, shop_list_id: change_id }
-      // } else if (i % 3 === 0) {
-      //   category_shoplist_format = { category_id: 1, shop_list_id: change_id }
-      // } else {
-      //   category_shoplist_format = { category_id: 2, shop_list_id: change_id}
-      // }
-      // state.shoplists.push(format_shoplist)
-      // category_shoplists.push(category_shoplist_format)
-    //}
+      for (let i = 0; i < 30; i++) {
+        date_now = new Date();
+        change_id = i + 1
+        if (i < 10) {
+          set_date = new Date(date_now.setDate(10));
+          format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: set_date.toJSON() , user_id: 1 }
+        } else if (i < 20) {
+          set_date = new Date(date_now.setDate(11));
+          format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: set_date.toJSON() , user_id: 2 }
+        } else if (i < 30) {
+          set_date = new Date(date_now.setDate(12));
+          format_shoplist = {id: change_id, list_name: 'ショップリスト' + change_id, price: 5000, purchasedate: set_date.toJSON() , user_id: 3 }
+        }
+        state.shoplists.push(format_shoplist);
+      }
+    });
 
     describe('userIdSplitShopLists', () => {
-      it('state.shoplistsの中の user_id の投稿を分割する', () => {
-        state.shoplists.push({id: 40, list_name: 'ショップリスト40', price: 5000, purchasedate: new Date().toJSON() , user_id: 1 })
-        // chart.userIdSplitShopLists(state.shoplists, 2)
-        // expect(chart.userIdSplitShopLists(state.shoplists, 1)[0].user).toEqual(1)
-        // expect(chart.userIdSplitShopLists(state.shoplists, 1)[0].shoplists.length).toEqual(10)
+      it('(user.id=2) state.shoplistsの中の user_id の投稿を分割する', () => {
+        state.shoplists.push({id: 40, list_name: 'ショップリスト40', price: 5000, purchasedate: new Date().toJSON() , user_id: 1 });
+        expect(chart.userIdSplitShopLists(state.shoplists, 2)).toEqual([
+          {user_id: 2, shoplists: 10},
+          {user_id: 1, shoplists: 11},
+          {user_id: 3, shoplists: 10}
+        ]);
+      });
+
+      it('(user.id=2) state.shoplists.length = 0', () => {
+        state.shoplists = [];
+        expect(chart.userIdSplitShopLists(state.shoplists, 2)).toEqual([
+          {user_id: 2, shoplists: 0},
+          {user_id: '', shoplists: ''}
+        ]);
+      });
+
+      it('(user.id=2) user = 0, 他のids = n', () => {
+        expect(state.shoplists.length).toEqual(30)
+        delete_shoplists_index = [];
+        state.shoplists.forEach((shoplist, index) => {
+          if (shoplist.user_id === 2) {
+            delete_shoplists_index.push(index)
+          }
+        });
+
+        state.shoplists.splice(delete_shoplists_index[0], 10);
+        expect(state.shoplists.length).toEqual(20);
+        expect(chart.userIdSplitShopLists(state.shoplists, 2)).toEqual([
+          {user_id: 2, shoplists: 0},
+          {user_id: 1, shoplists: 10},
+          {user_id: 3, shoplists:  10},
+        ]);
+      });
+      it('(user.id=2) user = n, 他のids = 0', () => {
+        date_now = new Date()
+        state.shoplists = [
+          {id: 40, list_name: 'ショップリスト40', price: 5000, purchasedate: date_now.toJSON() , user_id: 2 },
+          {id: 41, list_name: 'ショップリスト41', price: 5000, purchasedate: date_now.toJSON() , user_id: 2 },
+        ]
+        expect(chart.userIdSplitShopLists(state.shoplists, 2)).toEqual([
+          {user_id:2, shoplists: 2}
+        ]);
+      });
+    });
+
+    describe('userIdAndOtherShopList', () => {
+      let user_id_split_shop_lists
+      it('user.idのshoplists と 別に 他のuserのshoplistは合体 ( user.id and  (user.id2 + user.id3 + user.id4))', () => {
+
+        user_id_split_shop_lists = chart.userIdSplitShopLists(state.shoplists, 2);
+        expect(chart.userIdAndOtherShopList(user_id_split_shop_lists)).toEqual([
+          {user_id: 2, shoplists: 10},
+          {user_id: -1, shoplists: 20}
+        ]);
+      });
+      it('引数が空の場合', () => {
+        expect(chart.userIdAndOtherShopList([])).toEqual([
+          {user_id: '', shoplists: ''},
+          {user_id: '', shoplists: ''}
+        ]);
+      });
+      it('(user.id=2) user = 0, 他のids = n', () => {
+        user_id_split_shop_lists = [
+          {user_id: 2, shoplists: 0},
+          {user_id: 1, shoplists: 2},
+          {user_id: 3, shoplists: 1}
+        ]
+        expect(chart.userIdAndOtherShopList(user_id_split_shop_lists)).toEqual([
+          {user_id: 2, shoplists: 0},
+          {user_id: -1, shoplists: 3}
+        ]);
+      });
+      it('(user.id=2) user = n, 他のids = 0', () => {
+        user_id_split_shop_lists = [
+          {user_id: 2, shoplists: 2}
+        ]
+        expect(chart.userIdAndOtherShopList(user_id_split_shop_lists)).toEqual([
+          {user_id: 2, shoplists: 2},
+          {user_id: -1, shoplists: 0}
+        ]);
       });
     });
   });
